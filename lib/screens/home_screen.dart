@@ -1,31 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:khm_app/bloc/login/login_bloc.dart';
-import 'package:khm_app/bloc/login/login_event.dart';
-import 'package:khm_app/screens/login_screen.dart';
+import 'package:khm_app/provider/auth_provider.dart';
+import 'package:khm_app/utils/enum_app_page.dart';
+import 'package:provider/provider.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  final void Function(AppPage) onTapped;
+
+  const HomeScreen({
+    Key? key,
+    required this.onTapped,
+  }) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Home'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.logout),
-            onPressed: () {
-              context.read<LoginBloc>().add(LogoutRequested());
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => LoginScreen()),
-                (route) => false,
-              );
-            },
-          ),
-        ],
-      ),
       body: Center(
-        child: Text('Welcome to the Home Screen'),
+        child: ElevatedButton(
+          child: Text("keluar"),
+          onPressed: () async {
+            // final authRead = context.read<AuthProvider>();
+            // final result = await authRead.logout();
+            // if (result) {
+            widget.onTapped(AppPage.login);
+            // }
+          },
+        ),
       ),
     );
   }
