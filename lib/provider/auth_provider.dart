@@ -29,12 +29,12 @@ class AuthProvider extends ChangeNotifier {
     try {
       profile = await authRepository.getProfile();
       if (profile == null) {
-        var result = await apiService.loginApi(email, password);
-        message = result?['status'] ?? "Gagal Masuk";
-        if (result["uniq_code"].isNotEmpty) {
-          await authRepository
-              .saveProfile(ProfileModel(token: result["uniq_code"]));
-          profile = ProfileModel(token: result["uniq_code"]);
+        ProfileModel result = await apiService.loginApi(email, password);
+        message = 'Berhasil masuk';
+        print(result.token);
+        if (result.token?.isNotEmpty ?? false) {
+          await authRepository.saveProfile(result);
+          profile = result;
         }
       }
       isLoggedIn = await authRepository.isLoggedIn();
@@ -85,7 +85,6 @@ class AuthProvider extends ChangeNotifier {
 
     isLoadingRegister = false;
     message = result?['status'] ?? "Gagal Daftar";
-    print(result);
     notifyListeners();
 
     return true;

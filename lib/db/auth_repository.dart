@@ -9,8 +9,6 @@ class AuthRepository {
   Future<bool> isLoggedIn() async {
     final preferences = await SharedPreferences.getInstance();
     final state = preferences.getString(profileKey);
-    print(state);
-    print(state == null);
     if (state == null) {
       return false;
     } else {
@@ -33,7 +31,7 @@ class AuthRepository {
     final jsonString = preferences.getString(profileKey) ?? "";
     ProfileModel? profile;
     try {
-      profile = ProfileModel.fromJson(json.decode(jsonString));
+      profile = ProfileModel.fromLocalJson(json.decode(jsonString));
     } catch (e) {
       profile = null;
     }

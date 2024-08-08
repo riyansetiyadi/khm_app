@@ -140,8 +140,6 @@ class MyRouterDelegate extends RouterDelegate
     }
 
     isLoggedIn = await authRepository.isLoggedIn();
-    print('isLoggedIn');
-    print(isLoggedIn);
     if (authRequiredPages.contains(page) && !isLoggedIn) {
       // Jika mengunjungi halaman yang perlu login dan belum login
       _pageStack.removeWhere((page) => !authPages.contains(page));
@@ -154,7 +152,6 @@ class MyRouterDelegate extends RouterDelegate
       _pageStack.add(_handleDuplicatePage(page));
     }
 
-    print(_pageStack);
     notifyListeners();
   }
 
