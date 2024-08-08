@@ -30,7 +30,7 @@ class AuthProvider extends ChangeNotifier {
       profile = await authRepository.getProfile();
       if (profile == null) {
         var result = await apiService.loginApi(email, password);
-        message = result["status"];
+        message = result?['status'] ?? "Gagal Masuk";
         if (result["uniq_code"].isNotEmpty) {
           await authRepository
               .saveProfile(ProfileModel(token: result["uniq_code"]));
@@ -60,16 +60,34 @@ class AuthProvider extends ChangeNotifier {
     return !isLoggedIn;
   }
 
-  // Future<bool> register(User user) async {
-  //   isLoadingRegister = true;
-  //   notifyListeners();
+  Future<bool> register(
+      String fullname,
+      String phoneNumber,
+      String email,
+      String password,
+      String datebirth,
+      String monthbirth,
+      String yearbirth) async {
+    isLoadingRegister = true;
+    notifyListeners();
 
-  //   ApiResponseRegisterModel result = await apiService.registerApi(user);
+    var data = {
+      'nama_lengkap': fullname,
+      'nohp': phoneNumber,
+      'email': email,
+      'password': password,
+      'tanggal': datebirth,
+      'bulan': monthbirth,
+      'tahun': yearbirth,
+      'registerAwal': ''
+    };
+    var result = await apiService.registerFirstApi(data);
 
-  //   isLoadingRegister = false;
-  //   message = result.message;
-  //   notifyListeners();
+    isLoadingRegister = false;
+    message = result?['status'] ?? "Gagal Daftar";
+    print(result);
+    notifyListeners();
 
-  //   return !result.error;
-  // }
+    return true;
+  }
 }
