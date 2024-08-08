@@ -18,6 +18,7 @@ class ProfilScreen extends StatefulWidget {
 class _ProfilScreenState extends State<ProfilScreen> {
   @override
   Widget build(BuildContext context) {
+    final authWatch = context.watch<AuthProvider>();
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
@@ -53,7 +54,7 @@ class _ProfilScreenState extends State<ProfilScreen> {
                                 fontSize: 12, fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            'Nama Lengkap',
+                            authWatch.profile?.fullname ?? '',
                             style: TextStyle(
                                 fontSize: 12, fontWeight: FontWeight.bold),
                           ),
@@ -73,7 +74,7 @@ class _ProfilScreenState extends State<ProfilScreen> {
                                 fontSize: 12, fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            'Email',
+                            authWatch.profile?.email ?? '',
                             style: TextStyle(
                                 fontSize: 12, fontWeight: FontWeight.bold),
                           ),
@@ -93,7 +94,7 @@ class _ProfilScreenState extends State<ProfilScreen> {
                                 fontSize: 12, fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            'NIK',
+                            authWatch.profile?.idNumber ?? '',
                             style: TextStyle(
                                 fontSize: 12, fontWeight: FontWeight.bold),
                           ),
@@ -113,7 +114,7 @@ class _ProfilScreenState extends State<ProfilScreen> {
                                 fontSize: 12, fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            'Tanggal Lahir',
+                            authWatch.profile?.dateBirth ?? '',
                             style: TextStyle(
                                 fontSize: 12, fontWeight: FontWeight.bold),
                           ),
@@ -133,7 +134,7 @@ class _ProfilScreenState extends State<ProfilScreen> {
                                 fontSize: 12, fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            'Umur',
+                            authWatch.profile?.age ?? '',
                             style: TextStyle(
                                 fontSize: 12, fontWeight: FontWeight.bold),
                           ),
@@ -153,7 +154,7 @@ class _ProfilScreenState extends State<ProfilScreen> {
                                 fontSize: 12, fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            'No. Telepon',
+                            authWatch.profile?.phoneNumber ?? '',
                             style: TextStyle(
                                 fontSize: 12, fontWeight: FontWeight.bold),
                           ),
@@ -173,7 +174,7 @@ class _ProfilScreenState extends State<ProfilScreen> {
                                 fontSize: 12, fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            'Alamat Lengkap',
+                            authWatch.profile?.address ?? '',
                             style: TextStyle(
                                 fontSize: 12, fontWeight: FontWeight.bold),
                           ),
