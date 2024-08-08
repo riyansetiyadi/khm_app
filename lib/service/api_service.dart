@@ -20,4 +20,20 @@ class ApiService {
       throw Exception('Failed to login');
     }
   }
+
+  Future registerFirstApi(Map<String, String> data) async {
+    var request =
+        http.MultipartRequest('POST', Uri.parse("$_baseUrl/login_api.php"));
+    request.fields.addAll(data);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      final responseString = await response.stream.bytesToString();
+      final responseJson = jsonDecode(responseString);
+      return responseJson;
+    } else {
+      throw Exception('Failed to register');
+    }
+  }
 }

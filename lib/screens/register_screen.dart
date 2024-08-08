@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:khm_app/provider/auth_provider.dart';
 import 'package:khm_app/utils/enum_app_page.dart';
+import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
   final void Function(AppPage) onTapped;
@@ -17,6 +19,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _yearController = TextEditingController();
+  final TextEditingController _fullnameController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
 
   bool _obscureText = true;
 
@@ -128,6 +132,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                         ),
                         TextField(
+                          controller: _fullnameController,
                           decoration: InputDecoration(
                             labelText: 'Masukkan Nama Pasien',
                             labelStyle: TextStyle(fontSize: 12),
@@ -227,6 +232,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                         ),
                         TextField(
+                          controller: _phoneNumberController,
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             labelText: 'Masukkan No. HP Pasien',
@@ -253,7 +259,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         SizedBox(height: 15),
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            print(_emailController.text);
+                            print(_passwordController.text);
+                            print(_fullnameController.text);
+                            print(selectedDay);
+                            print(selectedMonth);
+                            print(_yearController.text);
+                            print(_phoneNumberController.text);
+                            final authRead = context.read<AuthProvider>();
+
+                            final result = await authRead.register(
+                                _fullnameController.text,
+                                _phoneNumberController.text,
+                                _emailController.text,
+                                _passwordController.text,
+                                selectedDay.toString(),
+                                selectedMonth.toString(),
+                                _yearController.text);
+                            if (result) {
+                              widget.onTapped(AppPage.login);
+                            }
+                          },
                           child: Text('Ajukan Pendaftaran'),
                           style: ElevatedButton.styleFrom(
                             minimumSize: Size(double.infinity, 36),
