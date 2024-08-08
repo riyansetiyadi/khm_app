@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:khm_app/utils/enum_app_page.dart';
 
 class HomeScreen extends StatefulWidget {
+  final void Function(AppPage) onTapped;
+
+  const HomeScreen({
+    Key? key,
+    required this.onTapped,
+  }) : super(key: key);
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -399,46 +406,50 @@ class _HomeScreenState extends State<HomeScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Image.asset(
-                        'assets/images/orang.png',
-                        width: 200,
-                        fit: BoxFit.contain,
+                      Expanded(
+                        child: Image.asset(
+                          'assets/images/orang.png',
+                          width: 170,
+                          fit: BoxFit.contain,
+                        ),
                       ),
-                      SizedBox(height: 15),
-                      Column(
-                        children: [
-                          Text(
-                            'Konsultasi dengan Dokter Ahli',
-                            style: TextStyle(
-                              fontSize: 12.0,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            'Hanya di SIMKHM!',
-                            style: TextStyle(
-                              fontSize: 12.0,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {},
-                            child: Text('Konsultasi',
-                                style: TextStyle(
-                                  fontSize: 11.0,
-                                )),
-                            style: ElevatedButton.styleFrom(
-                              minimumSize: Size(20, 20),
-                              backgroundColor: Color(0xFF198754),
-                              foregroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0),
+                      // SizedBox(height: 15),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Text(
+                              'Konsultasi dengan Dokter Ahli',
+                              style: TextStyle(
+                                fontSize: 12.0,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
-                          ),
-                        ],
+                            Text(
+                              'Hanya di SIMKHM!',
+                              style: TextStyle(
+                                fontSize: 12.0,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {},
+                              child: Text('Konsultasi',
+                                  style: TextStyle(
+                                    fontSize: 11.0,
+                                  )),
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: Size(20, 20),
+                                backgroundColor: Color(0xFF198754),
+                                foregroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
