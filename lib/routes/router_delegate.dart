@@ -101,6 +101,7 @@ class MyRouterDelegate extends RouterDelegate
       ),
       bottomNavigationBar: bottomNavPages.contains(_pageStack.last)
           ? BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
               selectedFontSize: 0,
               currentIndex: currentBottomNavigationIndex,
               backgroundColor: Colors.green,
@@ -108,13 +109,14 @@ class MyRouterDelegate extends RouterDelegate
               unselectedItemColor: Colors.white,
               onTap: (index) {
                 if (index == 0) {
-                  currentBottomNavigationIndex = 0;
                   _handleTapped(AppPage.home);
                 } else if (index == 1) {
-                  currentBottomNavigationIndex = 1;
                   _handleTapped(AppPage.home);
                 } else if (index == 2) {
-                  currentBottomNavigationIndex = 2;
+                  _handleTapped(AppPage.home);
+                } else if (index == 3) {
+                  _handleTapped(AppPage.home);
+                } else if (index == 4) {
                   _handleTapped(AppPage.profile);
                 }
                 notifyListeners();
@@ -122,7 +124,11 @@ class MyRouterDelegate extends RouterDelegate
               items: const [
                 BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.shopping_cart), label: ""),
+                    icon: Icon(Icons.chat_bubble_rounded), label: ""),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.store_rounded), label: ""),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.shopping_cart_rounded), label: ""),
                 BottomNavigationBarItem(icon: Icon(Icons.person), label: ""),
               ],
             )
@@ -136,7 +142,7 @@ class MyRouterDelegate extends RouterDelegate
       // } else if (page == AppPage.shop) {
       //   currentBottomNavigationIndex = 1;
     } else if (page == AppPage.profile) {
-      currentBottomNavigationIndex = 2;
+      currentBottomNavigationIndex = 4;
     }
 
     isLoggedIn = await authRepository.isLoggedIn();
