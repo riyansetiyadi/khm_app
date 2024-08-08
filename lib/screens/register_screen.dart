@@ -260,13 +260,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         SizedBox(height: 15),
                         ElevatedButton(
                           onPressed: () async {
-                            print(_emailController.text);
-                            print(_passwordController.text);
-                            print(_fullnameController.text);
-                            print(selectedDay);
-                            print(selectedMonth);
-                            print(_yearController.text);
-                            print(_phoneNumberController.text);
                             final authRead = context.read<AuthProvider>();
 
                             final result = await authRead.register(
