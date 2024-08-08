@@ -7,6 +7,7 @@ class RegisterKonsulScreen extends StatefulWidget {
 
 class _RegisterKonsulScreenState extends State<RegisterKonsulScreen> {
   final TextEditingController _yearController = TextEditingController();
+  final TextEditingController _nikController = TextEditingController();
 
   int? selectedDay;
   String? _selectedGender;
@@ -174,6 +175,7 @@ class _RegisterKonsulScreenState extends State<RegisterKonsulScreen> {
                           ),
                         ),
                         TextField(
+                          controller: _nikController,
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             labelText: 'NIK',
