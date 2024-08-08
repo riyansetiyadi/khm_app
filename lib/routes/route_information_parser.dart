@@ -12,8 +12,8 @@ class AppRouteInformationParser extends RouteInformationParser<AppPage> {
     switch (uri.pathSegments.first) {
       case 'splash':
         return AppPage.splash;
-      // case 'profile':
-      //   return AppPage.profile;
+      case 'profile':
+        return AppPage.profile;
       // case 'shop':
       //   return AppPage.shop;
       default:
@@ -30,8 +30,8 @@ class AppRouteInformationParser extends RouteInformationParser<AppPage> {
         return RouteInformation(uri: Uri.parse('/'));
       // case AppPage.shop:
       //   return RouteInformation(uri: Uri.parse('/shop'));
-      // case AppPage.profile:
-      //   return RouteInformation(uri: Uri.parse('/profile'));
+      case AppPage.profile:
+        return RouteInformation(uri: Uri.parse('/profile'));
       case AppPage.login:
         return RouteInformation(uri: Uri.parse('/login'));
       case AppPage.register:

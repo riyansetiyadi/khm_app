@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:khm_app/db/auth_repository.dart';
 import 'package:khm_app/screens/home_screen.dart';
 import 'package:khm_app/screens/login_screen.dart';
+import 'package:khm_app/screens/profil_screen.dart';
 import 'package:khm_app/screens/register_screen.dart';
 import 'package:khm_app/screens/splash_screen.dart';
 import 'package:khm_app/utils/enum_app_page.dart';
 import 'package:khm_app/utils/list_auth_page.dart';
+import 'package:khm_app/utils/list_auth_required_page.dart';
 import 'package:khm_app/utils/list_bottom_nav_page.dart';
 
 class MyRouterDelegate extends RouterDelegate
@@ -66,11 +68,11 @@ class MyRouterDelegate extends RouterDelegate
             //     key: ValueKey(AppPage.shop),
             //     child: HomeScreen(onTapped: _handleTapped),
             //   );
-            // case AppPage.profile:
-            //   return MaterialPage(
-            //     key: ValueKey(AppPage.profile),
-            //     child: HomeScreen(onTapped: _handleTapped),
-            //   );
+            case AppPage.profile:
+              return MaterialPage(
+                key: ValueKey(AppPage.profile),
+                child: ProfilScreen(onTapped: _handleTapped),
+              );
             case AppPage.login:
               return MaterialPage(
                 key: ValueKey(AppPage.login),
@@ -107,10 +109,13 @@ class MyRouterDelegate extends RouterDelegate
               onTap: (index) {
                 if (index == 0) {
                   currentBottomNavigationIndex = 0;
+                  _handleTapped(AppPage.home);
                 } else if (index == 1) {
                   currentBottomNavigationIndex = 1;
+                  _handleTapped(AppPage.home);
                 } else if (index == 2) {
                   currentBottomNavigationIndex = 2;
+                  _handleTapped(AppPage.profile);
                 }
                 notifyListeners();
               },
@@ -125,11 +130,26 @@ class MyRouterDelegate extends RouterDelegate
     );
   }
 
-  void _handleTapped(AppPage page) {
-    print("isLoggedIn");
+  void _handleTapped(AppPage page) async {
+    if (page == AppPage.home) {
+      currentBottomNavigationIndex = 0;
+      // } else if (page == AppPage.shop) {
+      //   currentBottomNavigationIndex = 1;
+    } else if (page == AppPage.profile) {
+      currentBottomNavigationIndex = 2;
+    }
+
+    isLoggedIn = await authRepository.isLoggedIn();
+    print('isLoggedIn');
     print(isLoggedIn);
-    if (authPages.contains(page) && isLoggedIn) {
+    if (authRequiredPages.contains(page) && !isLoggedIn) {
+      // Jika mengunjungi halaman yang perlu login dan belum login
+      _pageStack.removeWhere((page) => !authPages.contains(page));
       _pageStack.add(_handleDuplicatePage(AppPage.login));
+    } else if (authPages.contains(page) && isLoggedIn) {
+      // Jika mengunjungi halaman untuk login atau register dan sudah login
+      _pageStack.removeWhere((page) => authPages.contains(page));
+      _pageStack.add(_handleDuplicatePage(AppPage.home));
     } else {
       _pageStack.add(_handleDuplicatePage(page));
     }

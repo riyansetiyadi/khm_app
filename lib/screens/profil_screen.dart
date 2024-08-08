@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:khm_app/provider/auth_provider.dart';
+import 'package:khm_app/utils/enum_app_page.dart';
+import 'package:provider/provider.dart';
 
 class ProfilScreen extends StatefulWidget {
-  const ProfilScreen({super.key});
+  final void Function(AppPage) onTapped;
+
+  const ProfilScreen({
+    Key? key,
+    required this.onTapped,
+  }) : super(key: key);
 
   @override
   State<ProfilScreen> createState() => _ProfilScreenState();
@@ -177,7 +185,13 @@ class _ProfilScreenState extends State<ProfilScreen> {
                       ),
                       SizedBox(height: 25),
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          final authRead = context.read<AuthProvider>();
+                          final result = await authRead.logout();
+                          if (result) {
+                            widget.onTapped(AppPage.login);
+                          }
+                        },
                         child: Text('Log Out'),
                         style: ElevatedButton.styleFrom(
                           minimumSize: Size(double.infinity, 36),
