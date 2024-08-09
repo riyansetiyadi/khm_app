@@ -28,8 +28,8 @@ class AppRouteInformationParser extends RouteInformationParser<AppPage> {
         return RouteInformation(uri: Uri.parse('/splash'));
       case AppPage.home:
         return RouteInformation(uri: Uri.parse('/'));
-      // case AppPage.shop:
-      //   return RouteInformation(uri: Uri.parse('/shop'));
+      case AppPage.shop:
+        return RouteInformation(uri: Uri.parse('/shop'));
       case AppPage.profile:
         return RouteInformation(uri: Uri.parse('/profile'));
       case AppPage.login:

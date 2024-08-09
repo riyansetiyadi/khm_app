@@ -1,7 +1,7 @@
 enum AppPage {
   splash,
   home,
-// shop,
+  shop,
   profile,
   login,
   register
