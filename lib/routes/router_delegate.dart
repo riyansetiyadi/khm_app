@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:khm_app/db/auth_repository.dart';
+import 'package:khm_app/provider/product_provider.dart';
 import 'package:khm_app/screens/home_screen.dart';
 import 'package:khm_app/screens/login_screen.dart';
 import 'package:khm_app/screens/profil_screen.dart';
@@ -10,6 +11,7 @@ import 'package:khm_app/utils/enum_app_page.dart';
 import 'package:khm_app/utils/list_auth_page.dart';
 import 'package:khm_app/utils/list_auth_required_page.dart';
 import 'package:khm_app/utils/list_bottom_nav_page.dart';
+import 'package:provider/provider.dart';
 
 class MyRouterDelegate extends RouterDelegate
     with ChangeNotifier, PopNavigatorRouterDelegateMixin {
@@ -49,6 +51,7 @@ class MyRouterDelegate extends RouterDelegate
 
   @override
   Widget build(BuildContext context) {
+    final productProvider = context.read<ProductProvider>();
     return Scaffold(
       body: Navigator(
         key: navigatorKey,
@@ -110,11 +113,14 @@ class MyRouterDelegate extends RouterDelegate
               unselectedItemColor: Colors.white,
               onTap: (index) {
                 if (index == 0) {
+                  Future.microtask(
+                      () async => productProvider.getNewProductsHome());
                   _handleTapped(AppPage.home);
                 } else if (index == 1) {
                   _handleTapped(AppPage.home);
                 } else if (index == 2) {
                   _handleTapped(AppPage.shop);
+                  Future.microtask(() async => productProvider.getProducts());
                 } else if (index == 3) {
                   _handleTapped(AppPage.home);
                 } else if (index == 4) {

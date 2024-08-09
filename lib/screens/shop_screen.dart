@@ -1,5 +1,11 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:khm_app/provider/product_provider.dart';
 import 'package:khm_app/utils/enum_app_page.dart';
+import 'package:khm_app/utils/enum_state.dart';
+import 'package:khm_app/widgets/handle_error_refresh_widget.dart';
+import 'package:provider/provider.dart';
 
 class ShopScreen extends StatefulWidget {
   final void Function(AppPage) onTapped;
@@ -14,6 +20,16 @@ class ShopScreen extends StatefulWidget {
 }
 
 class _ShopScreenState extends State<ShopScreen> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   List<Map<String, dynamic>> products = [
     {'name': 'Product 1', 'price': 10.0, 'image': 'assets/images/produk.png'},
     {'name': 'Product 2', 'price': 20.0, 'image': 'assets/images/produk.png'},
@@ -45,10 +61,13 @@ class _ShopScreenState extends State<ShopScreen> {
                     borderRadius: BorderRadius.circular(4.0),
                   ),
                 ),
-                onChanged: (value) {
+                onChanged: (value) async {
                   setState(() {
                     searchQuery = value;
                   });
+                  final productProvider = context.read<ProductProvider>();
+                  await productProvider.getProducts(
+                      keyword: searchQuery, filter: _selectedFilter);
                 },
               ),
             ),
@@ -101,18 +120,21 @@ class _ShopScreenState extends State<ShopScreen> {
                       ),
                       items: [
                         DropdownMenuItem<String>(
-                          value: 'Harga Terendah',
+                          value: 'hargaTerendah',
                           child: Text('Harga Terendah'),
                         ),
                         DropdownMenuItem<String>(
-                          value: 'Harga Tertinggi',
+                          value: 'hargaTertinggi',
                           child: Text('Harga Tertinggi'),
                         ),
                       ],
-                      onChanged: (String? newValue) {
+                      onChanged: (String? newValue) async {
                         setState(() {
                           _selectedFilter = newValue;
                         });
+                        final productProvider = context.read<ProductProvider>();
+                        await productProvider.getProducts(
+                            keyword: searchQuery, filter: _selectedFilter);
                       },
                     ),
                   ),
@@ -124,78 +146,104 @@ class _ShopScreenState extends State<ShopScreen> {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 0.64,
-                ),
-                itemCount: products.length,
-                itemBuilder: (context, index) {
-                  if (products[index]['name']
-                      .toLowerCase()
-                      .contains(searchQuery.toLowerCase())) {
-                    return Card(
-                      color: Colors.white,
-                      elevation: 2,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Image.asset(
-                            'assets/images/produk.png',
-                            fit: BoxFit.cover,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(products[index]['name'],
-                                    style: TextStyle(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.bold)),
-                                SizedBox(height: 4),
-                                Text('\Rp${products[index]['price']}',
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold)),
-                                ElevatedButton(
-                                  onPressed: () {},
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.add,
-                                        color: Colors.white,
+              child: Consumer<ProductProvider>(builder: (context, state, _) {
+                if (state.state == ResultState.loading) {
+                  return Center(
+                    child: defaultTargetPlatform == TargetPlatform.iOS
+                        ? const CupertinoActivityIndicator(
+                            radius: 20.0,
+                          )
+                        : const CircularProgressIndicator(),
+                  );
+                } else if (state.state == ResultState.error ||
+                    state.newProducts == null) {
+                  return ErrorRefresh(
+                    errorTitle: state.message ?? '',
+                    refreshTitle: 'Refresh',
+                    onPressed: () async {
+                      await state.getProducts();
+                    },
+                  );
+                } else if (state.state == ResultState.loaded &&
+                    state.products != null) {
+                  return GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 0.6,
+                    ),
+                    itemCount: state.products?.length,
+                    itemBuilder: (context, index) {
+                      return Card(
+                        color: Colors.white,
+                        elevation: 2,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Image.asset(
+                              'assets/images/produk.png',
+                              fit: BoxFit.cover,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(state.products?[index].nama_produk ?? '',
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.bold)),
+                                  SizedBox(height: 4),
+                                  Text(
+                                      '\Rp${state.products?[index].harga ?? ''}',
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold)),
+                                  ElevatedButton(
+                                    onPressed: () {},
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.add,
+                                          color: Colors.white,
+                                        ),
+                                        SizedBox(width: 8),
+                                        Text('Keranjang',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                            )),
+                                      ],
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                      minimumSize: Size(20, 30),
+                                      backgroundColor: Color(0xFF198754),
+                                      foregroundColor: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(5.0),
                                       ),
-                                      SizedBox(width: 8),
-                                      Text('Keranjang',
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                          )),
-                                    ],
-                                  ),
-                                  style: ElevatedButton.styleFrom(
-                                    minimumSize: Size(20, 30),
-                                    backgroundColor: Color(0xFF198754),
-                                    foregroundColor: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    );
-                  } else {
-                    return Container();
-                  }
-                },
-              ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return ErrorRefresh(
+                    errorTitle: state.message ?? '',
+                    refreshTitle: 'Refresh',
+                    onPressed: () async {
+                      await state.getProducts();
+                    },
+                  );
+                }
+              }),
             ),
           ),
         ],

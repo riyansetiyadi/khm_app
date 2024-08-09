@@ -19,13 +19,65 @@ class ProductProvider extends ChangeNotifier {
 
   String? message;
   ProductModel? product;
+  List<ProductModel>? products;
   List<ProductModel>? newProducts;
+  List<ProductModel>? bestSellerProducts;
 
   _init() async {
     // profile = await authRepository.getProfile();
   }
 
+  Future<bool> getProducts(
+      {String? keyword, String? filter, int? lim, int? page}) async {
+    _resultState = ResultState.loading;
+    notifyListeners();
+
+    try {
+      final responseResult = await apiService.getProductsApi(
+          keyword: keyword, filter: filter, lim: lim, page: page);
+      products = responseResult['data']
+          .map<ProductModel>((product) => ProductModel.fromJson(product))
+          .toList();
+      message = 'Berhasil mendapatkan produk';
+      _resultState = ResultState.loaded;
+      notifyListeners();
+
+      return newProducts != null ? true : false;
+    } catch (e) {
+      _resultState = ResultState.error;
+      message = 'Gagal mendapatkan produk';
+      notifyListeners();
+      return false;
+    }
+  }
+
   Future<bool> getNewProductsHome() async {
+    int lim = 5;
+    int page = 1;
+    _resultState = ResultState.loading;
+    notifyListeners();
+
+    try {
+      final responseResult =
+          await apiService.getProductsApi(lim: lim, page: page);
+      newProducts = responseResult['data']
+          .map<ProductModel>((product) => ProductModel.fromJson(product))
+          .toList();
+      message = 'Berhasil mendapatkan produk';
+      _resultState = ResultState.loaded;
+      notifyListeners();
+
+      return newProducts != null ? true : false;
+    } catch (e) {
+      _resultState = ResultState.error;
+      message = 'Gagal mendapatkan produk';
+      print(e);
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<bool> getBestSellerProductsHome() async {
     int lim = 5;
     int page = 1;
     _resultState = ResultState.loading;

@@ -35,9 +35,6 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       }
     });
-
-    final productProvider = context.read<ProductProvider>();
-    Future.microtask(() async => productProvider.getNewProductsHome());
   }
 
   @override
