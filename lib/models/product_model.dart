@@ -1,4 +1,4 @@
-class ProfileModel {
+class ProductModel {
   final String? id_produk;
   final String? nama_produk;
   final String? deskripsi;
@@ -11,7 +11,7 @@ class ProfileModel {
   final String? foto;
   final String? updated_at;
 
-  ProfileModel({
+  ProductModel({
     String? this.id_produk,
     String? this.nama_produk,
     String? this.deskripsi,
@@ -26,8 +26,8 @@ class ProfileModel {
   });
 
   // Factory method to create a Profile object from JSON
-  factory ProfileModel.fromApiJson(Map<String, dynamic> json) {
-    return ProfileModel(
+  factory ProductModel.fromJson(Map<String, dynamic> json) {
+    return ProductModel(
       id_produk: json['id_produk'],
       nama_produk: json['nama_produk'],
       deskripsi: json['deskripsi'],
