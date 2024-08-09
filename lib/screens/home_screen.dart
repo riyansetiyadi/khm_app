@@ -1,5 +1,11 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:khm_app/provider/product_provider.dart';
 import 'package:khm_app/utils/enum_app_page.dart';
+import 'package:khm_app/utils/enum_state.dart';
+import 'package:khm_app/widgets/handle_error_refresh_widget.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   final void Function(AppPage) onTapped;
@@ -29,6 +35,9 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       }
     });
+
+    final productProvider = context.read<ProductProvider>();
+    Future.microtask(() async => productProvider.getNewProductsHome());
   }
 
   @override
@@ -165,44 +174,75 @@ class _HomeScreenState extends State<HomeScreen> {
               scrollDirection: Axis.horizontal,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Row(children: <Widget>[
-                  Card(
-                    color: Colors.white,
-                    elevation: 2,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Image.asset(
-                          'assets/images/produk.png',
-                          fit: BoxFit.contain,
-                          height: 120,
+                child: Consumer<ProductProvider>(builder: (context, state, _) {
+                  print(state.state);
+                  if (state.state == ResultState.loading) {
+                    return Center(
+                      child: defaultTargetPlatform == TargetPlatform.iOS
+                          ? const CupertinoActivityIndicator(
+                              radius: 20.0,
+                            )
+                          : const CircularProgressIndicator(),
+                    );
+                  } else if (state.state == ResultState.error ||
+                      state.newProducts == null) {
+                    return ErrorRefresh(
+                      errorTitle: state.message ?? '',
+                      refreshTitle: 'Refresh',
+                      onPressed: () async {
+                        await state.getNewProductsHome();
+                      },
+                    );
+                  } else if (state.state == ResultState.loaded) {
+                    return Row(
+                        children: state.newProducts!.map((product) {
+                      return Card(
+                        color: Colors.white,
+                        elevation: 2,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('nama produk',
-                                  style: TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.bold)),
-                              Text('keterangan',
-                                  style: TextStyle(
-                                      fontSize: 10, color: Colors.grey)),
-                              Text('Rp. 000.000',
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold)),
-                            ],
-                          ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Image.asset(
+                              'assets/images/produk.png',
+                              fit: BoxFit.contain,
+                              height: 120,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(product.nama_produk ?? '',
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.bold)),
+                                  Text(product.deskripsi ?? '',
+                                      style: TextStyle(
+                                          fontSize: 10, color: Colors.grey)),
+                                  Text('Rp. ${product.harga ?? ''}',
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold)),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
-                ]),
+                      );
+                    }).toList());
+                  } else {
+                    return ErrorRefresh(
+                      errorTitle: state.message ?? '',
+                      refreshTitle: 'Refresh',
+                      onPressed: () async {
+                        await state.getNewProductsHome();
+                      },
+                    );
+                  }
+                }),
               ),
             ),
             SizedBox(
