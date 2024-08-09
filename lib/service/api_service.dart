@@ -38,4 +38,22 @@ class ApiService {
       throw Exception('Failed to register');
     }
   }
+
+  Future getProductsApi(
+      {String? keyword, String? filter, int? lim, int? page}) async {
+    var request = http.MultipartRequest(
+        'POST',
+        Uri.parse(
+            "$_baseUrl/produk_api.php?allProduk&keyword=${keyword ?? ''}&fil=${filter ?? ''}&lim=${lim ?? ''}&page=${page ?? ''}"));
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      String responseString = await response.stream.bytesToString();
+      final responseJson = jsonDecode(responseString);
+      return responseJson;
+    } else {
+      throw Exception('Failed to get product');
+    }
+  }
 }
