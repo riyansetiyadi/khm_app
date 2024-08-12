@@ -27,6 +27,14 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+
+    final productProvider = context.read<ProductProvider>();
+
+    Future.microtask(() async {
+      productProvider.getNewProductsHome();
+      productProvider.getBestSellerProductsHome();
+    });
+
     _pageController.addListener(() {
       final page = _pageController.page;
       if (page != null) {
