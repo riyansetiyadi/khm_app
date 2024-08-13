@@ -48,6 +48,9 @@ dependencies:
   # For Localization
   intl: 0.19.0
 
+  # File Picker
+  file_picker: ^8.0.7
+
   # Handle Success/Error State From Data Source
   dartz: ^0.10.1
 

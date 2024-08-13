@@ -14,8 +14,14 @@ class AppRouteInformationParser extends RouteInformationParser<AppPage> {
         return AppPage.splash;
       case 'profile':
         return AppPage.profile;
-      // case 'shop':
-      //   return AppPage.shop;
+      case 'addroom':
+        return AppPage.addroom;
+      case 'chat':
+        return AppPage.chat;
+      case 'cart':
+        return AppPage.cart;
+      case 'shop':
+        return AppPage.shop;
       default:
         return AppPage.home;
     }
@@ -36,6 +42,12 @@ class AppRouteInformationParser extends RouteInformationParser<AppPage> {
         return RouteInformation(uri: Uri.parse('/login'));
       case AppPage.register:
         return RouteInformation(uri: Uri.parse('/register'));
+      case AppPage.addroom:
+        return RouteInformation(uri: Uri.parse('/addroom'));
+      case AppPage.chat:
+        return RouteInformation(uri: Uri.parse('/chat'));
+      case AppPage.cart:
+        return RouteInformation(uri: Uri.parse('/cart'));
     }
   }
 }
