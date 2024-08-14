@@ -486,56 +486,68 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Row listProduct(List<ProductModel> products) {
+    final productProvider = context.watch<ProductProvider>();
     return Row(
       children: products.map((product) {
-        return Card(
-          color: Colors.white,
-          elevation: 2,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5.0),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Image.asset(
-                'assets/images/produk.png',
-                fit: BoxFit.contain,
-                height: 120,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      product.nama_produk ?? '',
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Container(
-                      width: 100,
-                      child: Text(
-                        product.deskripsi ?? '',
-                        style: TextStyle(
-                          fontSize: 10,
-                          color: Colors.grey,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    Text(
-                      'Rp. ${product.harga ?? ''}',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
+        return GestureDetector(
+          onTap: () => {
+            if (product.id_produk != null)
+              {
+                productProvider.getProduct(
+                  int.parse(product.id_produk!),
                 ),
-              ),
-            ],
+                widget.onTapped(AppPage.detailProduct)
+              }
+          },
+          child: Card(
+            color: Colors.white,
+            elevation: 2,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Image.asset(
+                  'assets/images/produk.png',
+                  fit: BoxFit.contain,
+                  height: 120,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        product.nama_produk ?? '',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Container(
+                        width: 100,
+                        child: Text(
+                          product.deskripsi ?? '',
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: Colors.grey,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Text(
+                        'Rp. ${product.harga ?? ''}',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       }).toList(),

@@ -51,7 +51,7 @@ class _DetailProductState extends State<DetailProduct> {
           IconButton(
             icon: Icon(Icons.shopping_cart_rounded),
             onPressed: () {
-              // Tambahkan aksi untuk tombol favorit
+              widget.onTapped(AppPage.cart);
             },
           ),
         ],
