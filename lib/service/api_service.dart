@@ -94,4 +94,148 @@ class ApiService {
       throw Exception('Failed to get product');
     }
   }
+
+  Future getCartProduk(String uniqeCode) async {
+    var request = http.MultipartRequest(
+        'GET', Uri.parse("$_baseUrl/keranjang_api.php?getKeranjangUser&token=$uniqeCode"));
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      String responseString = await response.stream.bytesToString();
+      final responseJson = jsonDecode(responseString);
+      return responseJson;
+    } else {
+      throw Exception('Failed to get Cart Product');
+    }
+  }
+
+  Future updateJumlah(Map<String, String> data) async {
+    var request = http.MultipartRequest('POST', Uri.parse("$_baseUrl/keranjang_api.php"));
+    request.fields.addAll(data);
+    http.StreamedResponse response = await request.send();
+    if (response.statusCode == 200) {
+      final responseString = await response.stream.bytesToString();
+      final responseJson = jsonDecode(responseString);
+      return responseJson;
+    } else {
+      throw Exception('Failed to POST COUNT Jmlah');
+    }
+  }
+
+  Future delKeranjang(int idCart) async {
+    var request = http.MultipartRequest(
+        'GET', Uri.parse("$_baseUrl/keranjang_api.php?delKeranjang&idCart=$idCart"));
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      String responseString = await response.stream.bytesToString();
+      final responseJson = jsonDecode(responseString);
+      return responseJson;
+    } else {
+      throw Exception('Failed to delete cart product');
+    }
+  }
+  
+  Future checkout(Map<String, String> data) async {
+    var request = http.MultipartRequest('POST', Uri.parse("$_baseUrl/keranjang_api.php"));
+    request.fields.addAll(data);
+    http.StreamedResponse response = await request.send();
+    if (response.statusCode == 200) {
+      final responseString = await response.stream.bytesToString();
+      final responseJson = jsonDecode(responseString);
+      return responseJson;
+    } else {
+      throw Exception('Failed to CHECK OUT the cart');
+    }
+  }
+
+  Future addRoom(String uniqeCode) async {
+    var request = http.MultipartRequest(
+        'GET', Uri.parse("$_baseUrl/chat_room_api.php?addRoom&token=$uniqeCode"));
+
+    http.StreamedResponse response = await request.send();
+  
+    if (response.statusCode == 200) {
+      String responseString = await response.stream.bytesToString();
+      final responseJson = jsonDecode(responseString);
+      return responseJson;
+    } else {
+      throw Exception('Failed to delete cart product');
+    }
+  }
+
+  Future getPesan(int idRoom) async {
+    var request = http.MultipartRequest(
+        'GET', Uri.parse("$_baseUrl/../chat_api.php?getPesan=$idRoom"));
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      String responseString = await response.stream.bytesToString();
+      final responseJson = jsonDecode(responseString);
+      return responseJson;
+    } else {
+      throw Exception('Failed to GET the Message');
+    }
+  }
+
+  Future allHistoryUser(String uniqeCode) async {
+    var request = http.MultipartRequest(
+        'GET', Uri.parse("$_baseUrl/history_api.php?allHistoryUser&token=$uniqeCode"));
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      String responseString = await response.stream.bytesToString();
+      final responseJson = jsonDecode(responseString);
+      return responseJson;
+    } else {
+      throw Exception('Failed to GET the Historys');
+    }
+  }
+
+  Future allHistoruUserProduk(String uniqeCode, int code_nota) async {
+    var request = http.MultipartRequest(
+        'GET', Uri.parse("$_baseUrl/history_api.php?allHistoruUserProduk&token=$uniqeCode&code_nota=$code_nota"));
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      String responseString = await response.stream.bytesToString();
+      final responseJson = jsonDecode(responseString);
+      return responseJson;
+    } else {
+      throw Exception('Failed to GET the Historys');
+    }
+  }
+
+  Future uploadBuktiPembayaran(Map<String, String> data) async {
+    var request = http.MultipartRequest('POST', Uri.parse("$_baseUrl/history_api.php"));
+    request.fields.addAll(data);
+    http.StreamedResponse response = await request.send();
+    if (response.statusCode == 200) {
+      final responseString = await response.stream.bytesToString();
+      final responseJson = jsonDecode(responseString);
+      return responseJson;
+    } else {
+      throw Exception('Failed to upload pembayaran');
+    }
+  }
+
+  Future addKeranjang(Map<String, String> data) async {
+    var request = http.MultipartRequest('POST', Uri.parse("$_baseUrl/keranjang_api.php"));
+    request.fields.addAll(data);
+    http.StreamedResponse response = await request.send();
+    if (response.statusCode == 200) {
+      final responseString = await response.stream.bytesToString();
+      final responseJson = jsonDecode(responseString);
+      return responseJson;
+    } else {
+      throw Exception('Failed to add product to cart');
+    }
+  }
+
+
 }
