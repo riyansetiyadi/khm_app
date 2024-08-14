@@ -20,6 +20,8 @@ class AppRouteInformationParser extends RouteInformationParser<AppPage> {
         return AppPage.chat;
       case 'cart':
         return AppPage.cart;
+      case 'riwayat':
+        return AppPage.riwayat;
       case 'shop':
         return AppPage.shop;
       default:
@@ -50,6 +52,8 @@ class AppRouteInformationParser extends RouteInformationParser<AppPage> {
         return RouteInformation(uri: Uri.parse('/chat'));
       case AppPage.cart:
         return RouteInformation(uri: Uri.parse('/cart'));
+      case AppPage.riwayat:
+        return RouteInformation(uri: Uri.parse('/riwayat'));
     }
   }
 }
