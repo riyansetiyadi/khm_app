@@ -67,14 +67,14 @@ class _ShopScreenState extends State<ShopScreen> {
                 Icons.history,
                 color: Color(0xFF198754),
               ),
-              onPressed: () {},
+              onPressed: () {widget.onTapped(AppPage.riwayat);},
             ),
             IconButton(
               icon: Icon(
                 Icons.shopping_cart,
                 color: Color(0xFF198754),
               ),
-              onPressed: () {},
+              onPressed: () {widget.onTapped(AppPage.cart);},
             ),
           ],
         ),

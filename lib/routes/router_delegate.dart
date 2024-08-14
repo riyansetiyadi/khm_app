@@ -9,6 +9,9 @@ import 'package:khm_app/screens/register_screen.dart';
 import 'package:khm_app/screens/addroom_screen.dart';
 import 'package:khm_app/screens/chat_screen.dart';
 import 'package:khm_app/screens/shop_screen.dart';
+import 'package:khm_app/screens/riwayat_screen.dart';
+import 'package:khm_app/screens/registerkonsul_screen.dart';
+import 'package:khm_app/screens/registercheckout_screen.dart';
 import 'package:khm_app/screens/splash_screen.dart';
 import 'package:khm_app/utils/enum_app_page.dart';
 import 'package:khm_app/utils/list_auth_page.dart';
@@ -73,7 +76,7 @@ class MyRouterDelegate extends RouterDelegate
                 key: ValueKey(AppPage.addroom),
                 child: AddRoomScreen(onTapped: _handleTapped),
               );
-              case AppPage.chat:
+            case AppPage.chat:
               return MaterialPage(
                 key: ValueKey(AppPage.chat),
                 child: ChatScreen(onTapped: _handleTapped),
@@ -108,6 +111,22 @@ class MyRouterDelegate extends RouterDelegate
                 key: ValueKey(AppPage.detailProduct),
                 child: DetailProduct(onTapped: _handleTapped),
               );
+            case AppPage.riwayat:
+              return MaterialPage(
+                key: ValueKey(AppPage.riwayat),
+                child: RiwayatScreen(onTapped: _handleTapped),
+              );
+            case AppPage.registerkonsul:
+              return MaterialPage(
+                key: ValueKey(AppPage.registerkonsul),
+                child: RegisterKonsulScreen(onTapped: _handleTapped),
+              );
+            case AppPage.registercheckout:
+              return MaterialPage(
+                key: ValueKey(AppPage.registercheckout),
+                child: RegisterCheckout(onTapped: _handleTapped),
+              );
+
           }
         }).toList(),
         onPopPage: (route, result) {
@@ -119,6 +138,9 @@ class MyRouterDelegate extends RouterDelegate
 
           _pageStack.removeLast();
           currentBottomNavigationIndex = 0;
+
+          handleCurrentBottomNavigationIndexFromPage(_pageStack.last);
+
           notifyListeners();
 
           return true;
@@ -162,15 +184,7 @@ class MyRouterDelegate extends RouterDelegate
   }
 
   void _handleTapped(AppPage page) async {
-    if (page == AppPage.home) {
-      currentBottomNavigationIndex = 0;
-      // } else if (page == AppPage.shop) {
-      //   currentBottomNavigationIndex = 1;
-    } else if (page == AppPage.profile ||
-        page == AppPage.login ||
-        page == AppPage.register) {
-      currentBottomNavigationIndex = 4;
-    }
+    handleCurrentBottomNavigationIndexFromPage(page);
 
     isLoggedIn = await authRepository.isLoggedIn();
     if (authRequiredPages.contains(page) && !isLoggedIn) {
@@ -194,6 +208,18 @@ class MyRouterDelegate extends RouterDelegate
     } else {
       _pageStack.remove(page);
       return page;
+    }
+  }
+
+  void handleCurrentBottomNavigationIndexFromPage(AppPage page) {
+    if (page == AppPage.home) {
+      currentBottomNavigationIndex = 0;
+      // } else if (page == AppPage.shop) {
+      //   currentBottomNavigationIndex = 1;
+    } else if (page == AppPage.profile ||
+        page == AppPage.login ||
+        page == AppPage.register) {
+      currentBottomNavigationIndex = 4;
     }
   }
 

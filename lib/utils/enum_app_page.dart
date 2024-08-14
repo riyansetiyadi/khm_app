@@ -5,8 +5,11 @@ enum AppPage {
   chat,
   shop,
   cart,
+  riwayat,
   profile,
   login,
   register,
   detailProduct,
+  registerkonsul,
+  registercheckout
 }

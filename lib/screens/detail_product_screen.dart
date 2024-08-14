@@ -83,98 +83,103 @@ class _DetailProductState extends State<DetailProduct> {
             return Stack(
               children: [
                 SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(25.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Center(
-                          child: Stack(
-                            children: [
-                              Image.network(
-                                'https://picsum.photos/400/300',
-                                height: heightScreen * 0.35,
-                                fit: BoxFit.cover,
-                              ),
-                              Positioned(
-                                bottom: 10,
-                                right: 10,
-                                child: Container(
-                                  color: Colors.black,
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 4, horizontal: 8),
-                                  child: Text(
-                                    state.product?.kategori?.toUpperCase() ??
-                                        '',
-                                    style: TextStyle(color: Colors.white),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: heightScreen,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(25.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Center(
+                            child: Stack(
+                              children: [
+                                Image.network(
+                                  'https://picsum.photos/400/300',
+                                  height: heightScreen * 0.35,
+                                  fit: BoxFit.cover,
+                                ),
+                                Positioned(
+                                  bottom: 10,
+                                  right: 10,
+                                  child: Container(
+                                    color: Colors.black,
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 4, horizontal: 8),
+                                    child: Text(
+                                      state.product?.kategori?.toUpperCase() ??
+                                          '',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
                                   ),
                                 ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 16),
+                          Text(
+                            state.product?.nama_produk?.toUpperCase() ?? '',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16),
+                          ),
+                          SizedBox(height: 8),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    'Rp${state.product?.harga ?? ''}',
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                      decoration: TextDecoration.lineThrough,
+                                    ),
+                                  ),
+                                  SizedBox(width: 8),
+                                  Text(
+                                    'Rp${int.parse(state.product?.harga ?? '0') - int.parse(state.product?.diskon ?? '0')}',
+                                    style: TextStyle(
+                                      color: Colors.green,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 16),
+                              Row(
+                                children: [
+                                  IconButton(
+                                    icon: Icon(Icons.remove),
+                                    onPressed: () => _decrementQuantity(),
+                                  ),
+                                  Text(_quantity.toString()),
+                                  IconButton(
+                                    icon: Icon(Icons.add),
+                                    onPressed: () => _incrementQuantity(),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                        ),
-                        SizedBox(height: 16),
-                        Text(
-                          state.product?.nama_produk?.toUpperCase() ?? '',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
-                        ),
-                        SizedBox(height: 8),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  'Rp${state.product?.harga ?? ''}',
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                    decoration: TextDecoration.lineThrough,
-                                  ),
-                                ),
-                                SizedBox(width: 8),
-                                Text(
-                                  'Rp${int.parse(state.product?.harga ?? '0') - int.parse(state.product?.diskon ?? '0')}',
-                                  style: TextStyle(
-                                    color: Colors.green,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 16),
-                            Row(
-                              children: [
-                                IconButton(
-                                  icon: Icon(Icons.remove),
-                                  onPressed: () => _decrementQuantity(),
-                                ),
-                                Text(_quantity.toString()),
-                                IconButton(
-                                  icon: Icon(Icons.add),
-                                  onPressed: () => _incrementQuantity(),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 8),
-                        Text(
-                          state.product?.deskripsi ?? '',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        SizedBox(height: 8),
-                        Text(
-                          'Berat: ${state.product?.berat ?? '0'}g',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        SizedBox(height: 8),
-                        Text(
-                          'Stok: ${state.product?.stok ?? '0'} QTY',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        SizedBox(height: 100),
-                      ],
+                          SizedBox(height: 8),
+                          Text(
+                            state.product?.deskripsi ?? '',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          SizedBox(height: 8),
+                          Text(
+                            'Berat: ${state.product?.berat ?? '0'}g',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          SizedBox(height: 8),
+                          Text(
+                            'Stok: ${state.product?.stok ?? '0'} QTY',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          SizedBox(height: 100),
+                        ],
+                      ),
                     ),
                   ),
                 ),
