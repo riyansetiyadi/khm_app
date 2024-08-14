@@ -9,6 +9,7 @@ import 'package:khm_app/screens/register_screen.dart';
 import 'package:khm_app/screens/addroom_screen.dart';
 import 'package:khm_app/screens/chat_screen.dart';
 import 'package:khm_app/screens/shop_screen.dart';
+import 'package:khm_app/screens/riwayat_screen.dart';
 import 'package:khm_app/screens/splash_screen.dart';
 import 'package:khm_app/utils/enum_app_page.dart';
 import 'package:khm_app/utils/list_auth_page.dart';
@@ -107,6 +108,11 @@ class MyRouterDelegate extends RouterDelegate
               return MaterialPage(
                 key: ValueKey(AppPage.detailProduct),
                 child: DetailProduct(onTapped: _handleTapped),
+              );
+            case AppPage.riwayat:
+              return MaterialPage(
+                key: ValueKey(AppPage.riwayat),
+                child: RiwayatScreen(onTapped: _handleTapped),
               );
           }
         }).toList(),
