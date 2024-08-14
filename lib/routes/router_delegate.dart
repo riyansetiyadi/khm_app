@@ -73,7 +73,7 @@ class MyRouterDelegate extends RouterDelegate
                 key: ValueKey(AppPage.addroom),
                 child: AddRoomScreen(onTapped: _handleTapped),
               );
-              case AppPage.chat:
+            case AppPage.chat:
               return MaterialPage(
                 key: ValueKey(AppPage.chat),
                 child: ChatScreen(onTapped: _handleTapped),
@@ -119,6 +119,9 @@ class MyRouterDelegate extends RouterDelegate
 
           _pageStack.removeLast();
           currentBottomNavigationIndex = 0;
+
+          handleCurrentBottomNavigationIndexFromPage(_pageStack.last);
+
           notifyListeners();
 
           return true;
@@ -162,15 +165,7 @@ class MyRouterDelegate extends RouterDelegate
   }
 
   void _handleTapped(AppPage page) async {
-    if (page == AppPage.home) {
-      currentBottomNavigationIndex = 0;
-      // } else if (page == AppPage.shop) {
-      //   currentBottomNavigationIndex = 1;
-    } else if (page == AppPage.profile ||
-        page == AppPage.login ||
-        page == AppPage.register) {
-      currentBottomNavigationIndex = 4;
-    }
+    handleCurrentBottomNavigationIndexFromPage(page);
 
     isLoggedIn = await authRepository.isLoggedIn();
     if (authRequiredPages.contains(page) && !isLoggedIn) {
@@ -194,6 +189,18 @@ class MyRouterDelegate extends RouterDelegate
     } else {
       _pageStack.remove(page);
       return page;
+    }
+  }
+
+  void handleCurrentBottomNavigationIndexFromPage(AppPage page) {
+    if (page == AppPage.home) {
+      currentBottomNavigationIndex = 0;
+      // } else if (page == AppPage.shop) {
+      //   currentBottomNavigationIndex = 1;
+    } else if (page == AppPage.profile ||
+        page == AppPage.login ||
+        page == AppPage.register) {
+      currentBottomNavigationIndex = 4;
     }
   }
 
