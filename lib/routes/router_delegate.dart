@@ -4,7 +4,10 @@ import 'package:khm_app/screens/detail_product_screen.dart';
 import 'package:khm_app/screens/home_screen.dart';
 import 'package:khm_app/screens/login_screen.dart';
 import 'package:khm_app/screens/profil_screen.dart';
+import 'package:khm_app/screens/cart_screen.dart';
 import 'package:khm_app/screens/register_screen.dart';
+import 'package:khm_app/screens/addroom_screen.dart';
+import 'package:khm_app/screens/chat_screen.dart';
 import 'package:khm_app/screens/shop_screen.dart';
 import 'package:khm_app/screens/splash_screen.dart';
 import 'package:khm_app/utils/enum_app_page.dart';
@@ -65,10 +68,25 @@ class MyRouterDelegate extends RouterDelegate
                 key: ValueKey(AppPage.splash),
                 child: SplashScreen(),
               );
+            case AppPage.addroom:
+              return MaterialPage(
+                key: ValueKey(AppPage.addroom),
+                child: AddRoomScreen(onTapped: _handleTapped),
+              );
+              case AppPage.chat:
+              return MaterialPage(
+                key: ValueKey(AppPage.chat),
+                child: ChatScreen(onTapped: _handleTapped),
+              );
             case AppPage.shop:
               return MaterialPage(
                 key: ValueKey(AppPage.shop),
                 child: ShopScreen(onTapped: _handleTapped),
+              );
+            case AppPage.cart:
+              return MaterialPage(
+                key: ValueKey(AppPage.cart),
+                child: CartScreen(onTapped: _handleTapped),
               );
             case AppPage.profile:
               return MaterialPage(
@@ -118,11 +136,11 @@ class MyRouterDelegate extends RouterDelegate
                 if (index == 0) {
                   _handleTapped(AppPage.home);
                 } else if (index == 1) {
-                  _handleTapped(AppPage.home);
+                  _handleTapped(AppPage.addroom);
                 } else if (index == 2) {
                   _handleTapped(AppPage.shop);
                 } else if (index == 3) {
-                  _handleTapped(AppPage.home);
+                  _handleTapped(AppPage.cart);
                 } else if (index == 4) {
                   _handleTapped(AppPage.profile);
                 }
