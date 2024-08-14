@@ -204,8 +204,9 @@ class _ShopScreenState extends State<ShopScreen> {
           onTap: () => {
             if (products[index].id_produk != null)
               {
-                productProvider
-                    .getProduct(int.parse(products[index].id_produk!)),
+                productProvider.getProduct(
+                  int.parse(products[index].id_produk!),
+                ),
                 widget.onTapped(AppPage.detailProduct)
               }
           },
@@ -227,13 +228,21 @@ class _ShopScreenState extends State<ShopScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(products[index].nama_produk ?? '',
-                          style: TextStyle(
-                              fontSize: 13, fontWeight: FontWeight.bold)),
+                      Text(
+                        products[index].nama_produk ?? '',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       SizedBox(height: 4),
-                      Text('\Rp${products[index].harga ?? ''}',
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.bold)),
+                      Text(
+                        '\Rp${products[index].harga ?? ''}',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       ElevatedButton(
                         onPressed: () {},
                         child: Row(
@@ -243,10 +252,12 @@ class _ShopScreenState extends State<ShopScreen> {
                               color: Colors.white,
                             ),
                             SizedBox(width: 8),
-                            Text('Keranjang',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                )),
+                            Text(
+                              'Keranjang',
+                              style: TextStyle(
+                                fontSize: 12,
+                              ),
+                            ),
                           ],
                         ),
                         style: ElevatedButton.styleFrom(
