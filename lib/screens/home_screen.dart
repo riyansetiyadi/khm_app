@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:khm_app/models/product_model.dart';
 import 'package:khm_app/provider/product_provider.dart';
 import 'package:khm_app/utils/enum_app_page.dart';
 import 'package:khm_app/utils/enum_state.dart';
@@ -170,9 +171,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text('Produk Terbaru',
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold)),
+                    Text(
+                      'Produk Terbaru',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -182,91 +187,42 @@ class _HomeScreenState extends State<HomeScreen> {
               scrollDirection: Axis.horizontal,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Consumer<ProductProvider>(builder: (context, state, _) {
-                  print(state.state);
-                  if (state.state == ResultState.loading &&
-                      state.newProducts == null) {
-                    return Center(
-                      child: defaultTargetPlatform == TargetPlatform.iOS
-                          ? const CupertinoActivityIndicator(
-                              radius: 20.0,
-                            )
-                          : const CircularProgressIndicator(),
-                    );
-                  } else if (state.state == ResultState.error ||
-                      state.newProducts == null) {
-                    return ErrorRefresh(
-                      errorTitle: state.message ?? '',
-                      refreshTitle: 'Refresh',
-                      onPressed: () async {
-                        await state.getNewProductsHome();
-                      },
-                    );
-                  } else if (state.state == ResultState.loaded ||
-                      state.newProducts != null) {
-                    return Row(
-                        children: state.newProducts!.map((product) {
-                      return Card(
-                        color: Colors.white,
-                        elevation: 2,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Image.asset(
-                              'assets/images/produk.png',
-                              fit: BoxFit.contain,
-                              height: 120,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    product.nama_produk ?? '',
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Container(
-                                    width: 100,
-                                    child: Text(
-                                      product.deskripsi ?? '',
-                                      style: TextStyle(
-                                        fontSize: 10,
-                                        color: Colors.grey,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Rp. ${product.harga ?? ''}',
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    }).toList());
-                  } else {
-                    return ErrorRefresh(
-                      errorTitle: state.message ?? '',
-                      refreshTitle: 'Refresh',
-                      onPressed: () async {
-                        await state.getNewProductsHome();
-                      },
-                    );
-                  }
-                }),
+                child: Consumer<ProductProvider>(
+                  builder: (context, state, _) {
+                    if (state.newProducts == null) {
+                      switch (state.state) {
+                        case ResultState.loading:
+                          return Center(
+                            child: defaultTargetPlatform == TargetPlatform.iOS
+                                ? const CupertinoActivityIndicator(
+                                    radius: 20.0,
+                                  )
+                                : const CircularProgressIndicator(),
+                          );
+                        case ResultState.initial:
+                          return Container();
+                        case ResultState.error:
+                          return ErrorRefresh(
+                            onPressed: () async {
+                              await state.getNewProductsHome();
+                            },
+                          );
+                        case ResultState.loaded:
+                          if (state.newProducts != null) {
+                            return listProduct(state.newProducts!);
+                          } else {
+                            return ErrorRefresh(
+                              onPressed: () async {
+                                await state.getNewProductsHome();
+                              },
+                            );
+                          }
+                      }
+                    } else {
+                      return listProduct(state.newProducts!);
+                    }
+                  },
+                ),
               ),
             ),
             SizedBox(
@@ -279,59 +235,64 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 10.0,
             ),
             Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text('Produk Terlaris',
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold)),
-                        ]))),
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      'Produk Terlaris',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
             SizedBox(height: 10.0),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Row(children: <Widget>[
-                  Card(
-                    color: Colors.white,
-                    elevation: 2,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Image.asset(
-                          'assets/images/produk.png',
-                          fit: BoxFit.contain,
-                          height: 120,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('nama produk',
-                                  style: TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.bold)),
-                              Text('keterangan',
-                                  style: TextStyle(
-                                      fontSize: 10, color: Colors.grey)),
-                              Text('Rp. 000.000',
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold)),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ]),
+                child: Consumer<ProductProvider>(
+                  builder: (context, state, _) {
+                    if (state.bestSellerProducts == null) {
+                      switch (state.state) {
+                        case ResultState.loading:
+                          return Center(
+                            child: defaultTargetPlatform == TargetPlatform.iOS
+                                ? const CupertinoActivityIndicator(
+                                    radius: 20.0,
+                                  )
+                                : const CircularProgressIndicator(),
+                          );
+                        case ResultState.initial:
+                          return Container();
+                        case ResultState.error:
+                          return ErrorRefresh(
+                            onPressed: () async {
+                              await state.getBestSellerProductsHome();
+                            },
+                          );
+                        case ResultState.loaded:
+                          if (state.bestSellerProducts != null) {
+                            return listProduct(state.bestSellerProducts!);
+                          } else {
+                            return ErrorRefresh(
+                              onPressed: () async {
+                                await state.getBestSellerProductsHome();
+                              },
+                            );
+                          }
+                      }
+                    } else {
+                      return listProduct(state.bestSellerProducts!);
+                    }
+                  },
+                ),
               ),
             ),
             SizedBox(height: 8),
@@ -522,6 +483,63 @@ class _HomeScreenState extends State<HomeScreen> {
             )
           ]),
         )));
+  }
+
+  Row listProduct(List<ProductModel> products) {
+    return Row(
+      children: products.map((product) {
+        return Card(
+          color: Colors.white,
+          elevation: 2,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Image.asset(
+                'assets/images/produk.png',
+                fit: BoxFit.contain,
+                height: 120,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      product.nama_produk ?? '',
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Container(
+                      width: 100,
+                      child: Text(
+                        product.deskripsi ?? '',
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: Colors.grey,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    Text(
+                      'Rp. ${product.harga ?? ''}',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      }).toList(),
+    );
   }
 
   Widget buildBanner(String imagePath) {
