@@ -20,6 +20,7 @@ class AuthProvider extends ChangeNotifier {
 
   _init() async {
     profile = await authRepository.getProfile();
+    if (profile != null) isLoggedIn = true;
   }
 
   Future<bool> login(email, password) async {

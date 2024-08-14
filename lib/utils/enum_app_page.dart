@@ -4,5 +4,6 @@ enum AppPage {
   shop,
   profile,
   login,
-  register
+  register,
+  detailProduct,
 }

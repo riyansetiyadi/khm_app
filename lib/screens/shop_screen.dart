@@ -23,23 +23,14 @@ class _ShopScreenState extends State<ShopScreen> {
   @override
   void initState() {
     super.initState();
+    final productProvider = context.read<ProductProvider>();
+    Future.microtask(() async => productProvider.getProducts());
   }
 
   @override
   void dispose() {
     super.dispose();
   }
-
-  List<Map<String, dynamic>> products = [
-    {'name': 'Product 1', 'price': 10.0, 'image': 'assets/images/produk.png'},
-    {'name': 'Product 2', 'price': 20.0, 'image': 'assets/images/produk.png'},
-    {'name': 'Product 3', 'price': 30.0, 'image': 'assets/images/produk.png'},
-    {'name': 'Product 4', 'price': 40.0, 'image': 'assets/images/produk.png'},
-    {'name': 'Product 5', 'price': 50.0, 'image': 'assets/images/produk.png'},
-    {'name': 'Product 6', 'price': 60.0, 'image': 'assets/images/produk.png'},
-    {'name': 'Product 7', 'price': 70.0, 'image': 'assets/images/produk.png'},
-    {'name': 'Product 8', 'price': 80.0, 'image': 'assets/images/produk.png'},
-  ];
 
   String searchQuery = '';
 
@@ -173,63 +164,75 @@ class _ShopScreenState extends State<ShopScreen> {
                     ),
                     itemCount: state.products?.length,
                     itemBuilder: (context, index) {
-                      return Card(
-                        color: Colors.white,
-                        elevation: 2,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Image.asset(
-                              'assets/images/produk.png',
-                              fit: BoxFit.cover,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(state.products?[index].nama_produk ?? '',
-                                      style: TextStyle(
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.bold)),
-                                  SizedBox(height: 4),
-                                  Text(
-                                      '\Rp${state.products?[index].harga ?? ''}',
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold)),
-                                  ElevatedButton(
-                                    onPressed: () {},
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.add,
-                                          color: Colors.white,
+                      return GestureDetector(
+                        onTap: () => {
+                          if (state.products?[index].id_produk != null)
+                            {
+                              state.getProduct(
+                                  int.parse(state.products![index].id_produk!)),
+                              widget.onTapped(AppPage.detailProduct)
+                            }
+                        },
+                        child: Card(
+                          color: Colors.white,
+                          elevation: 2,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Image.asset(
+                                'assets/images/produk.png',
+                                fit: BoxFit.cover,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                        state.products?[index].nama_produk ??
+                                            '',
+                                        style: TextStyle(
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.bold)),
+                                    SizedBox(height: 4),
+                                    Text(
+                                        '\Rp${state.products?[index].harga ?? ''}',
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold)),
+                                    ElevatedButton(
+                                      onPressed: () {},
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            Icons.add,
+                                            color: Colors.white,
+                                          ),
+                                          SizedBox(width: 8),
+                                          Text('Keranjang',
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                              )),
+                                        ],
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                        minimumSize: Size(20, 30),
+                                        backgroundColor: Color(0xFF198754),
+                                        foregroundColor: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5.0),
                                         ),
-                                        SizedBox(width: 8),
-                                        Text('Keranjang',
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                            )),
-                                      ],
-                                    ),
-                                    style: ElevatedButton.styleFrom(
-                                      minimumSize: Size(20, 30),
-                                      backgroundColor: Color(0xFF198754),
-                                      foregroundColor: Colors.white,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(5.0),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       );
                     },

@@ -181,7 +181,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: Consumer<ProductProvider>(builder: (context, state, _) {
                   print(state.state);
-                  if (state.state == ResultState.loading) {
+                  if (state.state == ResultState.loading &&
+                      state.newProducts == null) {
                     return Center(
                       child: defaultTargetPlatform == TargetPlatform.iOS
                           ? const CupertinoActivityIndicator(
@@ -198,7 +199,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         await state.getNewProductsHome();
                       },
                     );
-                  } else if (state.state == ResultState.loaded) {
+                  } else if (state.state == ResultState.loaded ||
+                      state.newProducts != null) {
                     return Row(
                         children: state.newProducts!.map((product) {
                       return Card(

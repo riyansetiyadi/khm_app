@@ -5,12 +5,9 @@ import 'package:khm_app/service/api_service.dart';
 import 'package:khm_app/utils/enum_state.dart';
 
 class ProductProvider extends ChangeNotifier {
-  // final AuthRepository authRepository;
   final ApiService apiService;
 
-  ProductProvider(
-      // this.authRepository,
-      this.apiService) {
+  ProductProvider(this.apiService) {
     _init();
   }
 
@@ -19,12 +16,32 @@ class ProductProvider extends ChangeNotifier {
 
   String? message;
   ProductModel? product;
+  int? detailIdProduct;
   List<ProductModel>? products;
   List<ProductModel>? newProducts;
   List<ProductModel>? bestSellerProducts;
 
-  _init() async {
-    // profile = await authRepository.getProfile();
+  _init() async {}
+
+  Future<bool> getProduct(int id) async {
+    _resultState = ResultState.loading;
+    detailIdProduct = id;
+    notifyListeners();
+
+    try {
+      final responseResult = await apiService.getProductApi(id);
+      product = ProductModel.fromJson(responseResult['data'][0]);
+      message = 'Berhasil mendapatkan produk';
+      _resultState = ResultState.loaded;
+      notifyListeners();
+
+      return product != null ? true : false;
+    } catch (e) {
+      _resultState = ResultState.error;
+      message = 'Gagal mendapatkan produk';
+      notifyListeners();
+      return false;
+    }
   }
 
   Future<bool> getProducts(
