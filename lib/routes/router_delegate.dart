@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:khm_app/db/auth_repository.dart';
+import 'package:khm_app/provider/product_provider.dart';
 import 'package:khm_app/screens/detail_product_screen.dart';
 import 'package:khm_app/screens/home_screen.dart';
 import 'package:khm_app/screens/login_screen.dart';
@@ -15,6 +16,7 @@ import 'package:khm_app/utils/enum_app_page.dart';
 import 'package:khm_app/utils/list_auth_page.dart';
 import 'package:khm_app/utils/list_auth_required_page.dart';
 import 'package:khm_app/utils/list_bottom_nav_page.dart';
+import 'package:provider/provider.dart';
 
 class MyRouterDelegate extends RouterDelegate
     with ChangeNotifier, PopNavigatorRouterDelegateMixin {
@@ -54,6 +56,8 @@ class MyRouterDelegate extends RouterDelegate
 
   @override
   Widget build(BuildContext context) {
+    final productProvider = context.read<ProductProvider>();
+
     return Scaffold(
       body: Navigator(
         key: navigatorKey,
@@ -144,6 +148,10 @@ class MyRouterDelegate extends RouterDelegate
               onTap: (index) {
                 if (index == 0) {
                   _handleTapped(AppPage.home);
+                  Future.microtask(() async {
+                    productProvider.getNewProductsHome();
+                    productProvider.getBestSellerProductsHome();
+                  });
                 } else if (index == 1) {
                   _handleTapped(AppPage.addroom);
                 } else if (index == 2) {
