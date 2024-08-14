@@ -10,4 +10,6 @@ enum AppPage {
   login,
   register,
   detailProduct,
+  registerkonsul,
+  registercheckout
 }

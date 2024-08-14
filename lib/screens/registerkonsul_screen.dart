@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:khm_app/utils/enum_app_page.dart';
 
 class RegisterKonsulScreen extends StatefulWidget {
+  final void Function(AppPage) onTapped;
+
+  const RegisterKonsulScreen({
+    Key? key,
+    required this.onTapped,
+  }) : super(key: key);
+
   @override
   _RegisterKonsulScreenState createState() => _RegisterKonsulScreenState();
 }
@@ -191,7 +199,7 @@ class _RegisterKonsulScreenState extends State<RegisterKonsulScreen> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: <Widget>[
                             ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () => Navigator.pop(context),
                               child: Text('Cancel'),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.grey,
@@ -205,7 +213,7 @@ class _RegisterKonsulScreenState extends State<RegisterKonsulScreen> {
                             SizedBox(width: 15),
                             ElevatedButton(
                               onPressed: () {
-                                Navigator.pushNamed(context, '/registrasi');
+                                widget.onTapped(AppPage.addroom);
                               },
                               child: Text('Simpan'),
                               style: ElevatedButton.styleFrom(

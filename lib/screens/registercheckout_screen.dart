@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:khm_app/utils/enum_app_page.dart';
 
 class RegisterCheckout extends StatefulWidget {
+  final void Function(AppPage) onTapped;
+
+  const RegisterCheckout({
+    Key? key,
+    required this.onTapped,
+  }) : super(key: key);
+
   @override
   _RegisterCheckoutState createState() => _RegisterCheckoutState();
 }
 
 class _RegisterCheckoutState extends State<RegisterCheckout> {
   final _namaController = TextEditingController();
-  final _alamatController = TextEditingController(text: 'Provinsi , Kabupaten/Kota , Kecamatan , Desa/Kelurahan , , 0 ');
+  final _alamatController = TextEditingController(
+      text: 'Provinsi , Kabupaten/Kota , Kecamatan , Desa/Kelurahan , , 0 ');
   final _noHPController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -18,7 +27,7 @@ class _RegisterCheckoutState extends State<RegisterCheckout> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Image.asset(
-                'assets/images/login.png',
+                'assets/images/logo.png',
                 height: 70,
                 fit: BoxFit.contain,
               ),
@@ -107,19 +116,39 @@ class _RegisterCheckoutState extends State<RegisterCheckout> {
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 5.0, vertical: 12.0),
                           ),
-                        ),                       
+                        ),
                         SizedBox(height: 15),
-                        ElevatedButton(
-                          onPressed: () {},
-                          child: Text('Lengkapi Data Diri'),
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: Size(double.infinity, 36),
-                            backgroundColor: Color(0xFF198754),
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6.0),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            ElevatedButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: Text('Cancel'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.grey,
+                                foregroundColor: Colors.white,
+                                padding: EdgeInsets.symmetric(horizontal: 12),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(6.0),
+                                ),
+                              ),
                             ),
-                          ),
+                            SizedBox(width: 15),
+                            ElevatedButton(
+                              onPressed: () {
+                                widget.onTapped(AppPage.cart);
+                              },
+                              child: Text('Lengkapi Data Diri'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Color(0xFF198754),
+                                foregroundColor: Colors.white,
+                                padding: EdgeInsets.symmetric(horizontal: 12),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(6.0),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
