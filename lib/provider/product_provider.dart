@@ -59,7 +59,7 @@ class ProductProvider extends ChangeNotifier {
       _resultState = ResultState.loaded;
       notifyListeners();
 
-      return newProducts != null ? true : false;
+      return products != null ? true : false;
     } catch (e) {
       _resultState = ResultState.error;
       message = 'Gagal mendapatkan produk';
@@ -95,26 +95,35 @@ class ProductProvider extends ChangeNotifier {
   }
 
   Future<bool> getBestSellerProductsHome() async {
-    int lim = 5;
-    int page = 1;
     _resultState = ResultState.loading;
     notifyListeners();
 
     try {
       final responseResult =
-          await apiService.getProductsApi(lim: lim, page: page);
-      newProducts = responseResult['data']
+          await apiService.getBestSellerProductsApi(isBestSeller: true);
+      bestSellerProducts = responseResult['data']
           .map<ProductModel>((product) => ProductModel.fromJson(product))
           .toList();
       message = 'Berhasil mendapatkan produk';
       _resultState = ResultState.loaded;
       notifyListeners();
 
-      return newProducts != null ? true : false;
+      return bestSellerProducts != null ? true : false;
     } catch (e) {
       _resultState = ResultState.error;
       message = 'Gagal mendapatkan produk';
       notifyListeners();
+      return false;
+    }
+  }
+
+  Future<bool> addProductToCart(ProductModel product) async {
+    _resultState = ResultState.loading;
+    notifyListeners();
+
+    try {
+      return true;
+    } catch (e) {
       return false;
     }
   }
