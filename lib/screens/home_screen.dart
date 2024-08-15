@@ -297,11 +297,15 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             SizedBox(height: 8),
             ElevatedButton(
-              onPressed: () {},
-              child: Text('Produk Lainnya',
-                  style: TextStyle(
-                    fontSize: 12,
-                  )),
+              onPressed: () {
+                widget.onTapped(AppPage.shop);
+              },
+              child: Text(
+                'Produk Lainnya',
+                style: TextStyle(
+                  fontSize: 12,
+                ),
+              ),
               style: ElevatedButton.styleFrom(
                 minimumSize: Size(20, 30),
                 backgroundColor: Color(0xFF198754),
