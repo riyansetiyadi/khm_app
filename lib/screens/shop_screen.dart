@@ -23,7 +23,7 @@ class ShopScreen extends StatefulWidget {
 }
 
 class _ShopScreenState extends State<ShopScreen> {
-  final int itemCount = 0;
+  final int itemCount = 4;
 
   @override
   void initState() {
@@ -91,10 +91,10 @@ class _ShopScreenState extends State<ShopScreen> {
                 ),
                 if (itemCount > 0)
                   Positioned(
-                    right: 0,
-                    top: 0,
+                    right: 5,
+                    top: -5,
                     child: Container(
-                      padding: EdgeInsets.all(1),
+                      padding: EdgeInsets.all(2),
                       decoration: BoxDecoration(
                         color: Colors.red,
                         borderRadius: BorderRadius.circular(10),
@@ -108,7 +108,7 @@ class _ShopScreenState extends State<ShopScreen> {
                           '$itemCount',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 12,
+                            fontSize: 10,
                             fontWeight: FontWeight.bold,
                           ),
                           textAlign: TextAlign.center,
