@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:khm_app/db/auth_repository.dart';
+import 'package:khm_app/provider/cart_provider.dart';
 import 'package:khm_app/provider/product_provider.dart';
 import 'package:khm_app/screens/detail_product_screen.dart';
 import 'package:khm_app/screens/home_screen.dart';
@@ -59,6 +60,7 @@ class MyRouterDelegate extends RouterDelegate
   @override
   Widget build(BuildContext context) {
     final productProvider = context.read<ProductProvider>();
+    final cartProvider = context.read<CartProvider>();
 
     return Scaffold(
       body: Navigator(
@@ -130,7 +132,6 @@ class MyRouterDelegate extends RouterDelegate
                 key: ValueKey(AppPage.registercheckout),
                 child: RegisterCheckout(onTapped: _handleTapped),
               );
-
           }
         }).toList(),
         onPopPage: (route, result) {
@@ -170,6 +171,9 @@ class MyRouterDelegate extends RouterDelegate
                 } else if (index == 2) {
                   _handleTapped(AppPage.shop);
                 } else if (index == 3) {
+                  Future.microtask(() async {
+                    cartProvider.getCarts();
+                  });
                   _handleTapped(AppPage.cart);
                 } else if (index == 4) {
                   _handleTapped(AppPage.profile);

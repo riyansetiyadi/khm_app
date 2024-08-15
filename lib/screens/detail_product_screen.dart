@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:khm_app/provider/auth_provider.dart';
+import 'package:khm_app/provider/cart_provider.dart';
 import 'package:khm_app/provider/product_provider.dart';
 import 'package:khm_app/utils/enum_app_page.dart';
 import 'package:khm_app/utils/enum_state.dart';
@@ -20,20 +21,7 @@ class DetailProduct extends StatefulWidget {
 }
 
 class _DetailProductState extends State<DetailProduct> {
-  int _quantity = 1;
   int _stok = 0;
-
-  void _incrementQuantity() {
-    setState(() {
-      if (_quantity < _stok) _quantity++;
-    });
-  }
-
-  void _decrementQuantity() {
-    setState(() {
-      if (_quantity > 1) _quantity--;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +67,6 @@ class _DetailProductState extends State<DetailProduct> {
           } else if (state.state == ResultState.loaded &&
               state.product != null) {
             _stok = int.parse(state.product?.stok ?? '0');
-            if (_stok == 0) _quantity = 0;
             return Stack(
               children: [
                 SingleChildScrollView(
@@ -146,20 +133,6 @@ class _DetailProductState extends State<DetailProduct> {
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 16),
-                              Row(
-                                children: [
-                                  IconButton(
-                                    icon: Icon(Icons.remove),
-                                    onPressed: () => _decrementQuantity(),
-                                  ),
-                                  Text(_quantity.toString()),
-                                  IconButton(
-                                    icon: Icon(Icons.add),
-                                    onPressed: () => _incrementQuantity(),
-                                  ),
-                                ],
-                              ),
                             ],
                           ),
                           SizedBox(height: 8),
@@ -195,12 +168,17 @@ class _DetailProductState extends State<DetailProduct> {
                       onPressed: () async {
                         if (_stok != 0) {
                           final authRead = context.read<AuthProvider>();
-                          final result = await authRead.isLoggedIn;
-                          if (result) {
+                          bool isLoggedIn = await authRead.isLoggedIn;
+                          if (isLoggedIn && (state.detailIdProduct != null)) {
+                            final cartRead = context.read<CartProvider>();
+                            bool resultAddCart =
+                                await cartRead.addCart(state.detailIdProduct!);
                             final snackBar = SnackBar(
                               backgroundColor: Colors.green,
                               content: Text(
-                                "Berhasil menambahkan ke keranjang",
+                                resultAddCart
+                                    ? "Berhasil menambahkan ke keranjang"
+                                    : "Gagal menambahkan ke keranjang",
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyLarge
@@ -219,9 +197,7 @@ class _DetailProductState extends State<DetailProduct> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            _stok != 0
-                                ? 'TAMBAH KERANJANG - $_quantity QTY'
-                                : 'STOK HABIS',
+                            _stok != 0 ? 'MASUKKAN KERANJANG' : 'STOK HABIS',
                             style: TextStyle(color: Colors.white),
                           ),
                         ],

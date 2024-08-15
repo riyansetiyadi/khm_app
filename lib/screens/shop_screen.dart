@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:khm_app/models/product_model.dart';
+import 'package:khm_app/provider/auth_provider.dart';
+import 'package:khm_app/provider/cart_provider.dart';
 import 'package:khm_app/provider/product_provider.dart';
 import 'package:khm_app/utils/enum_app_page.dart';
 import 'package:khm_app/utils/enum_state.dart';
@@ -200,12 +202,13 @@ class _ShopScreenState extends State<ShopScreen> {
       ),
       itemCount: products.length,
       itemBuilder: (context, index) {
+        ProductModel product = products[index];
         return GestureDetector(
           onTap: () => {
-            if (products[index].id_produk != null)
+            if (product.id_produk != null)
               {
                 productProvider.getProduct(
-                  int.parse(products[index].id_produk!),
+                  int.parse(product.id_produk!),
                 ),
                 widget.onTapped(AppPage.detailProduct)
               }
@@ -229,7 +232,7 @@ class _ShopScreenState extends State<ShopScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        products[index].nama_produk ?? '',
+                        product.nama_produk ?? '',
                         style: TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.bold,
@@ -237,14 +240,41 @@ class _ShopScreenState extends State<ShopScreen> {
                       ),
                       SizedBox(height: 4),
                       Text(
-                        '\Rp${products[index].harga ?? ''}',
+                        '\Rp${product.harga ?? ''}',
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          if (int.parse(product.stok ?? '0') != 0) {
+                            final authRead = context.read<AuthProvider>();
+                            bool isLoggedIn = await authRead.isLoggedIn;
+                            if (isLoggedIn && (product.id_produk != null)) {
+                              final cartRead = context.read<CartProvider>();
+                              bool resultAddCart = await cartRead
+                                  .addCart(int.parse(product.id_produk!));
+                              final snackBar = SnackBar(
+                                backgroundColor: Colors.green,
+                                content: Text(
+                                  resultAddCart
+                                      ? "Berhasil menambahkan ke keranjang"
+                                      : "Gagal menambahkan ke keranjang",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge
+                                      ?.copyWith(color: Colors.white),
+                                ),
+                                duration: const Duration(seconds: 3),
+                              );
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                            } else {
+                              widget.onTapped(AppPage.login);
+                            }
+                          }
+                        },
                         child: Row(
                           children: [
                             Icon(

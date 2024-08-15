@@ -116,15 +116,4 @@ class ProductProvider extends ChangeNotifier {
       return false;
     }
   }
-
-  Future<bool> addProductToCart(ProductModel product) async {
-    _resultState = ResultState.loading;
-    notifyListeners();
-
-    try {
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
 }

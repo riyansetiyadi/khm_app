@@ -37,4 +37,18 @@ class AuthRepository {
     }
     return profile;
   }
+
+  Future<String?> getToken() async {
+    final preferences = await SharedPreferences.getInstance();
+    final jsonString = preferences.getString(profileKey) ?? "";
+    String? token = null;
+    ProfileModel? profile;
+    try {
+      profile = ProfileModel.fromLocalJson(json.decode(jsonString));
+      token = profile.token;
+    } catch (e) {
+      token = null;
+    }
+    return token;
+  }
 }
