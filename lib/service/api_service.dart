@@ -201,7 +201,7 @@ class ApiService {
     }
   }
 
-  Future addRoom(String uniqeCode) async {
+  Future createRoomChatApi(String uniqeCode) async {
     var request = http.MultipartRequest('GET',
         Uri.parse("$_baseUrl/chat_room_api.php?addRoom&token=$uniqeCode"));
 
@@ -212,7 +212,28 @@ class ApiService {
       final responseJson = jsonDecode(responseString);
       return responseJson;
     } else {
-      throw Exception('Failed to delete cart product');
+      throw Exception('Failed to create room chat');
+    }
+  }
+
+  Future sendMessageApi(
+    String token,
+    String room,
+    String fullname,
+    String message, {
+    String? filepath,
+  }) async {
+    var request =
+        http.MultipartRequest('POST', Uri.parse("$_baseUrl/chat_api.php"));
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      String responseString = await response.stream.bytesToString();
+      final responseJson = jsonDecode(responseString);
+      return responseJson;
+    } else {
+      throw Exception('Failed to create room chat');
     }
   }
 

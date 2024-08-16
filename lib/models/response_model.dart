@@ -2,11 +2,13 @@ class ResponseApiModel {
   final bool error;
   final String message;
   final String status;
+  final List data;
 
   ResponseApiModel({
     required this.error,
     required this.message,
     required this.status,
+    required this.data,
   });
 
   factory ResponseApiModel.fromJson(Map<String, dynamic> json) {
@@ -14,6 +16,7 @@ class ResponseApiModel {
       error: json['error'],
       message: json['message'],
       status: json['status'],
+      data: json['data'],
     );
   }
 
@@ -22,6 +25,7 @@ class ResponseApiModel {
       'error': error,
       'message': message,
       'status': status,
+      'data': data,
     };
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:khm_app/provider/auth_provider.dart';
 import 'package:khm_app/utils/enum_app_page.dart';
+import 'package:provider/provider.dart';
 
 class ChatScreen extends StatefulWidget {
   final void Function(AppPage) onTapped;
@@ -81,9 +83,10 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authWatch = context.watch<AuthProvider>();
     return Scaffold(
       appBar: AppBar(
-        title: Text('Konsultasi (Nama Pasien)'),
+        title: Text('Konsultasi ${authWatch.profile?.fullname ?? ''}'),
       ),
       body: Column(
         children: [
