@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:khm_app/utils/enum_app_page.dart';
+import 'package:file_picker/file_picker.dart';
 
 class RiwayatScreen extends StatefulWidget {
   final void Function(AppPage) onTapped;
@@ -14,6 +15,23 @@ class RiwayatScreen extends StatefulWidget {
 }
 
 class _RiwayatScreenState extends State<RiwayatScreen> {
+
+  bool _isPickingFile = false;
+
+ void _pickFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      PlatformFile file = result.files.first;
+
+      print('File name: ${file.name}');
+      print('File path: ${file.path}');
+      // Lakukan sesuatu dengan file yang dipilih
+    } else {
+      // Pengguna membatalkan pemilihan
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +39,7 @@ class _RiwayatScreenState extends State<RiwayatScreen> {
         title: Text(
               'Riwayat Transaksi',
               style: TextStyle(
-                fontSize: 15.0,
+                fontSize: 20.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -39,22 +57,33 @@ class _RiwayatScreenState extends State<RiwayatScreen> {
                 scrollDirection: Axis.horizontal,
                 child: DataTable(
                   columns: const [
-                    DataColumn(label: Text('No.Inv',)),
-                    DataColumn(label: Text('Produk',)),
-                    DataColumn(label: Text('Total',)),
-                    DataColumn(label: Text('Status',)),
-                    DataColumn(label: Text('No. Resi',)),
-                    DataColumn(label: Text('Aksi',)),
+                    DataColumn(label: Text('No.Inv', style: TextStyle(fontSize: 15))),
+                    DataColumn(label: Text('Produk',style: TextStyle(fontSize: 15))),
+                    DataColumn(label: Text('Total',style: TextStyle(fontSize: 15))),
+                    DataColumn(label: Text('Status',style: TextStyle(fontSize: 15))),
+                    DataColumn(label: Text('No. Resi',style: TextStyle(fontSize: 15))),
+                    DataColumn(label: Text('Aksi',style: TextStyle(fontSize: 15))),
                   ],
-                  rows: const [
+                  rows:[
                     DataRow(
-                      cells: const [
+                      cells: [
                         DataCell(Text('')),
                         DataCell(Text('')),
                         DataCell(Text('')),
                         DataCell(Text('')),
                         DataCell(Text('')),
-                        DataCell(Text('')),
+                        DataCell(
+                          ElevatedButton(
+          onPressed: _pickFile,
+          child: Text('Upload Bukti'),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color(0xFF198754),
+            foregroundColor: Colors.white,
+            padding: EdgeInsets.symmetric(horizontal: 12),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(6.0),
+            ),
+          ),),),
                       ],
                     ),
                   ],
