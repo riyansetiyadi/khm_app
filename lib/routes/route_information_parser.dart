@@ -26,8 +26,10 @@ class AppRouteInformationParser extends RouteInformationParser<AppPage> {
         return AppPage.shop;
       case 'registerkonsul':
         return AppPage.registerkonsul;
-      case 'registercheckout':
-        return AppPage.registercheckout;
+      case 'registeraddress':
+        return AppPage.registeraddress;
+      case 'checkout':
+        return AppPage.checkout;
       default:
         return AppPage.home;
     }
@@ -60,8 +62,10 @@ class AppRouteInformationParser extends RouteInformationParser<AppPage> {
         return RouteInformation(uri: Uri.parse('/riwayat'));
       case AppPage.registerkonsul:
         return RouteInformation(uri: Uri.parse('/registerkonsul'));
-      case AppPage.registercheckout:
-        return RouteInformation(uri: Uri.parse('/registercheckout'));
+      case AppPage.registeraddress:
+        return RouteInformation(uri: Uri.parse('/registeraddress'));
+      case AppPage.checkout:
+        return RouteInformation(uri: Uri.parse('/checkout'));
     }
   }
 }

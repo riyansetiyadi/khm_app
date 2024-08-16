@@ -23,6 +23,8 @@ class ShopScreen extends StatefulWidget {
 }
 
 class _ShopScreenState extends State<ShopScreen> {
+  final int itemCount = 4;
+
   @override
   void initState() {
     super.initState();
@@ -76,14 +78,45 @@ class _ShopScreenState extends State<ShopScreen> {
                 widget.onTapped(AppPage.riwayat);
               },
             ),
-            IconButton(
-              icon: Icon(
-                Icons.shopping_cart,
-                color: Color(0xFF198754),
-              ),
-              onPressed: () {
-                widget.onTapped(AppPage.cart);
-              },
+            Stack(
+              clipBehavior: Clip.none,
+              children: <Widget>[
+                IconButton(
+                  icon: Icon(
+                    Icons.shopping_cart,
+                    color: Color(0xFF198754),
+                    size: 30,
+                  ),
+                  onPressed: () {},
+                ),
+                if (itemCount > 0)
+                  Positioned(
+                    right: 5,
+                    top: -5,
+                    child: Container(
+                      padding: EdgeInsets.all(2),
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      constraints: BoxConstraints(
+                        minWidth: 16,
+                        minHeight: 16,
+                      ),
+                      child: Center(
+                        child: Text(
+                          '$itemCount',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
             ),
           ],
         ),

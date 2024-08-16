@@ -11,5 +11,6 @@ enum AppPage {
   register,
   detailProduct,
   registerkonsul,
-  registercheckout
+  registeraddress,
+  checkout
 }

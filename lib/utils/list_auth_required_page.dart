@@ -5,5 +5,7 @@ final List<AppPage> authRequiredPages = [
   AppPage.chat,
   AppPage.cart,
   AppPage.riwayat,
-  AppPage.addroom
+  AppPage.addroom,
+  AppPage.registeraddress,
+  AppPage.checkout
 ];
