@@ -175,6 +175,19 @@ class _LoginScreenState extends State<LoginScreen> {
                                   _passwordController.text);
                               if (result) {
                                 widget.onTapped(AppPage.home);
+                              } else {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  backgroundColor: Colors.red,
+                                  content: Text(
+                                    "Email/Password Salah",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge
+                                        ?.copyWith(color: Colors.white),
+                                  ),
+                                  duration: const Duration(seconds: 3),
+                                ));
                               }
                             },
                             child: Text('Login'),
