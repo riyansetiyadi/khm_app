@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:khm_app/provider/auth_provider.dart';
 import 'package:khm_app/utils/enum_app_page.dart';
+import 'package:provider/provider.dart';
 
 class AddRoomScreen extends StatefulWidget {
   final void Function(AppPage) onTapped;
@@ -18,54 +19,56 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
   List<Widget> buttons = [];
 
   void _addDateButton() {
-    DateTime now = DateTime.now();
-    String formattedDate = DateFormat('dd-MM-yyyy').format(now);
-    String formattedTime = DateFormat('HH:mm:ss').format(now);
+    widget.onTapped(AppPage.chat);
+    // DateTime now = DateTime.now();
+    // String formattedDate = DateFormat('dd-MM-yyyy').format(now);
+    // String formattedTime = DateFormat('HH:mm:ss').format(now);
 
-    setState(() {
-      buttons.add(
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            elevation: 3,
-            minimumSize: Size(double.infinity, 36),
-            backgroundColor: Colors.white,
-            foregroundColor: Color(0xFF198754),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(6.0),
-            ),
-          ),
-          onPressed: () {
-            widget.onTapped(AppPage.chat);
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                '$formattedDate',
-                style: TextStyle(
-                  fontSize: 15,
-                ),
-              ),
-              SizedBox(width: 4),
-              Text(
-                '$formattedTime',
-                style: TextStyle(
-                  fontSize: 15,
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-    });
+    // setState(() {
+    //   buttons.add(
+    //     ElevatedButton(
+    //       style: ElevatedButton.styleFrom(
+    //         elevation: 3,
+    //         minimumSize: Size(double.infinity, 36),
+    //         backgroundColor: Colors.white,
+    //         foregroundColor: Color(0xFF198754),
+    //         shape: RoundedRectangleBorder(
+    //           borderRadius: BorderRadius.circular(6.0),
+    //         ),
+    //       ),
+    //       onPressed: () {
+    //         widget.onTapped(AppPage.chat);
+    //       },
+    //       child: Row(
+    //         mainAxisAlignment: MainAxisAlignment.center,
+    //         mainAxisSize: MainAxisSize.min,
+    //         children: [
+    //           Text(
+    //             '$formattedDate',
+    //             style: TextStyle(
+    //               fontSize: 15,
+    //             ),
+    //           ),
+    //           SizedBox(width: 4),
+    //           Text(
+    //             '$formattedTime',
+    //             style: TextStyle(
+    //               fontSize: 15,
+    //             ),
+    //           ),
+    //         ],
+    //       ),
+    //     ),
+    //   );
+    // });
   }
 
   @override
   Widget build(BuildContext context) {
+    final authWatch = context.watch<AuthProvider>();
     return Scaffold(
       appBar: AppBar(
-        title: Text('Konsultasi (Nama Pasien)'),
+        title: Text('Konsultasi ${authWatch.profile?.fullname ?? ''}'),
       ),
       body: Center(
           child: Column(
