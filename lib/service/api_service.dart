@@ -45,6 +45,34 @@ class ApiService {
     }
   }
 
+  Future registerConsultationApi(
+    String gender,
+    String idNumber,
+    String token,
+  ) async {
+    print(idNumber);
+    var request = http.MultipartRequest(
+      'POST',
+      Uri.parse("$_baseUrl/login_api.php"),
+    );
+    request.fields.addAll({
+      'registerKe2': '',
+      'jenis_kelamin': gender,
+      'no_identitas': idNumber,
+      'token': token,
+    });
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      final responseString = await response.stream.bytesToString();
+      final responseJson = jsonDecode(responseString);
+      return responseJson;
+    } else {
+      throw Exception('Failed to register');
+    }
+  }
+
   Future getProductsApi({
     String? keyword,
     String? filter,

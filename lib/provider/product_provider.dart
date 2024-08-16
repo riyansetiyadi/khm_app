@@ -92,7 +92,6 @@ class ProductProvider extends ChangeNotifier {
     } catch (e) {
       _resultState = ResultState.error;
       message = 'Gagal mendapatkan produk';
-      print(e);
       notifyListeners();
       return false;
     }
