@@ -22,6 +22,8 @@ class DetailProduct extends StatefulWidget {
 
 class _DetailProductState extends State<DetailProduct> {
   int _stok = 0;
+    final int itemCount = 4;
+
 
   @override
   Widget build(BuildContext context) {
@@ -29,19 +31,53 @@ class _DetailProductState extends State<DetailProduct> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('PRODUK DETAIL'),
+        title: Text('Detail Produk'),
         centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
         actions: [
-          IconButton(
-            icon: Icon(Icons.shopping_cart_rounded),
-            onPressed: () {
-              widget.onTapped(AppPage.cart);
-            },
-          ),
+           Stack(
+              clipBehavior: Clip.none,
+              children: <Widget>[
+                IconButton(
+                  icon: Icon(
+                    Icons.shopping_cart,
+                    color: Color(0xFF198754),
+                    size: 30,
+                  ),
+                  onPressed: () {widget.onTapped(AppPage.cart);},
+                ),
+                if (itemCount > 0)
+                  Positioned(
+                    right: 5,
+                    top: -5,
+                    child: Container(
+                      padding: EdgeInsets.all(2),
+                      decoration: BoxDecoration(
+                        color: Colors.yellow,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      constraints: BoxConstraints(
+                        minWidth: 16,
+                        minHeight: 16,
+                      ),
+                      child: Center(
+                        child: Text(
+                          '$itemCount',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
         ],
       ),
       body: Consumer<ProductProvider>(
@@ -197,17 +233,22 @@ class _DetailProductState extends State<DetailProduct> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            _stok != 0 ? 'MASUKKAN KERANJANG' : 'STOK HABIS',
-                            style: TextStyle(color: Colors.white),
+                            _stok != 0
+                                ? 'Tambahkan Ke Keranjang'
+                                : 'STOK KOSONG!',
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 15.0),
                           ),
                         ],
                       ),
                       style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.symmetric(vertical: 16),
                         minimumSize: Size(double.infinity, 50),
-                        backgroundColor: Colors.black,
+                        backgroundColor:
+                            _stok != 0 ? Color(0xFF198754) : Colors.red,
+                        foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.zero, // Sudut tajam
+                          borderRadius: BorderRadius.circular(5.0),
                         ),
                       ),
                     ),

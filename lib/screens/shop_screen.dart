@@ -87,7 +87,9 @@ class _ShopScreenState extends State<ShopScreen> {
                     color: Color(0xFF198754),
                     size: 30,
                   ),
-                  onPressed: () {},
+                   onPressed: () {
+                widget.onTapped(AppPage.cart);
+              },
                 ),
                 if (itemCount > 0)
                   Positioned(
@@ -96,7 +98,7 @@ class _ShopScreenState extends State<ShopScreen> {
                     child: Container(
                       padding: EdgeInsets.all(2),
                       decoration: BoxDecoration(
-                        color: Colors.red,
+                        color: Colors.yellow,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       constraints: BoxConstraints(
