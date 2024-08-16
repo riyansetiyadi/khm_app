@@ -87,9 +87,9 @@ class _ShopScreenState extends State<ShopScreen> {
                     color: Color(0xFF198754),
                     size: 30,
                   ),
-                   onPressed: () {
-                widget.onTapped(AppPage.cart);
-              },
+                  onPressed: () {
+                    widget.onTapped(AppPage.cart);
+                  },
                 ),
                 if (itemCount > 0)
                   Positioned(
@@ -312,13 +312,16 @@ class _ShopScreenState extends State<ShopScreen> {
                         },
                         child: Row(
                           children: [
-                            Icon(
-                              Icons.add,
-                              color: Colors.white,
-                            ),
+                            if (int.parse(product.stok ?? '0') != 0)
+                              Icon(
+                                Icons.add,
+                                color: Colors.white,
+                              ),
                             SizedBox(width: 8),
                             Text(
-                              'Keranjang',
+                              (int.parse(product.stok ?? '0') != 0)
+                                  ? 'Keranjang'
+                                  : 'Habis',
                               style: TextStyle(
                                 fontSize: 12,
                               ),
@@ -327,7 +330,9 @@ class _ShopScreenState extends State<ShopScreen> {
                         ),
                         style: ElevatedButton.styleFrom(
                           minimumSize: Size(20, 30),
-                          backgroundColor: Color(0xFF198754),
+                          backgroundColor: (int.parse(product.stok ?? '0') != 0)
+                              ? Color(0xFF198754)
+                              : Colors.red,
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5.0),
