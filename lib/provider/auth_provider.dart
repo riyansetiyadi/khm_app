@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:khm_app/db/auth_repository.dart';
 import 'package:khm_app/models/profile_model.dart';
+import 'package:khm_app/models/response_model.dart';
 import 'package:khm_app/service/api_service.dart';
+import 'package:khm_app/utils/enum_state.dart';
 
 class AuthProvider extends ChangeNotifier {
   final AuthRepository authRepository;
@@ -11,12 +13,13 @@ class AuthProvider extends ChangeNotifier {
     _init();
   }
 
-  bool isLoadingLogin = false;
-  bool isLoadingLogout = false;
-  bool isLoadingRegister = false;
+  ResultState _resultState = ResultState.initial;
+  ResultState get state => _resultState;
+
   bool isLoggedIn = false;
   String? message;
   ProfileModel? profile;
+  ResponseApiModel? response;
 
   _init() async {
     profile = await authRepository.getProfile();
@@ -24,7 +27,7 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<bool> login(email, password) async {
-    isLoadingLogin = true;
+    _resultState = ResultState.loading;
     notifyListeners();
 
     try {
@@ -32,30 +35,31 @@ class AuthProvider extends ChangeNotifier {
       if (profile == null) {
         ProfileModel result = await apiService.loginApi(email, password);
         message = 'Berhasil masuk';
-        print(result.token);
         if (result.token?.isNotEmpty ?? false) {
           await authRepository.saveProfile(result);
           profile = result;
         }
       }
       isLoggedIn = await authRepository.isLoggedIn();
-      isLoadingLogin = false;
+      _resultState = ResultState.loaded;
       notifyListeners();
 
       return isLoggedIn;
     } catch (e) {
+      message = 'Login gagal!';
+      _resultState = ResultState.error;
       return false;
     }
   }
 
   Future<bool> logout() async {
-    isLoadingLogout = true;
+    _resultState = ResultState.loading;
     notifyListeners();
 
     await authRepository.deleteProfile();
     isLoggedIn = await authRepository.isLoggedIn();
 
-    isLoadingLogout = false;
+    _resultState = ResultState.loaded;
     notifyListeners();
 
     return !isLoggedIn;
@@ -69,25 +73,75 @@ class AuthProvider extends ChangeNotifier {
       String datebirth,
       String monthbirth,
       String yearbirth) async {
-    isLoadingRegister = true;
+    _resultState = ResultState.loading;
     notifyListeners();
 
-    var data = {
-      'nama_lengkap': fullname,
-      'nohp': phoneNumber,
-      'email': email,
-      'password': password,
-      'tanggal': datebirth,
-      'bulan': monthbirth,
-      'tahun': yearbirth,
-      'registerAwal': ''
-    };
-    var result = await apiService.registerFirstApi(data);
+    try {
+      var data = {
+        'nama_lengkap': fullname,
+        'nohp': phoneNumber,
+        'email': email,
+        'password': password,
+        'tanggal': datebirth,
+        'bulan': monthbirth,
+        'tahun': yearbirth,
+        'registerAwal': ''
+      };
+      var result = await apiService.registerFirstApi(data);
 
-    isLoadingRegister = false;
-    message = result?['status'] ?? "Gagal Daftar";
+      _resultState = ResultState.loaded;
+      message = result?['status'] ?? "Gagal Daftar";
+      notifyListeners();
+
+      return true;
+    } catch (e) {
+      message = 'Daftar gagal!';
+      _resultState = ResultState.error;
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<bool> registerConsultation(
+    String gender,
+    String idNumber,
+  ) async {
+    _resultState = ResultState.loading;
     notifyListeners();
 
-    return true;
+    try {
+      String? token = await authRepository.getToken();
+      final responseResult = await apiService.registerConsultationApi(
+        gender,
+        idNumber,
+        token.toString(),
+      );
+      response = ResponseApiModel.fromJson(responseResult);
+
+      if (!(response?.error ?? true)) {
+        profile = ProfileModel.fromApiJson(
+          responseResult,
+          token: profile?.token,
+        );
+        print(responseResult);
+        if (profile != null) authRepository.saveProfile(profile!);
+        message = response?.message ?? 'Berhasil menandaftar';
+        _resultState = ResultState.loaded;
+        notifyListeners();
+
+        return true;
+      } else {
+        message = response?.message ?? 'Gagal daftar!';
+        _resultState = ResultState.error;
+        notifyListeners();
+
+        return false;
+      }
+    } catch (e) {
+      _resultState = ResultState.error;
+      message = response?.message ?? 'Gagal daftar!';
+      notifyListeners();
+      return false;
+    }
   }
 }

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:khm_app/provider/auth_provider.dart';
 import 'package:khm_app/utils/enum_app_page.dart';
+import 'package:khm_app/utils/list_gender.dart';
+import 'package:provider/provider.dart';
 
 class RegisterKonsulScreen extends StatefulWidget {
   final void Function(AppPage) onTapped;
@@ -14,15 +17,18 @@ class RegisterKonsulScreen extends StatefulWidget {
 }
 
 class _RegisterKonsulScreenState extends State<RegisterKonsulScreen> {
-  final TextEditingController _yearController = TextEditingController();
   final TextEditingController _nikController = TextEditingController();
 
-  int? selectedDay;
   String? _selectedGender;
-  int? selectedMonth;
 
   @override
   Widget build(BuildContext context) {
+    final authRead = context.read<AuthProvider>();
+
+    if (listGender.any((gender) => gender.id == authRead.profile?.gender))
+      _selectedGender = authRead.profile?.gender;
+    _nikController.text = authRead.profile?.idNumber ?? '';
+
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
@@ -76,100 +82,20 @@ class _RegisterKonsulScreenState extends State<RegisterKonsulScreen> {
                           child: DropdownButton<String>(
                             value: _selectedGender,
                             hint: Text('Pilih', style: TextStyle(fontSize: 12)),
-                            items: [
-                              DropdownMenuItem<String>(
-                                value: 'Laki-laki',
-                                child: Text('Laki-laki'),
-                              ),
-                              DropdownMenuItem<String>(
-                                value: 'Perempuan',
-                                child: Text('Perempuan'),
-                              ),
-                            ],
+                            items: listGender
+                                .map(
+                                  (gender) => DropdownMenuItem<String>(
+                                    value: gender.id,
+                                    child: Text(gender.name),
+                                  ),
+                                )
+                                .toList(),
                             onChanged: (String? newValue) {
                               setState(() {
                                 _selectedGender = newValue;
                               });
                             },
                           ),
-                        ),
-                        SizedBox(height: 15),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 0),
-                            child: Text(
-                              'Tanggal Lahir',
-                              style: TextStyle(fontSize: 12),
-                            ),
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.symmetric(horizontal: 8.0),
-                              decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: Colors.grey, width: 1.0),
-                                borderRadius: BorderRadius.circular(4.0),
-                              ),
-                              child: DropdownButton<int>(
-                                value: selectedDay,
-                                hint: Text('Tanggal',
-                                    style: TextStyle(fontSize: 12)),
-                                items: List.generate(31, (index) {
-                                  return DropdownMenuItem<int>(
-                                    value: index + 1,
-                                    child: Text('${index + 1}'),
-                                  );
-                                }),
-                                onChanged: (value) {
-                                  setState(() {
-                                    selectedDay = value;
-                                  });
-                                },
-                              ),
-                            ),
-                            SizedBox(width: 8.0),
-                            Container(
-                              padding: EdgeInsets.symmetric(horizontal: 8.0),
-                              decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: Colors.grey, width: 1.0),
-                                borderRadius: BorderRadius.circular(4.0),
-                              ),
-                              child: DropdownButton<int>(
-                                value: selectedMonth,
-                                hint: Text('Bulan',
-                                    style: TextStyle(fontSize: 12)),
-                                items: List.generate(12, (index) {
-                                  return DropdownMenuItem<int>(
-                                    value: index + 1,
-                                    child: Text('${index + 1}'),
-                                  );
-                                }),
-                                onChanged: (value) {
-                                  setState(() {
-                                    selectedMonth = value;
-                                  });
-                                },
-                              ),
-                            ),
-                            SizedBox(width: 8.0),
-                            Expanded(
-                              child: TextField(
-                                controller: _yearController,
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                  labelText: 'Tahun',
-                                  labelStyle: TextStyle(fontSize: 12),
-                                  border: OutlineInputBorder(),
-                                  contentPadding: EdgeInsets.symmetric(
-                                      horizontal: 5.0, vertical: 12.0),
-                                ),
-                              ),
-                            ),
-                          ],
                         ),
                         SizedBox(height: 15),
                         Align(
@@ -212,8 +138,29 @@ class _RegisterKonsulScreenState extends State<RegisterKonsulScreen> {
                             ),
                             SizedBox(width: 15),
                             ElevatedButton(
-                              onPressed: () {
-                                widget.onTapped(AppPage.addroom);
+                              onPressed: () async {
+                                bool result =
+                                    await authRead.registerConsultation(
+                                  _selectedGender ?? '',
+                                  _nikController.text,
+                                );
+                                if (result) {
+                                  widget.onTapped(AppPage.addroom);
+                                } else {
+                                  final snackBar = SnackBar(
+                                    backgroundColor: Colors.green,
+                                    content: Text(
+                                      authRead.message ?? 'Gagal mendaftar!',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge
+                                          ?.copyWith(color: Colors.white),
+                                    ),
+                                    duration: const Duration(seconds: 3),
+                                  );
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(snackBar);
+                                }
                               },
                               child: Text('Simpan'),
                               style: ElevatedButton.styleFrom(

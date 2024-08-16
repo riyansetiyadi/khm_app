@@ -16,6 +16,15 @@ class AuthRepository {
     }
   }
 
+  Future<bool> isConsultationDataComplete() async {
+    ProfileModel? profile = await getProfile();
+    List<bool> result = [
+      profile?.gender?.isEmpty ?? false,
+      profile?.idNumber?.isEmpty ?? false
+    ];
+    return result.every((res) => !res);
+  }
+
   Future<bool> saveProfile(ProfileModel profile) async {
     final preferences = await SharedPreferences.getInstance();
     return preferences.setString(profileKey, jsonEncode(profile.toJson()));

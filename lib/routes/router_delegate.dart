@@ -214,7 +214,12 @@ class MyRouterDelegate extends RouterDelegate
       _pageStack.removeWhere((page) => authPages.contains(page));
       _pageStack.add(_handleDuplicatePage(AppPage.home));
     } else {
-      _pageStack.add(_handleDuplicatePage(page));
+      if (page == AppPage.addroom &&
+          !(await authRepository.isConsultationDataComplete())) {
+        _pageStack.add(_handleDuplicatePage(AppPage.registerkonsul));
+      } else {
+        _pageStack.add(_handleDuplicatePage(page));
+      }
     }
 
     notifyListeners();

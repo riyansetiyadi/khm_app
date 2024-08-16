@@ -86,7 +86,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           floatingLabelBehavior: FloatingLabelBehavior.never,
                           border: OutlineInputBorder(),
                           contentPadding: EdgeInsets.symmetric(
-                              horizontal: 5.0, vertical: 12.0),
+                            horizontal: 5.0,
+                            vertical: 12.0,
+                          ),
                         ),
                       ),
                       SizedBox(height: 15),

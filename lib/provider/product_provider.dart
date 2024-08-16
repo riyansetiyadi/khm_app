@@ -80,6 +80,10 @@ class ProductProvider extends ChangeNotifier {
       newProducts = responseResult['data']
           .map<ProductModel>((product) => ProductModel.fromJson(product))
           .toList();
+      if (newProducts?.isEmpty ?? false) {
+        await getProducts(lim: 5, page: 1);
+        newProducts = products ?? [];
+      }
       message = 'Berhasil mendapatkan produk';
       _resultState = ResultState.loaded;
       notifyListeners();
@@ -88,7 +92,6 @@ class ProductProvider extends ChangeNotifier {
     } catch (e) {
       _resultState = ResultState.error;
       message = 'Gagal mendapatkan produk';
-      print(e);
       notifyListeners();
       return false;
     }
@@ -104,6 +107,10 @@ class ProductProvider extends ChangeNotifier {
       bestSellerProducts = responseResult['data']
           .map<ProductModel>((product) => ProductModel.fromJson(product))
           .toList();
+      if (bestSellerProducts?.isEmpty ?? false) {
+        await getProducts(lim: 5, page: 1);
+        bestSellerProducts = products ?? [];
+      }
       message = 'Berhasil mendapatkan produk';
       _resultState = ResultState.loaded;
       notifyListeners();

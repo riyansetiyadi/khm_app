@@ -36,7 +36,6 @@ class CartProvider extends ChangeNotifier {
 
   void decrementQuantity(String id) {
     for (var product in products ?? []) {
-      print(product.jumlah);
       if (product.id == id && product.jumlah > 1) {
         product.jumlah--;
         changeQuantity = true;
@@ -149,7 +148,6 @@ class CartProvider extends ChangeNotifier {
 
     try {
       String? token = await authRepository.getToken();
-      print(token);
       final responseResult = await apiService.getCartsApi(token ?? '');
       products = responseResult['data']
           .map<CartModel>((product) => CartModel.fromJson(product))
@@ -175,7 +173,6 @@ class CartProvider extends ChangeNotifier {
     try {
       String? token = await authRepository.getToken();
       final responseResult = await apiService.delKeranjang(idCart, token ?? '');
-      print(responseResult);
       if (!responseResult['error']) {
         message = 'Berhasil menghapus produk';
         _resultState = ResultState.loaded;

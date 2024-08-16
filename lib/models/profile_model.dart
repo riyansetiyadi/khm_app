@@ -7,7 +7,7 @@ class ProfileModel {
   final String? age;
   final String? bpjsNumber;
   final String? placeBirth;
-  final String? gender;
+  String? gender;
   final String? phoneNumber;
   final String? email;
   final String? password;
@@ -86,9 +86,9 @@ class ProfileModel {
   });
 
   // Factory method to create a Profile object from JSON
-  factory ProfileModel.fromApiJson(Map<String, dynamic> json) {
+  factory ProfileModel.fromApiJson(Map<String, dynamic> json, {String? token}) {
     return ProfileModel(
-      token: json['uniq_code'],
+      token: token ?? json['uniq_code'],
       fullname: json['data'][0]['nama_lengkap'],
       motherName: json['data'][0]['nama_ibu'],
       rmNumber: json['data'][0]['no_rm'],

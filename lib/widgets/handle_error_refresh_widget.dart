@@ -16,7 +16,6 @@ class ErrorRefresh extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(onPressed);
     return Center(
       child: Material(
         child: Padding(
