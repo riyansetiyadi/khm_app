@@ -54,37 +54,29 @@ class _CartScreenState extends State<CartScreen> {
       ),
       body: Consumer<CartProvider>(
         builder: (context, state, _) {
-          if (state.products == null) {
-            switch (state.state) {
-              case ResultState.loading:
-                return Center(
-                  child: defaultTargetPlatform == TargetPlatform.iOS
-                      ? const CupertinoActivityIndicator(
-                          radius: 20.0,
-                        )
-                      : const CircularProgressIndicator(),
-                );
-              case ResultState.initial:
-                return Container();
-              case ResultState.error:
-                return ErrorRefresh(
-                  onPressed: () async {
-                    await state.getCarts();
-                  },
-                );
-              case ResultState.loaded:
-                if (state.products != null) {
-                  return containerCart(state);
-                } else {
-                  return ErrorRefresh(
-                    onPressed: () async {
-                      await state.getCarts();
-                    },
-                  );
-                }
-            }
-          } else {
-            return containerCart(state);
+          switch (state.state) {
+            case ResultState.loading:
+              return Center(
+                child: defaultTargetPlatform == TargetPlatform.iOS
+                    ? const CupertinoActivityIndicator(
+                        radius: 20.0,
+                      )
+                    : const CircularProgressIndicator(),
+              );
+            case ResultState.initial:
+              return emptyCart();
+            case ResultState.error:
+              return ErrorRefresh(
+                onPressed: () async {
+                  await state.getCarts();
+                },
+              );
+            case ResultState.loaded:
+              if (state.products?.isEmpty ?? true) {
+                return emptyCart();
+              } else {
+                return containerCart(state);
+              }
           }
         },
       ),
@@ -93,44 +85,6 @@ class _CartScreenState extends State<CartScreen> {
 
   Widget containerCart(CartProvider state) {
     List<CartModel> products = state.products!;
-    if (products.isEmpty) {
-      return Center(
-        child: Column(children: [
-          Image.asset(
-            'assets/images/cart.png',
-            width: 100,
-            height: 100,
-          ),
-          Text(
-            'Wah, keranjang belanjamu masih kosong nih',
-            style: TextStyle(
-              fontSize: 15.0,
-            ),
-          ),
-          Text(
-            'Yuk, segera penuhi keranjangmu!',
-            style: TextStyle(
-              fontSize: 15.0,
-            ),
-          ),
-          SizedBox(height: 10),
-          ElevatedButton(
-            onPressed: () {
-              widget.onTapped(AppPage.shop);
-            },
-            child: Text('Belanja Sekarang'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Color(0xFF198754),
-              foregroundColor: Colors.white,
-              padding: EdgeInsets.symmetric(horizontal: 12),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(6.0),
-              ),
-            ),
-          ),
-        ]),
-      );
-    }
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -313,6 +267,45 @@ class _CartScreenState extends State<CartScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Center emptyCart() {
+    return Center(
+      child: Column(children: [
+        Image.asset(
+          'assets/images/cart.png',
+          width: 100,
+          height: 100,
+        ),
+        Text(
+          'Wah, keranjang belanjamu masih kosong nih',
+          style: TextStyle(
+            fontSize: 15.0,
+          ),
+        ),
+        Text(
+          'Yuk, segera penuhi keranjangmu!',
+          style: TextStyle(
+            fontSize: 15.0,
+          ),
+        ),
+        SizedBox(height: 10),
+        ElevatedButton(
+          onPressed: () {
+            widget.onTapped(AppPage.shop);
+          },
+          child: Text('Belanja Sekarang'),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color(0xFF198754),
+            foregroundColor: Colors.white,
+            padding: EdgeInsets.symmetric(horizontal: 12),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(6.0),
+            ),
+          ),
+        ),
+      ]),
     );
   }
 
