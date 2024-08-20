@@ -4,5 +4,5 @@ final List<AppPage> bottomNavPages = [
   AppPage.home,
   AppPage.profile,
   AppPage.login,
-  AppPage.register
+  AppPage.register,
 ];

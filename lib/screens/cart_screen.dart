@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:khm_app/models/cart_model.dart';
+import 'package:khm_app/provider/auth_provider.dart';
 import 'package:khm_app/provider/cart_provider.dart';
 import 'package:khm_app/utils/enum_app_page.dart';
 import 'package:khm_app/utils/enum_state.dart';
@@ -54,29 +55,35 @@ class _CartScreenState extends State<CartScreen> {
       ),
       body: Consumer<CartProvider>(
         builder: (context, state, _) {
-          switch (state.state) {
-            case ResultState.loading:
-              return Center(
-                child: defaultTargetPlatform == TargetPlatform.iOS
-                    ? const CupertinoActivityIndicator(
-                        radius: 20.0,
-                      )
-                    : const CircularProgressIndicator(),
-              );
-            case ResultState.initial:
-              return emptyCart();
-            case ResultState.error:
-              return ErrorRefresh(
-                onPressed: () async {
-                  await state.getCarts();
-                },
-              );
-            case ResultState.loaded:
-              if (state.products?.isEmpty ?? true) {
+          final authWatch = context.watch<AuthProvider>();
+          print(authWatch.isLoggedIn);
+          if (authWatch.isLoggedIn) {
+            switch (state.state) {
+              case ResultState.loading:
+                return Center(
+                  child: defaultTargetPlatform == TargetPlatform.iOS
+                      ? const CupertinoActivityIndicator(
+                          radius: 20.0,
+                        )
+                      : const CircularProgressIndicator(),
+                );
+              case ResultState.initial:
                 return emptyCart();
-              } else {
-                return containerCart(state);
-              }
+              case ResultState.error:
+                return ErrorRefresh(
+                  onPressed: () async {
+                    await state.getCarts();
+                  },
+                );
+              case ResultState.loaded:
+                if (state.products?.isEmpty ?? true) {
+                  return emptyCart();
+                } else {
+                  return containerCart(state);
+                }
+            }
+          } else {
+            return notLoggedInCart();
           }
         },
       ),
@@ -238,7 +245,7 @@ class _CartScreenState extends State<CartScreen> {
               bool result =
                   state.changeQuantity ? await state.updateAllQuantity() : true;
               if (result) {
-                print('checkout');
+                widget.onTapped(AppPage.checkout);
               } else {
                 final snackBar = SnackBar(
                   backgroundColor: Colors.green,
@@ -267,6 +274,45 @@ class _CartScreenState extends State<CartScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Center notLoggedInCart() {
+    return Center(
+      child: Column(children: [
+        Image.asset(
+          'assets/images/cart.png',
+          width: 100,
+          height: 100,
+        ),
+        Text(
+          'Wah, kamu belum login/register nih',
+          style: TextStyle(
+            fontSize: 15.0,
+          ),
+        ),
+        Text(
+          'Yuk, segera login/register!',
+          style: TextStyle(
+            fontSize: 15.0,
+          ),
+        ),
+        SizedBox(height: 10),
+        ElevatedButton(
+          onPressed: () {
+            widget.onTapped(AppPage.login);
+          },
+          child: Text('Login Sekarang'),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color(0xFF198754),
+            foregroundColor: Colors.white,
+            padding: EdgeInsets.symmetric(horizontal: 12),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(6.0),
+            ),
+          ),
+        ),
+      ]),
     );
   }
 

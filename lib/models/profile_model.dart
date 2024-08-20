@@ -19,7 +19,7 @@ class ProfileModel {
   final String? rt;
   final String? rw;
   final String? province;
-  final String? city;
+  final String? district;
   final String? subdistrict;
   final String? village;
   final String? postalCode;
@@ -62,7 +62,7 @@ class ProfileModel {
     String? this.rt,
     String? this.rw,
     String? this.province,
-    String? this.city,
+    String? this.district,
     String? this.subdistrict,
     String? this.village,
     String? this.postalCode,
@@ -108,7 +108,7 @@ class ProfileModel {
       rt: json['data'][0]['rt'],
       rw: json['data'][0]['rw'],
       province: json['data'][0]['provinsi'],
-      city: json['data'][0]['kota'],
+      district: json['data'][0]['kota'],
       subdistrict: json['data'][0]['kecamatan'],
       village: json['data'][0]['kecamatan'],
       postalCode: json['data'][0]['kode_pos'],
@@ -155,7 +155,7 @@ class ProfileModel {
       rt: json['rt'],
       rw: json['rw'],
       province: json['province'],
-      city: json['city'],
+      district: json['city'],
       subdistrict: json['subdistrict'],
       village: json['village'],
       postalCode: json['postalCode'],
@@ -202,7 +202,7 @@ class ProfileModel {
       'rt': rt,
       'rw': rw,
       'province': province,
-      'city': city,
+      'city': district,
       'subdistrict': subdistrict,
       'village': village,
       'postalCode': postalCode,

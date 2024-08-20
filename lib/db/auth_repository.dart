@@ -25,6 +25,20 @@ class AuthRepository {
     return result.every((res) => !res);
   }
 
+  Future<bool> isChekoutDataComplete() async {
+    ProfileModel? profile = await getProfile();
+    List<bool> result = [
+      profile?.fullname?.isEmpty ?? false,
+      profile?.phoneNumber?.isEmpty ?? false,
+      profile?.district?.isEmpty ?? false,
+      profile?.subdistrict?.isEmpty ?? false,
+      profile?.village?.isEmpty ?? false,
+      profile?.postalCode?.isEmpty ?? false,
+      profile?.address?.isEmpty ?? false,
+    ];
+    return result.every((res) => !res);
+  }
+
   Future<bool> saveProfile(ProfileModel profile) async {
     final preferences = await SharedPreferences.getInstance();
     return preferences.setString(profileKey, jsonEncode(profile.toJson()));

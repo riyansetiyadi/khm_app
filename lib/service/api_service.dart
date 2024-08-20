@@ -5,6 +5,7 @@ import 'package:khm_app/models/profile_model.dart';
 
 class ApiService {
   static const String _baseUrl = 'https://wedangtech.my.id/api_personal';
+  static const String _addressUrl = 'https://kodepos-2d475.firebaseio.com';
 
   Future<ProfileModel> loginApi(email, password) async {
     var request =
@@ -73,6 +74,41 @@ class ApiService {
     }
   }
 
+  Future registerShopApi(
+    String province,
+    String district,
+    String subdistrict,
+    String village,
+    String postalCode,
+    String address,
+    String token,
+  ) async {
+    var request = http.MultipartRequest(
+      'POST',
+      Uri.parse("$_baseUrl/login_api.php"),
+    );
+    request.fields.addAll({
+      'registerKe3': '',
+      'provinsi': province,
+      'kota': district,
+      'kecamatan': subdistrict,
+      'kelurahan': village,
+      'kode_pos': postalCode,
+      'alamat': address,
+      'token': token,
+    });
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      final responseString = await response.stream.bytesToString();
+      final responseJson = jsonDecode(responseString);
+      return responseJson;
+    } else {
+      throw Exception('Failed to register');
+    }
+  }
+
   Future getProductsApi({
     String? keyword,
     String? filter,
@@ -110,6 +146,7 @@ class ApiService {
     if (response.statusCode == 200) {
       String responseString = await response.stream.bytesToString();
       final responseJson = jsonDecode(responseString);
+      print(responseJson);
       return responseJson;
     } else {
       throw Exception('Failed to get products');
@@ -187,10 +224,20 @@ class ApiService {
     }
   }
 
-  Future checkout(Map<String, String> data) async {
+  Future checkoutApi(
+    String token,
+    String fullname,
+    String completeAddress,
+    String phoneNumber,
+  ) async {
     var request =
         http.MultipartRequest('POST', Uri.parse("$_baseUrl/keranjang_api.php"));
-    request.fields.addAll(data);
+    request.fields.addAll({
+      'token': token,
+      'nama_lengkap': fullname,
+      'alamat_lengkap': completeAddress,
+      'no_telp': phoneNumber,
+    });
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
       final responseString = await response.stream.bytesToString();
@@ -315,6 +362,54 @@ class ApiService {
       return responseJson;
     } else {
       throw Exception('Failed to add product to cart');
+    }
+  }
+
+  Future getIndonesiaProvince() async {
+    var request = http.MultipartRequest(
+      'GET',
+      Uri.parse("$_addressUrl/list_propinsi.json"),
+    );
+
+    http.StreamedResponse response = await request.send();
+    if (response.statusCode == 200) {
+      final responseString = await response.stream.bytesToString();
+      final responseJson = jsonDecode(responseString);
+      return responseJson;
+    } else {
+      throw Exception('Failed to fetch province');
+    }
+  }
+
+  Future getIndonesiaDistrict(String provinceId) async {
+    var request = http.MultipartRequest(
+      'GET',
+      Uri.parse("$_addressUrl/list_kotakab/$provinceId.json"),
+    );
+
+    http.StreamedResponse response = await request.send();
+    if (response.statusCode == 200) {
+      final responseString = await response.stream.bytesToString();
+      final responseJson = jsonDecode(responseString);
+      return responseJson;
+    } else {
+      throw Exception('Failed to fetch city');
+    }
+  }
+
+  Future getIndonesiaSubdistrict(String cityId) async {
+    var request = http.MultipartRequest(
+      'GET',
+      Uri.parse("$_addressUrl/kota_kab/$cityId.json"),
+    );
+
+    http.StreamedResponse response = await request.send();
+    if (response.statusCode == 200) {
+      final responseString = await response.stream.bytesToString();
+      final responseJson = jsonDecode(responseString);
+      return responseJson;
+    } else {
+      throw Exception('Failed to fetch city');
     }
   }
 }

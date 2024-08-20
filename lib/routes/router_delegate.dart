@@ -69,6 +69,7 @@ class MyRouterDelegate extends RouterDelegate
         pages: _pageStack.map((page) {
           switch (page) {
             case AppPage.home:
+              currentBottomNavigationIndex = 0;
               return MaterialPage(
                 key: ValueKey(AppPage.home),
                 child: HomeScreen(onTapped: _handleTapped),
@@ -79,36 +80,43 @@ class MyRouterDelegate extends RouterDelegate
                 child: SplashScreen(),
               );
             case AppPage.addroom:
+              currentBottomNavigationIndex = 1;
               return MaterialPage(
                 key: ValueKey(AppPage.addroom),
                 child: AddRoomScreen(onTapped: _handleTapped),
               );
             case AppPage.chat:
+              currentBottomNavigationIndex = 1;
               return MaterialPage(
                 key: ValueKey(AppPage.chat),
                 child: ChatScreen(onTapped: _handleTapped),
               );
             case AppPage.shop:
+              currentBottomNavigationIndex = 2;
               return MaterialPage(
                 key: ValueKey(AppPage.shop),
                 child: ShopScreen(onTapped: _handleTapped),
               );
             case AppPage.cart:
+              currentBottomNavigationIndex = 3;
               return MaterialPage(
                 key: ValueKey(AppPage.cart),
                 child: CartScreen(onTapped: _handleTapped),
               );
             case AppPage.profile:
+              currentBottomNavigationIndex = 4;
               return MaterialPage(
                 key: ValueKey(AppPage.profile),
                 child: ProfilScreen(onTapped: _handleTapped),
               );
             case AppPage.login:
+              currentBottomNavigationIndex = 4;
               return MaterialPage(
                 key: ValueKey(AppPage.login),
                 child: LoginScreen(onTapped: _handleTapped),
               );
             case AppPage.register:
+              currentBottomNavigationIndex = 4;
               return MaterialPage(
                 key: ValueKey(AppPage.register),
                 child: RegisterScreen(onTapped: _handleTapped),
@@ -124,16 +132,19 @@ class MyRouterDelegate extends RouterDelegate
                 child: RiwayatScreen(onTapped: _handleTapped),
               );
             case AppPage.registerkonsul:
+              currentBottomNavigationIndex = 4;
               return MaterialPage(
                 key: ValueKey(AppPage.registerkonsul),
                 child: RegisterKonsulScreen(onTapped: _handleTapped),
               );
             case AppPage.registeraddress:
+              currentBottomNavigationIndex = 4;
               return MaterialPage(
                 key: ValueKey(AppPage.registeraddress),
                 child: RegisterAddress(onTapped: _handleTapped),
               );
             case AppPage.checkout:
+              currentBottomNavigationIndex = 3;
               return MaterialPage(
                 key: ValueKey(AppPage.checkout),
                 child: Checkout(onTapped: _handleTapped),
@@ -150,7 +161,7 @@ class MyRouterDelegate extends RouterDelegate
           _pageStack.removeLast();
           currentBottomNavigationIndex = 0;
 
-          handleCurrentBottomNavigationIndexFromPage(_pageStack.last);
+          // handleCurrentBottomNavigationIndexFromPage(_pageStack.last);
 
           notifyListeners();
 
@@ -202,7 +213,7 @@ class MyRouterDelegate extends RouterDelegate
   }
 
   void _handleTapped(AppPage page) async {
-    handleCurrentBottomNavigationIndexFromPage(page);
+    // handleCurrentBottomNavigationIndexFromPage(page);
 
     isLoggedIn = await authRepository.isLoggedIn();
     if (authRequiredPages.contains(page) && !isLoggedIn) {
@@ -214,9 +225,14 @@ class MyRouterDelegate extends RouterDelegate
       _pageStack.removeWhere((page) => authPages.contains(page));
       _pageStack.add(_handleDuplicatePage(AppPage.home));
     } else {
+      print('cart');
       if (page == AppPage.addroom &&
           !(await authRepository.isConsultationDataComplete())) {
         _pageStack.add(_handleDuplicatePage(AppPage.registerkonsul));
+      } else if (page == AppPage.checkout &&
+          !(await authRepository.isChekoutDataComplete())) {
+        print('mmaaa');
+        _pageStack.add(_handleDuplicatePage(AppPage.registeraddress));
       } else {
         _pageStack.add(_handleDuplicatePage(page));
       }

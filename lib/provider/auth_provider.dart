@@ -123,13 +123,63 @@ class AuthProvider extends ChangeNotifier {
           responseResult,
           token: profile?.token,
         );
-        print(responseResult);
         if (profile != null) authRepository.saveProfile(profile!);
         message = response?.message ?? 'Berhasil menandaftar';
         _resultState = ResultState.loaded;
         notifyListeners();
 
-        return true;
+        return authRepository.isConsultationDataComplete();
+      } else {
+        message = response?.message ?? 'Gagal daftar!';
+        _resultState = ResultState.error;
+        notifyListeners();
+
+        return false;
+      }
+    } catch (e) {
+      _resultState = ResultState.error;
+      message = response?.message ?? 'Gagal daftar!';
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<bool> registerShop(
+    String province,
+    String district,
+    String subdistrict,
+    String village,
+    String postalCode,
+    String address,
+  ) async {
+    _resultState = ResultState.loading;
+    notifyListeners();
+
+    try {
+      String? token = await authRepository.getToken();
+      final responseResult = await apiService.registerShopApi(
+        province,
+        district,
+        subdistrict,
+        village,
+        postalCode,
+        address,
+        token.toString(),
+      );
+      response = ResponseApiModel.fromJson(responseResult);
+
+      if (!(response?.error ?? true)) {
+        profile = ProfileModel.fromApiJson(
+          responseResult,
+          token: profile?.token,
+        );
+
+        if (profile != null) authRepository.saveProfile(profile!);
+        message = response?.message ?? 'Berhasil menandaftar';
+        _resultState = ResultState.loaded;
+        notifyListeners();
+
+        return authRepository.isChekoutDataComplete();
       } else {
         message = response?.message ?? 'Gagal daftar!';
         _resultState = ResultState.error;

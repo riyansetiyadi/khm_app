@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:khm_app/db/auth_repository.dart';
+import 'package:khm_app/provider/address_provider.dart';
 import 'package:khm_app/provider/auth_provider.dart';
 import 'package:khm_app/provider/cart_provider.dart';
 import 'package:khm_app/provider/product_provider.dart';
@@ -25,6 +26,7 @@ class _StoryAppState extends State<KhmApp> {
   late AuthProvider authProvider;
   late ProductProvider productProvider;
   late CartProvider cartProvider;
+  late AddressProvider addressProvider;
   late AppRouteInformationParser routeInformationParser;
 
   @override
@@ -41,7 +43,14 @@ class _StoryAppState extends State<KhmApp> {
     productProvider = ProductProvider(
       apiService,
     );
-    cartProvider = CartProvider(apiService, authRepository);
+    cartProvider = CartProvider(
+      apiService,
+      authRepository,
+    );
+
+    addressProvider = AddressProvider(
+      apiService,
+    );
 
     myRouterDelegate = MyRouterDelegate(authRepository);
     routeInformationParser = AppRouteInformationParser();
@@ -62,6 +71,9 @@ class _StoryAppState extends State<KhmApp> {
           ),
           ChangeNotifierProvider(
             create: (context) => cartProvider,
+          ),
+          ChangeNotifierProvider(
+            create: (context) => addressProvider,
           ),
         ],
         child: MaterialApp(
