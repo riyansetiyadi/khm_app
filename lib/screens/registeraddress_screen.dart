@@ -24,19 +24,39 @@ class _RegisterAddressState extends State<RegisterAddress> {
     super.initState();
 
     final addressProvider = context.read<AddressProvider>();
+    final authRead = context.read<AuthProvider>();
 
     Future.microtask(() async {
-      addressProvider.getProvince();
+      await addressProvider.getProvinces();
+      ProvinceDistrictModel? userProvince = await addressProvider
+          .getProvinceByName(authRead.profile?.province ?? '');
+      if (userProvince != null)
+        await addressProvider.getDistrict(userProvince.id);
+      ProvinceDistrictModel? userDistrict = await addressProvider
+          .getDistrictByName(authRead.profile?.district ?? '');
+      if (userDistrict != null)
+        await addressProvider.getSubdistrict(userDistrict.id);
+      String? userSubdistrict = authRead.profile?.subdistrict;
+      if (userSubdistrict != null)
+        await addressProvider.getVillage(userSubdistrict);
+      SubdistrictModel? userVillage = await addressProvider
+          .getVillageByName(authRead.profile?.village ?? '');
+      setState(() {
+        selectedProvince = userProvince;
+        selectedDistrict = userDistrict;
+        selectedSubdistrict = userSubdistrict;
+        selectedVillage = userVillage;
+      });
     });
   }
 
   @override
   void dispose() {
-    super.dispose();
     _fullnameController.dispose();
     _phoneNumberController.dispose();
     _postalCodeController.dispose();
     _alamatController.dispose();
+    super.dispose();
   }
 
   final _fullnameController = TextEditingController();

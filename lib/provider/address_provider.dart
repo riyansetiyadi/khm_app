@@ -24,7 +24,7 @@ class AddressProvider extends ChangeNotifier {
 
   _init() async {}
 
-  Future<bool> getProvince() async {
+  Future<bool> getProvinces() async {
     _resultState = ResultState.loading;
     notifyListeners();
 
@@ -40,6 +40,49 @@ class AddressProvider extends ChangeNotifier {
       message = 'Gagal mendapatkan propinsi';
       notifyListeners();
       return false;
+    }
+  }
+
+  Future<ProvinceDistrictModel?> getProvinceByName(String provinceName) async {
+    try {
+      if (provinces.isEmpty) {
+        await getProvinces();
+        return await getProvinceByName(provinceName);
+      } else {
+        return provinces
+            .firstWhere((province) => province.name == provinceName);
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<ProvinceDistrictModel?> getDistrictByName(String districtName) async {
+    try {
+      if (provinces.isEmpty && districts.isEmpty) {
+        return null;
+      } else {
+        return districts
+            .firstWhere((district) => district.name == districtName);
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<SubdistrictModel?> getVillageByName(String villageName) async {
+    try {
+      if (provinces.isEmpty &&
+          districts.isEmpty &&
+          subdistrictsComplete.isEmpty &&
+          villages.isEmpty) {
+        return null;
+      } else {
+        return villages
+            .firstWhere((village) => village.kelurahan == villageName);
+      }
+    } catch (e) {
+      return null;
     }
   }
 
