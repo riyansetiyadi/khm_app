@@ -51,7 +51,6 @@ class ApiService {
     String idNumber,
     String token,
   ) async {
-    print(idNumber);
     var request = http.MultipartRequest(
       'POST',
       Uri.parse("$_baseUrl/login_api.php"),
@@ -146,7 +145,6 @@ class ApiService {
     if (response.statusCode == 200) {
       String responseString = await response.stream.bytesToString();
       final responseJson = jsonDecode(responseString);
-      print(responseJson);
       return responseJson;
     } else {
       throw Exception('Failed to get products');

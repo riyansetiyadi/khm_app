@@ -163,9 +163,9 @@ class MyRouterDelegate extends RouterDelegate
               return MaterialPage(
                 key: ValueKey(AppPage.checkout),
                 child: Checkout(onTapped: _handleTapped),
-              ); 
+              );
             case AppPage.setting:
-              currentBottomNavigationIndex = 3;
+              currentBottomNavigationIndex = 4;
               return MaterialPage(
                 key: ValueKey(AppPage.setting),
                 child: SettingScreen(onTapped: _handleTapped),

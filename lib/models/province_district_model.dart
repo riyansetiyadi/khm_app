@@ -20,6 +20,14 @@ class ProvinceDistrictModel {
       'name': name,
     };
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ProvinceDistrictModel && id == other.id && name == other.name);
+
+  @override
+  int get hashCode => id.hashCode ^ name.hashCode;
 }
 
 List<ProvinceDistrictModel> parseProvincesDistricts(Map<String, dynamic> json) {

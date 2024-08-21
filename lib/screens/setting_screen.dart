@@ -18,47 +18,70 @@ class SettingScreen extends StatefulWidget {
 class _SettingScreenState extends State<SettingScreen> {
   @override
   Widget build(BuildContext context) {
+    final authRead = context.read<AuthProvider>();
     return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              Container(
-                  width: 400,
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Column(children: [
-                      Row(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10.0),
-                            child: Image.asset(
-                              'assets/images/user.png',
-                              height: 60,
-                              width: 60,
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                          SizedBox(width: 15),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Nama Lengkap',
-                                style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                'no telp',
-                                style: TextStyle(
-                                    fontSize: 12, fontWeight: FontWeight.bold),
-                              )
-                            ],
-                          )
-                        ],
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Text(
+          "Profil",
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.green,
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Container(
+              color: Colors.green,
+              padding: EdgeInsets.all(20),
+              child: Row(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10.0),
+                    child: Image.asset(
+                      'assets/images/user.png',
+                      height: 60,
+                      width: 60,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                  SizedBox(width: 15),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        authRead.profile?.fullname ?? '',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
-                      SizedBox(height: 30),
-                      InkWell(
+                      Text(
+                        authRead.profile?.phoneNumber ?? '',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Container(
+                width: 400,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 10,
+                    ),
+                    SizedBox(
+                      height: 40,
+                      child: InkWell(
                         onTap: () {
                           widget.onTapped(AppPage.profile);
                         },
@@ -73,7 +96,7 @@ class _SettingScreenState extends State<SettingScreen> {
                               ),
                               SizedBox(width: 8),
                               Text(
-                                'Profile',
+                                'Detail Profil',
                                 style: TextStyle(
                                     fontSize: 12, fontWeight: FontWeight.bold),
                               ),
@@ -86,128 +109,140 @@ class _SettingScreenState extends State<SettingScreen> {
                           ],
                         ),
                       ),
-                      SizedBox(height: 15),
-                      Divider(
-                        color: Colors.grey,
-                        thickness: 0.3,
-                      ),
-                      SizedBox(height: 15),
-                      InkWell(
+                    ),
+                    SizedBox(height: 5),
+                    Divider(
+                      color: Colors.grey,
+                      thickness: 0.3,
+                    ),
+                    SizedBox(height: 5),
+                    SizedBox(
+                      height: 40,
+                      child: InkWell(
                         onTap: () {
                           widget.onTapped(AppPage.registerkonsul);
                         },
                         child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(children: [
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(children: [
+                              Icon(
+                                Icons.person_add,
+                                color: Color(0xFF198754),
+                                size: 20,
+                              ),
+                              SizedBox(width: 8),
+                              Text(
+                                'Perbarui Jenis Kelamin dan NIK',
+                                style: TextStyle(
+                                    fontSize: 12, fontWeight: FontWeight.bold),
+                              ),
+                            ]),
                             Icon(
-                              Icons.person_add,
+                              Icons.chevron_right,
                               color: Color(0xFF198754),
                               size: 20,
                             ),
-                            SizedBox(width: 8),
-                            Text(
-                              'Register Jenis Kelamin dan NIK',
-                              style: TextStyle(
-                                  fontSize: 12, fontWeight: FontWeight.bold),
-                            ),
-                          ]),
-                          Icon(
-                            Icons.chevron_right,
-                            color: Color(0xFF198754),
-                            size: 20,
-                          ),
-                        ],
-                      ),),
-                      SizedBox(height: 15),
-                      InkWell(
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 40,
+                      child: InkWell(
                         onTap: () {
                           widget.onTapped(AppPage.registeraddress);
                         },
                         child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(children: [
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(children: [
+                              Icon(
+                                Icons.person_add,
+                                color: Color(0xFF198754),
+                                size: 20,
+                              ),
+                              SizedBox(width: 8),
+                              Text(
+                                'Atur Alamat Pengiriman',
+                                style: TextStyle(
+                                    fontSize: 12, fontWeight: FontWeight.bold),
+                              ),
+                            ]),
                             Icon(
-                              Icons.person_add,
+                              Icons.chevron_right,
                               color: Color(0xFF198754),
                               size: 20,
                             ),
-                            SizedBox(width: 8),
-                            Text(
-                              'Register Alamat',
-                              style: TextStyle(
-                                  fontSize: 12, fontWeight: FontWeight.bold),
-                            ),
-                          ]),
-                          Icon(
-                            Icons.chevron_right,
-                            color: Color(0xFF198754),
-                            size: 20,
-                          ),
-                        ],
-                      ),),
-                      SizedBox(height: 15),
-                      Divider(
-                        color: Colors.grey,
-                        thickness: 0.3,
+                          ],
+                        ),
                       ),
-                      SizedBox(height: 15),
-                      InkWell(
+                    ),
+                    SizedBox(height: 5),
+                    Divider(
+                      color: Colors.grey,
+                      thickness: 0.3,
+                    ),
+                    SizedBox(height: 5),
+                    SizedBox(
+                      height: 40,
+                      child: InkWell(
                         onTap: () {
                           widget.onTapped(AppPage.riwayat);
                         },
                         child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(children: [
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(children: [
+                              Icon(
+                                Icons.history,
+                                color: Color(0xFF198754),
+                                size: 20,
+                              ),
+                              SizedBox(width: 8),
+                              Text(
+                                'Riwayat Transaksi',
+                                style: TextStyle(
+                                    fontSize: 12, fontWeight: FontWeight.bold),
+                              ),
+                            ]),
                             Icon(
-                              Icons.history,
+                              Icons.chevron_right,
                               color: Color(0xFF198754),
                               size: 20,
                             ),
-                            SizedBox(width: 8),
-                            Text(
-                              'Riwayat Transaksi',
-                              style: TextStyle(
-                                  fontSize: 12, fontWeight: FontWeight.bold),
-                            ),
-                          ]),
-                          Icon(
-                            Icons.chevron_right,
-                            color: Color(0xFF198754),
-                            size: 20,
-                          ),
-                        ],
-                      ),),
-                      SizedBox(height: 15),
-                      Divider(
-                        color: Colors.grey,
-                        thickness: 0.3,
-                      ),
-                      SizedBox(height: 15),
-                      ElevatedButton(
-                        onPressed: () async {
-                          final authRead = context.read<AuthProvider>();
-                          final result = await authRead.logout();
-                          if (result) {
-                            widget.onTapped(AppPage.login);
-                          }
-                        },
-                        child: Text('Log Out'),
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: Size(double.infinity, 36),
-                          backgroundColor: Color(0xFF198754),
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6.0),
-                          ),
+                          ],
                         ),
                       ),
-                    ]),
-                  ))
-            ],
-          ),
+                    ),
+                    SizedBox(height: 5),
+                    Divider(
+                      color: Colors.grey,
+                      thickness: 0.3,
+                    ),
+                    SizedBox(height: 15),
+                    ElevatedButton(
+                      onPressed: () async {
+                        final result = await authRead.logout();
+                        if (result) {
+                          widget.onTapped(AppPage.login);
+                        }
+                      },
+                      child: Text('Log Out'),
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(double.infinity, 36),
+                        backgroundColor: Color(0xFF198754),
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6.0),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ],
         ),
       ),
     );

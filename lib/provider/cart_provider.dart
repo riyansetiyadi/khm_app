@@ -206,14 +206,12 @@ class CartProvider extends ChangeNotifier {
       ProfileModel? profile = await authRepository.getProfile();
       String completeAddress =
           "Provinsi ${profile?.province ?? ''}, Kabupaten/Kota ${profile?.district ?? ''}, Kecamatan ${profile?.subdistrict ?? ''}, Desa/Kelurahan ${profile?.village ?? ''}, ${profile?.address ?? ''}, ${profile?.postalCode ?? ''}";
-      print(token);
       final responseResult = await apiService.checkoutApi(
         token ?? '',
         profile?.fullname ?? '',
         completeAddress,
         profile?.phoneNumber ?? '',
       );
-      print(responseResult);
       response = ResponseApiModel.fromJson(responseResult);
       if (!(response?.error ?? false)) {
         message = 'Berhasil chekout produk';

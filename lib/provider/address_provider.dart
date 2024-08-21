@@ -99,7 +99,6 @@ class AddressProvider extends ChangeNotifier {
           .map((subdistrict) => subdistrict.kecamatan)
           .toSet()
           .toList();
-      print(subdistrictsComplete);
       message = 'Berhasil mendapatkan kecamatan';
       _resultState = ResultState.loaded;
       notifyListeners();
