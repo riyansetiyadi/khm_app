@@ -6,7 +6,9 @@ import 'package:khm_app/provider/auth_provider.dart';
 import 'package:khm_app/provider/cart_provider.dart';
 import 'package:khm_app/utils/enum_app_page.dart';
 import 'package:khm_app/utils/enum_state.dart';
+import 'package:khm_app/widgets/empty_shop_widget.dart';
 import 'package:khm_app/widgets/handle_error_refresh_widget.dart';
+import 'package:khm_app/widgets/unauthorized_widget.dart';
 import 'package:provider/provider.dart';
 
 class CartScreen extends StatefulWidget {
@@ -50,7 +52,6 @@ class _CartScreenState extends State<CartScreen> {
       body: Consumer<CartProvider>(
         builder: (context, state, _) {
           final authWatch = context.watch<AuthProvider>();
-          print(authWatch.isLoggedIn);
           if (authWatch.isLoggedIn) {
             switch (state.state) {
               case ResultState.loading:
@@ -62,7 +63,9 @@ class _CartScreenState extends State<CartScreen> {
                       : const CircularProgressIndicator(),
                 );
               case ResultState.initial:
-                return emptyCart();
+                return EmptyShop(
+                  onTapped: widget.onTapped,
+                );
               case ResultState.error:
                 return ErrorRefresh(
                   onPressed: () async {
@@ -71,13 +74,17 @@ class _CartScreenState extends State<CartScreen> {
                 );
               case ResultState.loaded:
                 if (state.products?.isEmpty ?? true) {
-                  return emptyCart();
+                  return EmptyShop(
+                    onTapped: widget.onTapped,
+                  );
                 } else {
                   return containerCart(state);
                 }
             }
           } else {
-            return notLoggedInCart();
+            return UnauthorizedPage(
+              onTapped: widget.onTapped,
+            );
           }
         },
       ),
@@ -268,84 +275,6 @@ class _CartScreenState extends State<CartScreen> {
           ),
         ],
       ),
-    );
-  }
-
-  Center notLoggedInCart() {
-    return Center(
-      child: Column(children: [
-        Image.asset(
-          'assets/images/cart.png',
-          width: 100,
-          height: 100,
-        ),
-        Text(
-          'Wah, kamu belum login/register nih',
-          style: TextStyle(
-            fontSize: 15.0,
-          ),
-        ),
-        Text(
-          'Yuk, segera login/register!',
-          style: TextStyle(
-            fontSize: 15.0,
-          ),
-        ),
-        SizedBox(height: 10),
-        ElevatedButton(
-          onPressed: () {
-            widget.onTapped(AppPage.login);
-          },
-          child: Text('Login Sekarang'),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFF198754),
-            foregroundColor: Colors.white,
-            padding: EdgeInsets.symmetric(horizontal: 12),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(6.0),
-            ),
-          ),
-        ),
-      ]),
-    );
-  }
-
-  Center emptyCart() {
-    return Center(
-      child: Column(children: [
-        Image.asset(
-          'assets/images/cart.png',
-          width: 100,
-          height: 100,
-        ),
-        Text(
-          'Wah, keranjang belanjamu masih kosong nih',
-          style: TextStyle(
-            fontSize: 15.0,
-          ),
-        ),
-        Text(
-          'Yuk, segera penuhi keranjangmu!',
-          style: TextStyle(
-            fontSize: 15.0,
-          ),
-        ),
-        SizedBox(height: 10),
-        ElevatedButton(
-          onPressed: () {
-            widget.onTapped(AppPage.shop);
-          },
-          child: Text('Belanja Sekarang'),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFF198754),
-            foregroundColor: Colors.white,
-            padding: EdgeInsets.symmetric(horizontal: 12),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(6.0),
-            ),
-          ),
-        ),
-      ]),
     );
   }
 
