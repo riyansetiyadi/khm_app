@@ -4,6 +4,7 @@ import 'package:khm_app/provider/cart_provider.dart';
 import 'package:khm_app/provider/history_transaction_provider.dart';
 import 'package:khm_app/provider/product_provider.dart';
 import 'package:khm_app/screens/detail_product_screen.dart';
+import 'package:khm_app/screens/detail_history_screen.dart';
 import 'package:khm_app/screens/home_screen.dart';
 import 'package:khm_app/screens/login_screen.dart';
 import 'package:khm_app/screens/profil_screen.dart';
@@ -169,6 +170,11 @@ class MyRouterDelegate extends RouterDelegate
               return MaterialPage(
                 key: ValueKey(AppPage.setting),
                 child: SettingScreen(onTapped: _handleTapped),
+              );
+            case AppPage.detailHistory:
+              return MaterialPage(
+                key: ValueKey(AppPage.detailHistory),
+                child: DetailHistory(onTapped: _handleTapped),
               );
           }
         }).toList(),

@@ -7,5 +7,6 @@ final List<AppPage> authRequiredPages = [
   AppPage.addroom,
   AppPage.registeraddress,
   AppPage.checkout,
-  AppPage.setting
+  AppPage.setting,
+  AppPage.detailHistory
 ];

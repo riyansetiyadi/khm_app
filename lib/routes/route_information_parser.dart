@@ -68,6 +68,8 @@ class AppRouteInformationParser extends RouteInformationParser<AppPage> {
         return RouteInformation(uri: Uri.parse('/checkout'));
       case AppPage.setting:
         return RouteInformation(uri: Uri.parse('/setting'));
+      case AppPage.detailHistory:
+        return RouteInformation(uri: Uri.parse('/detailHistory'));
 
     }
   }
