@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:khm_app/db/auth_repository.dart';
 import 'package:khm_app/provider/cart_provider.dart';
+import 'package:khm_app/provider/history_transaction_provider.dart';
 import 'package:khm_app/provider/product_provider.dart';
 import 'package:khm_app/screens/detail_product_screen.dart';
 import 'package:khm_app/screens/home_screen.dart';
@@ -70,6 +71,10 @@ class MyRouterDelegate extends RouterDelegate
           switch (page) {
             case AppPage.home:
               currentBottomNavigationIndex = 0;
+              Future.microtask(() async {
+                productProvider.getNewProductsHome();
+                productProvider.getBestSellerProductsHome();
+              });
               return MaterialPage(
                 key: ValueKey(AppPage.home),
                 child: HomeScreen(onTapped: _handleTapped),
@@ -99,8 +104,6 @@ class MyRouterDelegate extends RouterDelegate
               );
             case AppPage.cart:
               currentBottomNavigationIndex = 3;
-              final cartProvider = context.read<CartProvider>();
-
               Future.microtask(() async {
                 cartProvider.getCarts();
               });
@@ -132,6 +135,12 @@ class MyRouterDelegate extends RouterDelegate
                 child: DetailProduct(onTapped: _handleTapped),
               );
             case AppPage.riwayat:
+              final historyTransactionProvider =
+                  context.read<HistoryTransactionProvider>();
+
+              Future.microtask(() async {
+                historyTransactionProvider.getTransactions();
+              });
               return MaterialPage(
                 key: ValueKey(AppPage.riwayat),
                 child: RiwayatScreen(onTapped: _handleTapped),
@@ -184,18 +193,11 @@ class MyRouterDelegate extends RouterDelegate
               onTap: (index) {
                 if (index == 0) {
                   _handleTapped(AppPage.home);
-                  Future.microtask(() async {
-                    productProvider.getNewProductsHome();
-                    productProvider.getBestSellerProductsHome();
-                  });
                 } else if (index == 1) {
                   _handleTapped(AppPage.addroom);
                 } else if (index == 2) {
                   _handleTapped(AppPage.shop);
                 } else if (index == 3) {
-                  Future.microtask(() async {
-                    cartProvider.getCarts();
-                  });
                   _handleTapped(AppPage.cart);
                 } else if (index == 4) {
                   _handleTapped(AppPage.profile);
@@ -230,13 +232,11 @@ class MyRouterDelegate extends RouterDelegate
       _pageStack.removeWhere((page) => authPages.contains(page));
       _pageStack.add(_handleDuplicatePage(AppPage.home));
     } else {
-      print('cart');
       if (page == AppPage.addroom &&
           !(await authRepository.isConsultationDataComplete())) {
         _pageStack.add(_handleDuplicatePage(AppPage.registerkonsul));
       } else if (page == AppPage.checkout &&
           !(await authRepository.isChekoutDataComplete())) {
-        print('mmaaa');
         _pageStack.add(_handleDuplicatePage(AppPage.registeraddress));
       } else {
         _pageStack.add(_handleDuplicatePage(page));

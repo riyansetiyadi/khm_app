@@ -300,9 +300,9 @@ class ApiService {
     }
   }
 
-  Future allHistoryUser(String uniqeCode) async {
+  Future getTransactionsApi(String token) async {
     var request = http.MultipartRequest('GET',
-        Uri.parse("$_baseUrl/history_api.php?allHistoryUser&token=$uniqeCode"));
+        Uri.parse("$_baseUrl/history_api.php?allHistoryUser&token=$token"));
 
     http.StreamedResponse response = await request.send();
 
