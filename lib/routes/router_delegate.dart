@@ -99,6 +99,11 @@ class MyRouterDelegate extends RouterDelegate
               );
             case AppPage.cart:
               currentBottomNavigationIndex = 3;
+              final cartProvider = context.read<CartProvider>();
+
+              Future.microtask(() async {
+                cartProvider.getCarts();
+              });
               return MaterialPage(
                 key: ValueKey(AppPage.cart),
                 child: CartScreen(onTapped: _handleTapped),
