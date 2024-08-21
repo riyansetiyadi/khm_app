@@ -15,6 +15,7 @@ import 'package:khm_app/screens/riwayat_screen.dart';
 import 'package:khm_app/screens/registerkonsul_screen.dart';
 import 'package:khm_app/screens/registeraddress_screen.dart';
 import 'package:khm_app/screens/checkout_screen.dart';
+import 'package:khm_app/screens/setting_screen.dart';
 import 'package:khm_app/screens/splash_screen.dart';
 import 'package:khm_app/utils/enum_app_page.dart';
 import 'package:khm_app/utils/list_auth_page.dart';
@@ -148,6 +149,12 @@ class MyRouterDelegate extends RouterDelegate
               return MaterialPage(
                 key: ValueKey(AppPage.checkout),
                 child: Checkout(onTapped: _handleTapped),
+              ); 
+            case AppPage.setting:
+              currentBottomNavigationIndex = 3;
+              return MaterialPage(
+                key: ValueKey(AppPage.setting),
+                child: SettingScreen(onTapped: _handleTapped),
               );
           }
         }).toList(),
@@ -193,7 +200,7 @@ class MyRouterDelegate extends RouterDelegate
                   });
                   _handleTapped(AppPage.cart);
                 } else if (index == 4) {
-                  _handleTapped(AppPage.profile);
+                  _handleTapped(AppPage.setting);
                 }
                 notifyListeners();
               },
