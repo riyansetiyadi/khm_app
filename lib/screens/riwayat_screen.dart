@@ -44,11 +44,13 @@ class _RiwayatScreenState extends State<RiwayatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Riwayat Transaksi',
-          style: TextStyle(
-            fontSize: 20.0,
-            fontWeight: FontWeight.bold,
+        title: TextField(
+          decoration: InputDecoration(
+            hintText: 'Cari Transaksi ...',
+            prefixIcon: Icon(Icons.search, color: Color(0xFF198754)),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(4.0),
+            ),
           ),
         ),
         leading: IconButton(
@@ -104,51 +106,152 @@ class _RiwayatScreenState extends State<RiwayatScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: DataTable(
-                columns: const [
-                  DataColumn(
-                      label: Text('No.Inv', style: TextStyle(fontSize: 15))),
-                  DataColumn(
-                      label: Text('Produk', style: TextStyle(fontSize: 15))),
-                  DataColumn(
-                      label: Text('Total', style: TextStyle(fontSize: 15))),
-                  DataColumn(
-                      label: Text('Status', style: TextStyle(fontSize: 15))),
-                  DataColumn(
-                      label: Text('No. Resi', style: TextStyle(fontSize: 15))),
-                  DataColumn(
-                      label: Text('Aksi', style: TextStyle(fontSize: 15))),
-                ],
-                rows: [
-                  DataRow(
-                    cells: [
-                      DataCell(Text('')),
-                      DataCell(Text('')),
-                      DataCell(Text('')),
-                      DataCell(Text('')),
-                      DataCell(Text('')),
-                      DataCell(
-                        ElevatedButton(
-                          onPressed: _pickFile,
-                          child: Text('Upload Bukti'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xFF198754),
-                            foregroundColor: Colors.white,
-                            padding: EdgeInsets.symmetric(horizontal: 12),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6.0),
+          Column(
+            children: [
+              Card(
+                color: Colors.white,
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: <Widget>[
+                      InkWell(
+                            onTap: () { 
+                          widget.onTapped(AppPage.detailHistory);
+                        },
+                            child: 
+                        Container(
+                          child: InkWell(
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.shopping_bag,
+                                          color: Color(0xFF198754),
+                                          size: 20,
+                                        ),
+                                        SizedBox(width: 10),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Belanja',
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            Text(
+                                              'Tanggal',
+                                              style: TextStyle(fontSize: 10),
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    Container(
+                                      padding: const EdgeInsets.all(5),
+                                      child: Text(
+                                        'Status Transaksi',
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 12),
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: Colors.green,
+                                        borderRadius:
+                                            BorderRadius.circular(5.0),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(height: 5),
+                                Divider(
+                                  color: Colors.grey,
+                                  thickness: 0.3,
+                                ),
+                                SizedBox(height: 5),
+                                Row(
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/produk.png',
+                                      height: 60,
+                                      width: 60,
+                                      fit: BoxFit.contain,
+                                    ),
+                                    SizedBox(width: 15),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'nama produk',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18),
+                                        ),
+                                        Text(
+                                          'jumlah produk',
+                                          style: TextStyle(fontSize: 12),
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
+                                SizedBox(height: 15),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Total belanja',
+                                          style: TextStyle(fontSize: 12),
+                                        ),
+                                        Text(
+                                          'harga produk',
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        widget.onTapped(AppPage.detailHistory);
+                                      },
+                                      child: Text('Upload Bukti Transaksi'),
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Color(0xFF198754),
+                                        foregroundColor: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(6.0),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ],
                             ),
                           ),
                         ),
                       ),
                     ],
                   ),
-                ],
+                ),
               ),
-            ),
+            ],
           ),
         ],
       ),
