@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:khm_app/db/auth_repository.dart';
 import 'package:khm_app/models/cart_model.dart';
+import 'package:khm_app/models/profile_model.dart';
+import 'package:khm_app/models/response_model.dart';
 import 'package:khm_app/service/api_service.dart';
 import 'package:khm_app/utils/enum_state.dart';
 
@@ -16,6 +18,7 @@ class CartProvider extends ChangeNotifier {
   ResultState _resultState = ResultState.initial;
   ResultState get state => _resultState;
 
+  ResponseApiModel? response;
   String? message;
   List<CartModel>? products;
   bool changeQuantity = false;
@@ -189,6 +192,45 @@ class CartProvider extends ChangeNotifier {
     } catch (e) {
       _resultState = ResultState.error;
       message = 'Gagal menghapus produk';
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<bool> chekoutCart() async {
+    _resultState = ResultState.loading;
+    notifyListeners();
+
+    try {
+      String? token = await authRepository.getToken();
+      ProfileModel? profile = await authRepository.getProfile();
+      String completeAddress =
+          "Provinsi ${profile?.province ?? ''}, Kabupaten/Kota ${profile?.district ?? ''}, Kecamatan ${profile?.subdistrict ?? ''}, Desa/Kelurahan ${profile?.village ?? ''}, ${profile?.address ?? ''}, ${profile?.postalCode ?? ''}";
+      print(token);
+      final responseResult = await apiService.checkoutApi(
+        token ?? '',
+        profile?.fullname ?? '',
+        completeAddress,
+        profile?.phoneNumber ?? '',
+      );
+      print(responseResult);
+      response = ResponseApiModel.fromJson(responseResult);
+      if (!(response?.error ?? false)) {
+        message = 'Berhasil chekout produk';
+        _resultState = ResultState.loaded;
+        notifyListeners();
+
+        return true;
+      } else {
+        message = 'Gagal chekout produk';
+        _resultState = ResultState.error;
+        notifyListeners();
+
+        return false;
+      }
+    } catch (e) {
+      _resultState = ResultState.error;
+      message = 'Gagal chekout produk';
       notifyListeners();
       return false;
     }

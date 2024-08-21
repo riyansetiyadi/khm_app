@@ -31,56 +31,38 @@ class AddressProvider extends ChangeNotifier {
     try {
       final responseResult = await apiService.getIndonesiaProvince();
       provinces = parseProvincesDistricts(responseResult);
-      message = 'Berhasil mendapatkan propinsi';
+      message = 'Berhasil mendapatkan provinsi';
       _resultState = ResultState.loaded;
       notifyListeners();
       return true;
     } catch (e) {
       _resultState = ResultState.error;
-      message = 'Gagal mendapatkan propinsi';
+      message = 'Gagal mendapatkan provinsi';
       notifyListeners();
       return false;
     }
   }
 
-  Future<ProvinceDistrictModel?> getProvinceByName(String provinceName) async {
+  Future<ProvinceDistrictModel?> getProvinceByName(String? provinceName) async {
     try {
-      if (provinces.isEmpty) {
-        await getProvinces();
-        return await getProvinceByName(provinceName);
-      } else {
-        return provinces
-            .firstWhere((province) => province.name == provinceName);
-      }
+      if (provinces.isEmpty) await getProvinces();
+      return provinces.firstWhere((province) => province.name == provinceName);
     } catch (e) {
       return null;
     }
   }
 
-  Future<ProvinceDistrictModel?> getDistrictByName(String districtName) async {
+  Future<ProvinceDistrictModel?> getDistrictByName(String? districtName) async {
     try {
-      if (provinces.isEmpty && districts.isEmpty) {
-        return null;
-      } else {
-        return districts
-            .firstWhere((district) => district.name == districtName);
-      }
+      return districts.firstWhere((district) => district.name == districtName);
     } catch (e) {
       return null;
     }
   }
 
-  Future<SubdistrictModel?> getVillageByName(String villageName) async {
+  Future<SubdistrictModel?> getVillageByName(String? villageName) async {
     try {
-      if (provinces.isEmpty &&
-          districts.isEmpty &&
-          subdistrictsComplete.isEmpty &&
-          villages.isEmpty) {
-        return null;
-      } else {
-        return villages
-            .firstWhere((village) => village.kelurahan == villageName);
-      }
+      return villages.firstWhere((village) => village.kelurahan == villageName);
     } catch (e) {
       return null;
     }

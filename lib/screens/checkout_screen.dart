@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:khm_app/provider/auth_provider.dart';
+import 'package:khm_app/provider/cart_provider.dart';
 import 'package:khm_app/utils/enum_app_page.dart';
+import 'package:provider/provider.dart';
 
 class Checkout extends StatefulWidget {
   final void Function(AppPage) onTapped;
@@ -20,6 +23,12 @@ class _CheckoutState extends State<Checkout> {
   final _noHPController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final authRead = context.read<AuthProvider>();
+    final cartRead = context.read<CartProvider>();
+    _fullnameController.text = authRead.profile?.fullname ?? '';
+    _alamatController.text =
+        "Provinsi ${authRead.profile?.province ?? ''}, Kabupaten/Kota ${authRead.profile?.district ?? ''}, Kecamatan ${authRead.profile?.subdistrict ?? ''}, Desa/Kelurahan ${authRead.profile?.village ?? ''}, ${authRead.profile?.address ?? ''}, ${authRead.profile?.postalCode ?? ''}";
+    _noHPController.text = authRead.profile?.phoneNumber ?? '';
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
@@ -114,7 +123,8 @@ class _CheckoutState extends State<Checkout> {
                               ),
                               child: IconButton(
                                 icon: Icon(Icons.edit),
-                                onPressed: () {},
+                                onPressed: () =>
+                                    widget.onTapped(AppPage.registeraddress),
                               ),
                             ),
                           ],
@@ -159,7 +169,14 @@ class _CheckoutState extends State<Checkout> {
                             SizedBox(width: 15),
                             Expanded(
                               child: ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () async {
+                                  if (await cartRead.chekoutCart()) {
+                                    widget.onTapped(AppPage.riwayat);
+                                  } else {
+                                    print(cartRead.message);
+                                  }
+                                  ;
+                                },
                                 child: Text('Checkout'),
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Color(0xFF198754),

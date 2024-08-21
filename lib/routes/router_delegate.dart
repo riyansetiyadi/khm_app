@@ -238,6 +238,9 @@ class MyRouterDelegate extends RouterDelegate
       }
     }
 
+    if (_pageStack.last != AppPage.checkout)
+      _pageStack.removeWhere((page) => page == AppPage.checkout);
+
     notifyListeners();
   }
 

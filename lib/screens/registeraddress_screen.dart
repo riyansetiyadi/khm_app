@@ -28,19 +28,19 @@ class _RegisterAddressState extends State<RegisterAddress> {
 
     Future.microtask(() async {
       await addressProvider.getProvinces();
-      ProvinceDistrictModel? userProvince = await addressProvider
-          .getProvinceByName(authRead.profile?.province ?? '');
+      ProvinceDistrictModel? userProvince =
+          await addressProvider.getProvinceByName(authRead.profile?.province);
       if (userProvince != null)
         await addressProvider.getDistrict(userProvince.id);
-      ProvinceDistrictModel? userDistrict = await addressProvider
-          .getDistrictByName(authRead.profile?.district ?? '');
+      ProvinceDistrictModel? userDistrict =
+          await addressProvider.getDistrictByName(authRead.profile?.district);
       if (userDistrict != null)
         await addressProvider.getSubdistrict(userDistrict.id);
       String? userSubdistrict = authRead.profile?.subdistrict;
       if (userSubdistrict != null)
         await addressProvider.getVillage(userSubdistrict);
-      SubdistrictModel? userVillage = await addressProvider
-          .getVillageByName(authRead.profile?.village ?? '');
+      SubdistrictModel? userVillage =
+          await addressProvider.getVillageByName(authRead.profile?.village);
       setState(() {
         selectedProvince = userProvince;
         selectedDistrict = userDistrict;
@@ -52,15 +52,11 @@ class _RegisterAddressState extends State<RegisterAddress> {
 
   @override
   void dispose() {
-    _fullnameController.dispose();
-    _phoneNumberController.dispose();
     _postalCodeController.dispose();
     _alamatController.dispose();
     super.dispose();
   }
 
-  final _fullnameController = TextEditingController();
-  final _phoneNumberController = TextEditingController();
   final _postalCodeController = TextEditingController();
   final _alamatController = TextEditingController();
 
@@ -72,8 +68,6 @@ class _RegisterAddressState extends State<RegisterAddress> {
   @override
   Widget build(BuildContext context) {
     final authRead = context.read<AuthProvider>();
-    _fullnameController.text = authRead.profile?.fullname ?? '';
-    _phoneNumberController.text = authRead.profile?.phoneNumber ?? '';
     _postalCodeController.text = authRead.profile?.postalCode ?? '';
     _alamatController.text = authRead.profile?.address ?? '';
 
@@ -102,62 +96,6 @@ class _RegisterAddressState extends State<RegisterAddress> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
-                        Text(
-                          'Data Diri',
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 15),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 0),
-                            child: Text(
-                              'Nama Lengkap',
-                              style: TextStyle(fontSize: 12),
-                            ),
-                          ),
-                        ),
-                        TextField(
-                          minLines: 1,
-                          maxLines: null,
-                          controller: _fullnameController,
-                          decoration: InputDecoration(
-                            labelStyle: TextStyle(fontSize: 12),
-                            hintText: 'Nama Lengkap',
-                            floatingLabelBehavior: FloatingLabelBehavior.never,
-                            border: OutlineInputBorder(),
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: 5.0, vertical: 12.0),
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 0),
-                            child: Text(
-                              'Nomor Telepon',
-                              style: TextStyle(fontSize: 12),
-                            ),
-                          ),
-                        ),
-                        TextField(
-                          minLines: 1,
-                          maxLines: null,
-                          controller: _phoneNumberController,
-                          decoration: InputDecoration(
-                            labelStyle: TextStyle(fontSize: 12),
-                            hintText: 'Nomor Telepon',
-                            floatingLabelBehavior: FloatingLabelBehavior.never,
-                            border: OutlineInputBorder(),
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: 5.0, vertical: 12.0),
-                          ),
-                        ),
-                        SizedBox(height: 20),
                         Text(
                           'Alamat',
                           style: TextStyle(
@@ -221,7 +159,7 @@ class _RegisterAddressState extends State<RegisterAddress> {
                                             final snackBar = SnackBar(
                                               backgroundColor: Colors.green,
                                               content: Text(
-                                                "Gagal mendapatkan data propinsi ${newProvince?.name ?? ''}",
+                                                "Gagal mendapatkan data provinsi ${newProvince?.name ?? ''}",
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .bodyLarge

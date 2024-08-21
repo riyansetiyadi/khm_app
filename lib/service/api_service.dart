@@ -233,6 +233,7 @@ class ApiService {
     var request =
         http.MultipartRequest('POST', Uri.parse("$_baseUrl/keranjang_api.php"));
     request.fields.addAll({
+      'checkout': '',
       'token': token,
       'nama_lengkap': fullname,
       'alamat_lengkap': completeAddress,
