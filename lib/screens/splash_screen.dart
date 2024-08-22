@@ -13,13 +13,9 @@ class SplashScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Image.asset('assets/logo.webp'),
-            const Text(
-              'Dicoding Moments',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 15,
-              ),
+            Image.asset(
+              'assets/images/logo.png',
+              height: 70,
             ),
           ],
         ),
