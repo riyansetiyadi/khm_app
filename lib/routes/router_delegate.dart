@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:khm_app/db/auth_repository.dart';
 import 'package:khm_app/provider/cart_provider.dart';
-import 'package:khm_app/provider/history_transaction_provider.dart';
+import 'package:khm_app/provider/transaction_provider.dart';
 import 'package:khm_app/provider/product_provider.dart';
 import 'package:khm_app/screens/detail_product_screen.dart';
 import 'package:khm_app/screens/detail_history_screen.dart';
@@ -19,6 +19,7 @@ import 'package:khm_app/screens/registeraddress_screen.dart';
 import 'package:khm_app/screens/checkout_screen.dart';
 import 'package:khm_app/screens/setting_screen.dart';
 import 'package:khm_app/screens/splash_screen.dart';
+import 'package:khm_app/screens/upload_bukti_pembayaran_screen.dart';
 import 'package:khm_app/utils/enum_app_page.dart';
 import 'package:khm_app/utils/list_auth_page.dart';
 import 'package:khm_app/utils/list_auth_required_page.dart';
@@ -138,7 +139,7 @@ class MyRouterDelegate extends RouterDelegate
               );
             case AppPage.riwayat:
               final historyTransactionProvider =
-                  context.read<HistoryTransactionProvider>();
+                  context.read<TransactionProvider>();
 
               Future.microtask(() async {
                 historyTransactionProvider.getTransactions();
@@ -175,6 +176,11 @@ class MyRouterDelegate extends RouterDelegate
               return MaterialPage(
                 key: ValueKey(AppPage.detailHistory),
                 child: DetailHistory(onTapped: _handleTapped),
+              );
+            case AppPage.uploadBuktiPembayaran:
+              return MaterialPage(
+                key: ValueKey(AppPage.uploadBuktiPembayaran),
+                child: UploadBuktiPembayaranScreen(onTapped: _handleTapped),
               );
           }
         }).toList(),

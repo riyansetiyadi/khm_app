@@ -2,7 +2,7 @@ class ResponseApiModel {
   final bool error;
   final String message;
   final String status;
-  final List data;
+  final dynamic data;
 
   ResponseApiModel({
     required this.error,

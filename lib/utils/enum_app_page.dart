@@ -14,5 +14,6 @@ enum AppPage {
   detailHistory,
   registerkonsul,
   registeraddress,
-  checkout
+  checkout,
+  uploadBuktiPembayaran
 }

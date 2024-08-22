@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:khm_app/models/profile_model.dart';
@@ -313,11 +314,11 @@ class ApiService {
     }
   }
 
-  Future allHistoruUserProduk(String uniqeCode, int code_nota) async {
+  Future getTransactionByNota(String token, String nota) async {
     var request = http.MultipartRequest(
         'GET',
         Uri.parse(
-            "$_baseUrl/history_api.php?allHistoruUserProduk&token=$uniqeCode&code_nota=$code_nota"));
+            "$_baseUrl/history_api.php?allHistoruUserProduk&token=$token&code_nota=$nota"));
 
     http.StreamedResponse response = await request.send();
 
@@ -330,10 +331,14 @@ class ApiService {
     }
   }
 
-  Future uploadBuktiPembayaran(Map<String, String> data) async {
+  Future uploadBuktiPembayaranApi(
+      String token, String nota, File? buktiPembayaran) async {
     var request =
         http.MultipartRequest('POST', Uri.parse("$_baseUrl/history_api.php"));
-    request.fields.addAll(data);
+    request.fields.addAll(
+        {'token': token, 'uploadBuktiPembayaran': '', 'code_nota': nota});
+    request.files.add(await http.MultipartFile.fromPath(
+        'foto_bukti', buktiPembayaran?.path ?? ''));
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
       final responseString = await response.stream.bytesToString();
