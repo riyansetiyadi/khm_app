@@ -11,6 +11,7 @@ class SplashScreen extends StatelessWidget {
       appBar: AppBar(),
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
               'assets/images/logo.png',
