@@ -18,6 +18,8 @@ import 'package:khm_app/screens/shop_screen.dart';
 import 'package:khm_app/screens/splash_screen.dart';
 import 'package:khm_app/screens/upload_bukti_pembayaran_screen.dart';
 import 'package:khm_app/screens/riwayat_screen.dart';
+import 'package:khm_app/utils/list_auth_page.dart';
+import 'package:khm_app/utils/list_auth_required_page.dart';
 
 // GoRouter configuration
 final router = GoRouter(
@@ -37,7 +39,7 @@ final router = GoRouter(
     ),
     GoRoute(
       path: '/login',
-      builder: (context, state) => const LoginScreen(),
+      builder: (context, state) => LoginScreen(),
     ),
     GoRoute(
       path: '/register',
@@ -92,4 +94,18 @@ final router = GoRouter(
       builder: (context, state) => SplashScreen(),
     ),
   ],
+  redirect: (BuildContext context, GoRouterState state) async {
+    if (state.path == '/splash') {
+      Future.delayed(const Duration(seconds: 5), () {
+        return '/';
+      });
+    }
+
+    final authRepository = AuthRepository();
+    bool isLoggedIn = await authRepository.isLoggedIn();
+    if (authRequiredPages.contains(state.path) && !isLoggedIn) return '/login';
+    if (authPages.contains(state.path) && isLoggedIn) return '/';
+
+    return null;
+  },
 );
