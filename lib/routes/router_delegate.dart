@@ -63,6 +63,41 @@ class MyRouterDelegate extends RouterDelegate
   int currentBottomNavigationIndex = 0;
 
   @override
+  Future<bool> popRoute() {
+    print(_pageStack);
+    if (_pageStack.length > 1) {
+      _pageStack.removeLast();
+      currentBottomNavigationIndex = 0;
+      notifyListeners();
+      return Future.value(true);
+    }
+    return _confirmAppExit();
+  }
+
+  Future<bool> _confirmAppExit() {
+    return showDialog<bool>(
+      context: navigatorKey.currentContext!,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Exit App'),
+          content: const Text('Are you sure you want to exit the app?'),
+          actions: [
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () => Navigator.pop(context, false),
+            ),
+            TextButton(
+              child: const Text('Confirm'),
+              onPressed: () => Navigator.pop(context, true),
+            ),
+          ],
+        );
+      },
+    ).then(
+        (value) => value ?? false); // Handle case where the dialog is dismissed
+  }
+
+  @override
   Widget build(BuildContext context) {
     final productProvider = context.read<ProductProvider>();
     final cartProvider = context.read<CartProvider>();
@@ -74,7 +109,7 @@ class MyRouterDelegate extends RouterDelegate
           switch (page) {
             case AppPage.home:
               currentBottomNavigationIndex = 0;
-              Future.microtask(() async {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
                 productProvider.getNewProductsHome();
                 productProvider.getBestSellerProductsHome();
               });
@@ -191,10 +226,7 @@ class MyRouterDelegate extends RouterDelegate
             return false;
           }
 
-          _pageStack.removeLast();
-          currentBottomNavigationIndex = 0;
-
-          // handleCurrentBottomNavigationIndexFromPage(_pageStack.last);
+          popRoute();
 
           notifyListeners();
 

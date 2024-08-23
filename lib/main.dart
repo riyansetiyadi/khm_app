@@ -92,7 +92,7 @@ class _StoryAppState extends State<KhmApp> {
           home: Router(
             routerDelegate: myRouterDelegate,
             routeInformationParser: routeInformationParser,
-            // backButtonDispatcher: RootBackButtonDispatcher(),
+            backButtonDispatcher: RootBackButtonDispatcher(),
           ),
           locale: Locale('id', 'ID'),
           supportedLocales: [

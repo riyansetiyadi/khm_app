@@ -11,40 +11,43 @@ class EmptyShop extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(children: [
-        Image.asset(
-          'assets/images/cart.png',
-          width: 100,
-          height: 100,
-        ),
-        Text(
-          'Wah, belanjaanmu masih kosong nih',
-          style: TextStyle(
-            fontSize: 15.0,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            'assets/images/cart.png',
+            width: 100,
+            height: 100,
           ),
-        ),
-        Text(
-          'Yuk, segera penuhi belanjaanmu!',
-          style: TextStyle(
-            fontSize: 15.0,
-          ),
-        ),
-        SizedBox(height: 10),
-        ElevatedButton(
-          onPressed: () {
-            onTapped(AppPage.shop);
-          },
-          child: Text('Belanja Sekarang'),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFF198754),
-            foregroundColor: Colors.white,
-            padding: EdgeInsets.symmetric(horizontal: 12),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(6.0),
+          Text(
+            'Wah, belanjaanmu masih kosong nih',
+            style: TextStyle(
+              fontSize: 15.0,
             ),
           ),
-        ),
-      ]),
+          Text(
+            'Yuk, segera penuhi belanjaanmu!',
+            style: TextStyle(
+              fontSize: 15.0,
+            ),
+          ),
+          SizedBox(height: 10),
+          ElevatedButton(
+            onPressed: () {
+              onTapped(AppPage.shop);
+            },
+            child: Text('Belanja Sekarang'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color(0xFF198754),
+              foregroundColor: Colors.white,
+              padding: EdgeInsets.symmetric(horizontal: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(6.0),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

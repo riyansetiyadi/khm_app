@@ -1,4 +1,3 @@
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:khm_app/extension/currency.dart';
 import 'package:khm_app/extension/status_formatted.dart';
-import 'package:khm_app/models/transaction_model.dart';
 import 'package:khm_app/provider/product_provider.dart';
 import 'package:khm_app/provider/transaction_provider.dart';
 import 'package:khm_app/utils/enum_app_page.dart';
@@ -27,22 +25,6 @@ class DetailHistory extends StatefulWidget {
 }
 
 class _DetailHistoryState extends State<DetailHistory> {
-  PlatformFile? _buktiTransaksi;
-
-  void _pickFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
-
-    if (result != null) {
-      PlatformFile file = result.files.first;
-
-      print('File name: ${file.name}');
-      print('File path: ${file.path}');
-      setState(() {
-        _buktiTransaksi = file;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:khm_app/extension/capitalize.dart';
 import 'package:khm_app/extension/currency.dart';
 import 'package:khm_app/extension/status_formatted.dart';
 import 'package:khm_app/models/group_transaction_model.dart';
@@ -226,9 +225,7 @@ class _RiwayatScreenState extends State<RiwayatScreen> {
                                       ),
                                     ],
                                   ),
-                                  if (state
-                                          .transaction!.first.buktiPembayaran ==
-                                      null)
+                                  if (transaction.buktiPembayaran == null)
                                     ElevatedButton(
                                       onPressed: () {
                                         widget.onTapped(AppPage.detailHistory);

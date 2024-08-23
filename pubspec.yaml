@@ -37,8 +37,6 @@ dependencies:
 
   url_launcher: ^6.1.5
 
-  flutter_launcher_icons: ^0.13.1
-
   # To Store Data In Local Storage
   shared_preferences: ^2.2.2
 
@@ -109,7 +107,9 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  # To generate Localization File's
+    # To generate Localization File's
+
+  flutter_launcher_icons: ^0.13.1
   build_runner: ^2.4.7
   json_serializable: ^6.7.1
   # Localization config
