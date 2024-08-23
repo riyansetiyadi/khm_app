@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:khm_app/models/province_district_model.dart';
 import 'package:khm_app/models/subdistrict_model.dart';
 import 'package:khm_app/provider/address_provider.dart';
@@ -7,11 +8,9 @@ import 'package:khm_app/utils/enum_app_page.dart';
 import 'package:provider/provider.dart';
 
 class RegisterAddress extends StatefulWidget {
-  final void Function(AppPage) onTapped;
 
   const RegisterAddress({
     Key? key,
-    required this.onTapped,
   }) : super(key: key);
 
   @override
@@ -463,7 +462,8 @@ class _RegisterAddressState extends State<RegisterAddress> {
                                 _alamatController.text,
                               );
 
-                              if (result) widget.onTapped(AppPage.checkout);
+                              if (result)context.go('/checkout');                                                   
+;
                             }
                           },
                           child: Text('Simpan Alamat'),

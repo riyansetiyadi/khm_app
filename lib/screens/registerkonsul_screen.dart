@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:khm_app/models/gender_model.dart';
 import 'package:khm_app/provider/auth_provider.dart';
 import 'package:khm_app/utils/enum_app_page.dart';
@@ -6,11 +7,9 @@ import 'package:khm_app/utils/list_gender.dart';
 import 'package:provider/provider.dart';
 
 class RegisterKonsulScreen extends StatefulWidget {
-  final void Function(AppPage) onTapped;
 
   const RegisterKonsulScreen({
     Key? key,
-    required this.onTapped,
   }) : super(key: key);
 
   @override
@@ -131,7 +130,7 @@ class _RegisterKonsulScreenState extends State<RegisterKonsulScreen> {
                               _nikController.text,
                             );
                             if (result) {
-                              widget.onTapped(AppPage.addroom);
+                            context.go('/addroom');                                                    
                             } else {
                               final snackBar = SnackBar(
                                 backgroundColor: Colors.green,

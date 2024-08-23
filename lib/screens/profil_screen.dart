@@ -4,11 +4,9 @@ import 'package:khm_app/utils/enum_app_page.dart';
 import 'package:provider/provider.dart';
 
 class ProfilScreen extends StatefulWidget {
-  final void Function(AppPage) onTapped;
 
   const ProfilScreen({
     Key? key,
-    required this.onTapped,
   }) : super(key: key);
 
   @override

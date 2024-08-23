@@ -5,11 +5,9 @@ import 'package:khm_app/utils/enum_app_page.dart';
 import 'package:provider/provider.dart';
 
 class ChatScreen extends StatefulWidget {
-  final void Function(AppPage) onTapped;
 
   const ChatScreen({
     Key? key,
-    required this.onTapped,
   }) : super(key: key);
 
   @override

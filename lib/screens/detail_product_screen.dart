@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:khm_app/provider/auth_provider.dart';
 import 'package:khm_app/provider/cart_provider.dart';
 import 'package:khm_app/provider/product_provider.dart';
@@ -10,11 +11,8 @@ import 'package:khm_app/widgets/handle_error_refresh_widget.dart';
 import 'package:provider/provider.dart';
 
 class DetailProduct extends StatefulWidget {
-  final void Function(AppPage) onTapped;
-
   const DetailProduct({
     Key? key,
-    required this.onTapped,
   }) : super(key: key);
   @override
   State<DetailProduct> createState() => _DetailProductState();
@@ -22,8 +20,7 @@ class DetailProduct extends StatefulWidget {
 
 class _DetailProductState extends State<DetailProduct> {
   int _stok = 0;
-    final int itemCount = 4;
-
+  final int itemCount = 4;
 
   @override
   Widget build(BuildContext context) {
@@ -38,46 +35,46 @@ class _DetailProductState extends State<DetailProduct> {
           onPressed: () => Navigator.pop(context),
         ),
         actions: [
-           Stack(
-              clipBehavior: Clip.none,
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(
-                    Icons.shopping_cart,
-                    color: Color(0xFF198754),
-                    size: 30,
-                  ),
-                  onPressed: () {widget.onTapped(AppPage.cart);},
+          Stack(
+            clipBehavior: Clip.none,
+            children: <Widget>[
+              IconButton(
+                icon: Icon(
+                  Icons.shopping_cart,
+                  color: Color(0xFF198754),
+                  size: 30,
                 ),
-                if (itemCount > 0)
-                  Positioned(
-                    right: 5,
-                    top: -5,
-                    child: Container(
-                      padding: EdgeInsets.all(2),
-                      decoration: BoxDecoration(
-                        color: Colors.yellow,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      constraints: BoxConstraints(
-                        minWidth: 16,
-                        minHeight: 16,
-                      ),
-                      child: Center(
-                        child: Text(
-                          '$itemCount',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.center,
+                            onPressed: ()  => context.go('/cart'),                                                    
+              ),
+              if (itemCount > 0)
+                Positioned(
+                  right: 5,
+                  top: -5,
+                  child: Container(
+                    padding: EdgeInsets.all(2),
+                    decoration: BoxDecoration(
+                      color: Colors.yellow,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    constraints: BoxConstraints(
+                      minWidth: 16,
+                      minHeight: 16,
+                    ),
+                    child: Center(
+                      child: Text(
+                        '$itemCount',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
                         ),
+                        textAlign: TextAlign.center,
                       ),
                     ),
                   ),
-              ],
-            ),
+                ),
+            ],
+          ),
         ],
       ),
       body: Consumer<ProductProvider>(
@@ -225,7 +222,7 @@ class _DetailProductState extends State<DetailProduct> {
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(snackBar);
                           } else {
-                            widget.onTapped(AppPage.login);
+                            context.go('/login');                                                
                           }
                         }
                       },

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:khm_app/extension/currency.dart';
 import 'package:khm_app/extension/status_formatted.dart';
@@ -15,11 +16,8 @@ import 'package:khm_app/widgets/unauthorized_widget.dart';
 import 'package:provider/provider.dart';
 
 class RiwayatScreen extends StatefulWidget {
-  final void Function(AppPage) onTapped;
-
   const RiwayatScreen({
     Key? key,
-    required this.onTapped,
   }) : super(key: key);
 
   @override
@@ -59,9 +57,7 @@ class _RiwayatScreenState extends State<RiwayatScreen> {
                       : const CircularProgressIndicator(),
                 );
               case ResultState.initial:
-                return EmptyShop(
-                  onTapped: widget.onTapped,
-                );
+                return EmptyShop();
               case ResultState.error:
                 return ErrorRefresh(
                   onPressed: () async {
@@ -70,17 +66,13 @@ class _RiwayatScreenState extends State<RiwayatScreen> {
                 );
               case ResultState.loaded:
                 if (state.transactions?.isEmpty ?? true) {
-                  return EmptyShop(
-                    onTapped: widget.onTapped,
-                  );
+                  return EmptyShop();
                 } else {
                   return listTransactions(state);
                 }
             }
           } else {
-            return UnauthorizedPage(
-              onTapped: widget.onTapped,
-            );
+            return UnauthorizedPage();
           }
         },
       ),
@@ -110,7 +102,7 @@ class _RiwayatScreenState extends State<RiwayatScreen> {
                         bool result = await state
                             .getTransactionByNota(transaction.codeNota);
                         if (result) {
-                          widget.onTapped(AppPage.detailHistory);
+                          context.go('/detailhistory');
                         } else {}
                       },
                       child: Container(
@@ -228,7 +220,7 @@ class _RiwayatScreenState extends State<RiwayatScreen> {
                                   if (transaction.buktiPembayaran == null)
                                     ElevatedButton(
                                       onPressed: () {
-                                        widget.onTapped(AppPage.detailHistory);
+                                        context.go('/detailhistory');
                                       },
                                       child: Text('Upload Bukti Transaksi'),
                                       style: ElevatedButton.styleFrom(

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:khm_app/models/cart_model.dart';
 import 'package:khm_app/provider/auth_provider.dart';
 import 'package:khm_app/provider/cart_provider.dart';
@@ -12,11 +13,8 @@ import 'package:khm_app/widgets/unauthorized_widget.dart';
 import 'package:provider/provider.dart';
 
 class CartScreen extends StatefulWidget {
-  final void Function(AppPage) onTapped;
-
   const CartScreen({
     Key? key,
-    required this.onTapped,
   }) : super(key: key);
 
   @override
@@ -63,9 +61,7 @@ class _CartScreenState extends State<CartScreen> {
                       : const CircularProgressIndicator(),
                 );
               case ResultState.initial:
-                return EmptyShop(
-                  onTapped: widget.onTapped,
-                );
+                return EmptyShop();
               case ResultState.error:
                 return ErrorRefresh(
                   onPressed: () async {
@@ -74,17 +70,13 @@ class _CartScreenState extends State<CartScreen> {
                 );
               case ResultState.loaded:
                 if (state.products?.isEmpty ?? true) {
-                  return EmptyShop(
-                    onTapped: widget.onTapped,
-                  );
+                  return EmptyShop();
                 } else {
                   return containerCart(state);
                 }
             }
           } else {
-            return UnauthorizedPage(
-              onTapped: widget.onTapped,
-            );
+            return UnauthorizedPage();
           }
         },
       ),
@@ -246,7 +238,7 @@ class _CartScreenState extends State<CartScreen> {
               bool result =
                   state.changeQuantity ? await state.updateAllQuantity() : true;
               if (result) {
-                widget.onTapped(AppPage.checkout);
+                context.go('/checkout');
               } else {
                 final snackBar = SnackBar(
                   backgroundColor: Colors.green,

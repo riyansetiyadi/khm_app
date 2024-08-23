@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:khm_app/utils/enum_app_page.dart';
+import 'package:go_router/go_router.dart';
 
 class UnauthorizedPage extends StatelessWidget {
-  final void Function(AppPage) onTapped;
   const UnauthorizedPage({
     super.key,
-    required this.onTapped,
   });
 
   @override
@@ -34,7 +32,7 @@ class UnauthorizedPage extends StatelessWidget {
           SizedBox(height: 10),
           ElevatedButton(
             onPressed: () {
-              onTapped(AppPage.login);
+              context.go('/login');
             },
             child: Text('Login Sekarang'),
             style: ElevatedButton.styleFrom(

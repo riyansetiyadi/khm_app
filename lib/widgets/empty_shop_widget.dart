@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:khm_app/utils/enum_app_page.dart';
 
 class EmptyShop extends StatelessWidget {
-  final void Function(AppPage) onTapped;
   const EmptyShop({
     super.key,
-    required this.onTapped,
   });
 
   @override
@@ -34,7 +33,7 @@ class EmptyShop extends StatelessWidget {
           SizedBox(height: 10),
           ElevatedButton(
             onPressed: () {
-              onTapped(AppPage.shop);
+             context.go('/shop');
             },
             child: Text('Belanja Sekarang'),
             style: ElevatedButton.styleFrom(

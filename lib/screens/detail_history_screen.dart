@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:khm_app/extension/currency.dart';
 import 'package:khm_app/extension/status_formatted.dart';
@@ -13,11 +14,8 @@ import 'package:khm_app/widgets/handle_error_refresh_widget.dart';
 import 'package:provider/provider.dart';
 
 class DetailHistory extends StatefulWidget {
-  final void Function(AppPage) onTapped;
-
   const DetailHistory({
     Key? key,
-    required this.onTapped,
   }) : super(key: key);
 
   @override
@@ -137,7 +135,7 @@ class _DetailHistoryState extends State<DetailHistory> {
                     return InkWell(
                       onTap: () {
                         productProvider.getProduct(int.parse(product.produkId));
-                        widget.onTapped(AppPage.detailProduct);
+                        context.go('/detailproduct');
                       },
                       child: Card(
                         color: Colors.white,
@@ -275,7 +273,7 @@ class _DetailHistoryState extends State<DetailHistory> {
             child: ElevatedButton(
               onPressed: () async {
                 await state.pickImage();
-                widget.onTapped(AppPage.uploadBuktiPembayaran);
+                context.go('/buktipembayaran');
               },
               child: Text('Upload Bukti Transaksi'),
               style: ElevatedButton.styleFrom(

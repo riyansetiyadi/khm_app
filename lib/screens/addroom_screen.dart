@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:khm_app/provider/auth_provider.dart';
-import 'package:khm_app/utils/enum_app_page.dart';
 import 'package:provider/provider.dart';
 
 class AddRoomScreen extends StatefulWidget {
-  final void Function(AppPage) onTapped;
 
   const AddRoomScreen({
     Key? key,
-    required this.onTapped,
   }) : super(key: key);
 
   @override
@@ -19,7 +17,7 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
   List<Widget> buttons = [];
 
   void _addDateButton() {
-    widget.onTapped(AppPage.chat);
+              context.go('/chat');
     // DateTime now = DateTime.now();
     // String formattedDate = DateFormat('dd-MM-yyyy').format(now);
     // String formattedTime = DateFormat('HH:mm:ss').format(now);
