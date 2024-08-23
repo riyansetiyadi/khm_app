@@ -3,17 +3,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:khm_app/models/product_model.dart';
 import 'package:khm_app/provider/product_provider.dart';
-import 'package:khm_app/utils/enum_app_page.dart';
 import 'package:khm_app/utils/enum_state.dart';
 import 'package:khm_app/widgets/handle_error_refresh_widget.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
-  final void Function(AppPage) onTapped;
-
   const HomeScreen({
     Key? key,
-    required this.onTapped,
   }) : super(key: key);
 
   @override
@@ -298,7 +294,7 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(height: 8),
             ElevatedButton(
               onPressed: () {
-                widget.onTapped(AppPage.shop);
+                // widget.onTapped(AppPage.shop);
               },
               child: Text(
                 'Produk Lainnya',
@@ -499,7 +495,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 productProvider.getProduct(
                   int.parse(product.id_produk!),
                 ),
-                widget.onTapped(AppPage.detailProduct)
+                // widget.onTapped(AppPage.detailProduct)
               }
           },
           child: Card(

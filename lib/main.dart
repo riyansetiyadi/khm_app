@@ -7,11 +7,9 @@ import 'package:khm_app/provider/transaction_provider.dart';
 import 'package:khm_app/provider/product_provider.dart';
 import 'package:khm_app/routes/page_manager.dart';
 import 'package:khm_app/routes/route_information_parser.dart';
-import 'package:khm_app/routes/router_delegate.dart';
 import 'package:khm_app/service/api_service.dart';
 import 'package:provider/provider.dart';
-
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:khm_app/routes/config.dart';
 
 void main() {
   runApp(const KhmApp());
@@ -25,7 +23,7 @@ class KhmApp extends StatefulWidget {
 }
 
 class _StoryAppState extends State<KhmApp> {
-  late MyRouterDelegate myRouterDelegate;
+  // late MyRouterDelegate myRouterDelegate;
   late AuthProvider authProvider;
   late ProductProvider productProvider;
   late CartProvider cartProvider;
@@ -60,7 +58,7 @@ class _StoryAppState extends State<KhmApp> {
       authRepository,
     );
 
-    myRouterDelegate = MyRouterDelegate(authRepository);
+    // myRouterDelegate = MyRouterDelegate(authRepository);
     routeInformationParser = AppRouteInformationParser();
   }
 
@@ -87,22 +85,26 @@ class _StoryAppState extends State<KhmApp> {
             create: (context) => historyTransactionProvider,
           ),
         ],
-        child: MaterialApp(
-          title: 'Husada Mulia',
-          home: Router(
-            routerDelegate: myRouterDelegate,
-            routeInformationParser: routeInformationParser,
-            backButtonDispatcher: RootBackButtonDispatcher(),
-          ),
-          locale: Locale('id', 'ID'),
-          supportedLocales: [
-            const Locale('id', 'ID'),
-          ],
-          localizationsDelegates: [
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-        ));
+        child: MaterialApp.router(
+          routerConfig: router,
+        )
+        // MaterialApp(
+        //   title: 'Husada Mulia',
+        //   home: Router(
+        //     routerDelegate: myRouterDelegate,
+        //     routeInformationParser: routeInformationParser,
+        //     backButtonDispatcher: RootBackButtonDispatcher(),
+        //   ),
+        //   locale: Locale('id', 'ID'),
+        //   supportedLocales: [
+        //     const Locale('id', 'ID'),
+        //   ],
+        //   localizationsDelegates: [
+        //     GlobalMaterialLocalizations.delegate,
+        //     GlobalWidgetsLocalizations.delegate,
+        //     GlobalCupertinoLocalizations.delegate,
+        //   ],
+        // ),
+        );
   }
 }
