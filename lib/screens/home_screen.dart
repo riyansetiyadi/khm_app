@@ -438,11 +438,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       Expanded(
                         child: Image.asset(
                           'assets/images/orang.png',
-                          width: 170,
+                          width: 250,
                           fit: BoxFit.contain,
                         ),
                       ),
-                      // SizedBox(height: 15),
                       Expanded(
                         child: Column(
                           children: [
