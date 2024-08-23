@@ -52,7 +52,7 @@ class _UploadBuktiPembayaranScreenState
                         Navigator.pop(context);
                       } else {}
                     },
-                    child: Text('Upload'),
+                    child: Text('Upload', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color:  Color(0xFF198754))),
                   );
                 }
             }
@@ -64,10 +64,21 @@ class _UploadBuktiPembayaranScreenState
             final transactionProvider = context.read<TransactionProvider>();
             await transactionProvider.pickImage();
           },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color(0xFF198754).withOpacity(0.5),
+            foregroundColor: Colors.white,
+            minimumSize: Size(double.infinity, 36),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(0),
+            ),
+          ),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.image_outlined),
-              Text('Pilih Ulang'),
+              Icon(Icons.camera_alt),
+              SizedBox(width: 10),
+              Text('Ambil Foto Ulang',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
             ],
           )),
       body: Consumer<TransactionProvider>(builder: (context, state, _) {
