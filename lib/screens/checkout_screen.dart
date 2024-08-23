@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:khm_app/provider/auth_provider.dart';
 import 'package:khm_app/provider/cart_provider.dart';
 import 'package:khm_app/utils/enum_app_page.dart';
 import 'package:provider/provider.dart';
 
 class Checkout extends StatefulWidget {
-  final void Function(AppPage) onTapped;
 
   const Checkout({
     Key? key,
-    required this.onTapped,
   }) : super(key: key);
 
   @override
@@ -124,7 +123,7 @@ class _CheckoutState extends State<Checkout> {
                               child: IconButton(
                                 icon: Icon(Icons.edit),
                                 onPressed: () =>
-                                    widget.onTapped(AppPage.registeraddress),
+                            context.go('registeraddress'),                                                 
                               ),
                             ),
                           ],
@@ -171,7 +170,7 @@ class _CheckoutState extends State<Checkout> {
                               child: ElevatedButton(
                                 onPressed: () async {
                                   if (await cartRead.chekoutCart()) {
-                                    widget.onTapped(AppPage.riwayat);
+                            context.go('/riwayat');                                                  
                                   } else {
                                     print(cartRead.message);
                                   }

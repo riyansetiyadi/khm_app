@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:khm_app/provider/auth_provider.dart';
 import 'package:khm_app/utils/enum_app_page.dart';
 import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
-  final void Function(AppPage) onTapped;
 
   const RegisterScreen({
     Key? key,
-    required this.onTapped,
   }) : super(key: key);
 
   @override
@@ -247,7 +246,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           alignment: Alignment.centerLeft,
                           child: InkWell(
                             onTap: () {
-                              widget.onTapped(AppPage.login);
+                            context.go('/login');                                                  
                             },
                             child: Text(
                               'Sudah punya akun ??',
@@ -270,7 +269,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 selectedMonth.toString(),
                                 _yearController.text);
                             if (result) {
-                              widget.onTapped(AppPage.login);
+                            context.go('/login');                                                  
                             }
                           },
                           child: Text('Ajukan Pendaftaran'),

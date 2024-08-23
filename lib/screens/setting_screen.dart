@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:khm_app/provider/auth_provider.dart';
 import 'package:khm_app/utils/enum_app_page.dart';
 import 'package:provider/provider.dart';
 
 class SettingScreen extends StatefulWidget {
-  final void Function(AppPage) onTapped;
 
   const SettingScreen({
     Key? key,
-    required this.onTapped,
   }) : super(key: key);
 
   @override
@@ -83,7 +82,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       height: 40,
                       child: InkWell(
                         onTap: () {
-                          widget.onTapped(AppPage.profile);
+                            context.go('/profile');                                                    
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -120,7 +119,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       height: 40,
                       child: InkWell(
                         onTap: () {
-                          widget.onTapped(AppPage.registerkonsul);
+                            context.go('/registerkonsul');                                                    
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -151,7 +150,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       height: 40,
                       child: InkWell(
                         onTap: () {
-                          widget.onTapped(AppPage.registeraddress);
+                          context.go('/registeraddress');                                                    
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -188,7 +187,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       height: 40,
                       child: InkWell(
                         onTap: () {
-                          widget.onTapped(AppPage.riwayat);
+                          context.go('/riwayat');                                                    
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -225,7 +224,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       onPressed: () async {
                         final result = await authRead.logout();
                         if (result) {
-                          widget.onTapped(AppPage.login);
+                          context.go('/login');                                                    
                         }
                       },
                       child: Text('Log Out'),

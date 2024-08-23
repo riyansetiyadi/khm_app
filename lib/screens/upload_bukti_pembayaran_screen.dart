@@ -7,11 +7,9 @@ import 'package:khm_app/utils/enum_state.dart';
 import 'package:provider/provider.dart';
 
 class UploadBuktiPembayaranScreen extends StatefulWidget {
-  final void Function(AppPage) onTapped;
 
   const UploadBuktiPembayaranScreen({
     Key? key,
-    required this.onTapped,
   }) : super(key: key);
 
   @override

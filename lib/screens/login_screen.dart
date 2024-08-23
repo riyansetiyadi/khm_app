@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:khm_app/provider/auth_provider.dart';
 import 'package:khm_app/utils/enum_app_page.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LoginScreen extends StatefulWidget {
-  final void Function(AppPage) onTapped;
 
   const LoginScreen({
     Key? key,
-    required this.onTapped,
   }) : super(key: key);
 
   @override
@@ -173,7 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   _emailController.text,
                                   _passwordController.text);
                               if (result) {
-                                widget.onTapped(AppPage.home);
+                            context.go('/home');                                                    
                               } else {
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(SnackBar(
@@ -201,9 +200,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           SizedBox(width: 15),
                           ElevatedButton(
-                            onPressed: () {
-                              widget.onTapped(AppPage.register);
-                            },
+                            onPressed: ()  => context.go('/register'),                                                    
                             child: Text('Registrasi'),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Color(0xFF198754),

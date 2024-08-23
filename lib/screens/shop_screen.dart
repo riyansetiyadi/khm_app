@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:khm_app/models/product_model.dart';
 import 'package:khm_app/provider/auth_provider.dart';
 import 'package:khm_app/provider/cart_provider.dart';
@@ -11,11 +12,8 @@ import 'package:khm_app/widgets/handle_error_refresh_widget.dart';
 import 'package:provider/provider.dart';
 
 class ShopScreen extends StatefulWidget {
-  final void Function(AppPage) onTapped;
-
   const ShopScreen({
     Key? key,
-    required this.onTapped,
   }) : super(key: key);
 
   @override
@@ -74,9 +72,7 @@ class _ShopScreenState extends State<ShopScreen> {
                 Icons.history,
                 color: Color(0xFF198754),
               ),
-              onPressed: () {
-                widget.onTapped(AppPage.riwayat);
-              },
+              onPressed: () => context.go('/riwayat'),
             ),
             Stack(
               clipBehavior: Clip.none,
@@ -87,9 +83,7 @@ class _ShopScreenState extends State<ShopScreen> {
                     color: Color(0xFF198754),
                     size: 30,
                   ),
-                  onPressed: () {
-                    widget.onTapped(AppPage.cart);
-                  },
+                  onPressed: () => context.go('/cart'),
                 ),
                 if (itemCount > 0)
                   Positioned(
@@ -245,7 +239,7 @@ class _ShopScreenState extends State<ShopScreen> {
                 productProvider.getProduct(
                   int.parse(product.id_produk!),
                 ),
-                widget.onTapped(AppPage.detailProduct)
+                           context.go('/detailproduct')                                                    
               }
           },
           child: Card(
@@ -306,7 +300,7 @@ class _ShopScreenState extends State<ShopScreen> {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(snackBar);
                             } else {
-                              widget.onTapped(AppPage.login);
+                            context.go('/login');                                                    
                             }
                           }
                         },
