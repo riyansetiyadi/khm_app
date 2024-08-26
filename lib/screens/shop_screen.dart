@@ -239,7 +239,7 @@ class _ShopScreenState extends State<ShopScreen> {
                 productProvider.getProduct(
                   int.parse(product.id_produk!),
                 ),
-                           context.go('/detailproduct')                                                    
+                context.push('/detailproduct')
               }
           },
           child: Card(
@@ -300,7 +300,7 @@ class _ShopScreenState extends State<ShopScreen> {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(snackBar);
                             } else {
-                            context.go('/login');                                                    
+                              context.go('/login');
                             }
                           }
                         },

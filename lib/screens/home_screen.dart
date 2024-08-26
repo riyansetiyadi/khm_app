@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:khm_app/models/product_model.dart';
 import 'package:khm_app/provider/product_provider.dart';
 import 'package:khm_app/utils/enum_state.dart';
@@ -495,7 +496,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 productProvider.getProduct(
                   int.parse(product.id_produk!),
                 ),
-                // widget.onTapped(AppPage.detailProduct)
+                context.push('/detailproduct')
               }
           },
           child: Card(
