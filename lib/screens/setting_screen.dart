@@ -5,7 +5,6 @@ import 'package:khm_app/utils/enum_app_page.dart';
 import 'package:provider/provider.dart';
 
 class SettingScreen extends StatefulWidget {
-
   const SettingScreen({
     Key? key,
   }) : super(key: key);
@@ -82,7 +81,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       height: 40,
                       child: InkWell(
                         onTap: () {
-                            context.go('/profile');                                                    
+                          context.push('/profile');
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -119,7 +118,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       height: 40,
                       child: InkWell(
                         onTap: () {
-                            context.go('/registerkonsul');                                                    
+                          context.push('/registerkonsul');
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -150,7 +149,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       height: 40,
                       child: InkWell(
                         onTap: () {
-                          context.go('/registeraddress');                                                    
+                          context.push('/registeraddress');
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -187,7 +186,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       height: 40,
                       child: InkWell(
                         onTap: () {
-                          context.go('/riwayat');                                                    
+                          context.go('/riwayat');
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -224,7 +223,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       onPressed: () async {
                         final result = await authRead.logout();
                         if (result) {
-                          context.go('/login');                                                    
+                          context.go('/login');
                         }
                       },
                       child: Text('Log Out'),

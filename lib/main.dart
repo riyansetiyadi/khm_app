@@ -23,7 +23,6 @@ class KhmApp extends StatefulWidget {
 }
 
 class _StoryAppState extends State<KhmApp> {
-  // late MyRouterDelegate myRouterDelegate;
   late AuthProvider authProvider;
   late ProductProvider productProvider;
   late CartProvider cartProvider;
@@ -58,53 +57,35 @@ class _StoryAppState extends State<KhmApp> {
       authRepository,
     );
 
-    // myRouterDelegate = MyRouterDelegate(authRepository);
     routeInformationParser = AppRouteInformationParser();
   }
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-        providers: [
-          ChangeNotifierProvider(
-            create: (context) => PageManager(),
-          ),
-          ChangeNotifierProvider(
-            create: (context) => authProvider,
-          ),
-          ChangeNotifierProvider(
-            create: (context) => productProvider,
-          ),
-          ChangeNotifierProvider(
-            create: (context) => cartProvider,
-          ),
-          ChangeNotifierProvider(
-            create: (context) => addressProvider,
-          ),
-          ChangeNotifierProvider(
-            create: (context) => historyTransactionProvider,
-          ),
-        ],
-        child: MaterialApp.router(
-          routerConfig: router,
-        )
-        // MaterialApp(
-        //   title: 'Husada Mulia',
-        //   home: Router(
-        //     routerDelegate: myRouterDelegate,
-        //     routeInformationParser: routeInformationParser,
-        //     backButtonDispatcher: RootBackButtonDispatcher(),
-        //   ),
-        //   locale: Locale('id', 'ID'),
-        //   supportedLocales: [
-        //     const Locale('id', 'ID'),
-        //   ],
-        //   localizationsDelegates: [
-        //     GlobalMaterialLocalizations.delegate,
-        //     GlobalWidgetsLocalizations.delegate,
-        //     GlobalCupertinoLocalizations.delegate,
-        //   ],
-        // ),
-        );
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => PageManager(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => authProvider,
+        ),
+        ChangeNotifierProvider(
+          create: (context) => productProvider,
+        ),
+        ChangeNotifierProvider(
+          create: (context) => cartProvider,
+        ),
+        ChangeNotifierProvider(
+          create: (context) => addressProvider,
+        ),
+        ChangeNotifierProvider(
+          create: (context) => historyTransactionProvider,
+        ),
+      ],
+      child: MaterialApp.router(
+        routerConfig: router,
+      ),
+    );
   }
 }

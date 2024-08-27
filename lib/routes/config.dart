@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:khm_app/db/auth_repository.dart';
+import 'package:khm_app/screens/chat_screen.dart';
 import 'package:khm_app/screens/home_screen.dart';
 import 'package:khm_app/screens/profil_screen.dart';
 import 'package:khm_app/screens/addroom_screen.dart';
 import 'package:khm_app/screens/cart_screen.dart';
-import 'package:khm_app/screens/chat_screen.dart';
 import 'package:khm_app/screens/checkout_screen.dart';
 import 'package:khm_app/screens/detail_history_screen.dart';
 import 'package:khm_app/screens/detail_product_screen.dart';
@@ -21,6 +20,7 @@ import 'package:khm_app/screens/upload_bukti_pembayaran_screen.dart';
 import 'package:khm_app/screens/riwayat_screen.dart';
 import 'package:khm_app/utils/list_auth_page.dart';
 import 'package:khm_app/utils/list_auth_required_page.dart';
+import 'package:khm_app/utils/list_bottom_nav_page.dart';
 import 'package:khm_app/widgets/bottom_nav_bar_widget.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -153,9 +153,11 @@ final router = GoRouter(
         StatefulNavigationShell navigationShell,
       ) {
         return getPage(
-          child: BottomNavigationPage(
-            child: navigationShell,
-          ),
+          child: (bottomNavPages.contains(state.fullPath))
+              ? BottomNavigationPage(
+                  child: navigationShell,
+                )
+              : navigationShell,
           state: state,
         );
       },
@@ -181,17 +183,34 @@ final router = GoRouter(
     //   builder: (context, state) => RegisterScreen(),
     // ),
     GoRoute(
-      path: '/detailproduct',
-      builder: (context, state) => DetailProduct(),
+      path: '/detailproduct/:id',
+      pageBuilder: (context, state) {
+        final id = state.pathParameters["id"]!;
+        return getPage(
+          child: DetailProduct(
+            id: int.parse(id),
+          ),
+          state: state,
+        );
+      },
+    ),
+    GoRoute(
+      path: '/cart2',
+      pageBuilder: (context, GoRouterState state) {
+        return getPage(
+          child: const CartScreen(),
+          state: state,
+        );
+      },
     ),
     // GoRoute(
     //   path: '/addroom',
     //   builder: (context, state) => AddRoomScreen(),
     // ),
-    // GoRoute(
-    //   path: '/chat',
-    //   builder: (context, state) => ChatScreen(),
-    // ),
+    GoRoute(
+      path: '/chat',
+      builder: (context, state) => ChatScreen(),
+    ),
     // GoRoute(
     //   path: '/cart',
     //   builder: (context, state) => CartScreen(),

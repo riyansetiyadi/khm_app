@@ -5,14 +5,16 @@ import 'package:go_router/go_router.dart';
 import 'package:khm_app/provider/auth_provider.dart';
 import 'package:khm_app/provider/cart_provider.dart';
 import 'package:khm_app/provider/product_provider.dart';
-import 'package:khm_app/utils/enum_app_page.dart';
 import 'package:khm_app/utils/enum_state.dart';
 import 'package:khm_app/widgets/handle_error_refresh_widget.dart';
 import 'package:provider/provider.dart';
 
 class DetailProduct extends StatefulWidget {
+  final int id;
+
   const DetailProduct({
     Key? key,
+    required int this.id,
   }) : super(key: key);
   @override
   State<DetailProduct> createState() => _DetailProductState();
@@ -23,6 +25,20 @@ class _DetailProductState extends State<DetailProduct> {
   final int itemCount = 4;
 
   @override
+  void initState() {
+    final productProvider = context.read<ProductProvider>();
+    Future.microtask(() async {
+      productProvider.getProduct(widget.id);
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var heightScreen = MediaQuery.of(context).size.height;
 
@@ -30,10 +46,6 @@ class _DetailProductState extends State<DetailProduct> {
       appBar: AppBar(
         title: Text('Detail Produk'),
         centerTitle: true,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
         actions: [
           Stack(
             clipBehavior: Clip.none,
@@ -44,7 +56,10 @@ class _DetailProductState extends State<DetailProduct> {
                   color: Color(0xFF198754),
                   size: 30,
                 ),
-                            onPressed: ()  => context.go('/cart'),                                                    
+                onPressed: () {
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                  context.push('/cart2');
+                },
               ),
               if (itemCount > 0)
                 Positioned(
@@ -222,7 +237,7 @@ class _DetailProductState extends State<DetailProduct> {
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(snackBar);
                           } else {
-                            context.go('/login');                                                
+                            context.push('/login');
                           }
                         }
                       },

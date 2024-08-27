@@ -4,7 +4,6 @@ import 'package:khm_app/utils/enum_app_page.dart';
 import 'package:provider/provider.dart';
 
 class ProfilScreen extends StatefulWidget {
-
   const ProfilScreen({
     Key? key,
   }) : super(key: key);
@@ -17,6 +16,7 @@ class _ProfilScreenState extends State<ProfilScreen> {
   @override
   Widget build(BuildContext context) {
     final authWatch = context.watch<AuthProvider>();
+    print(authWatch.profile?.token);
     return Scaffold(
       appBar: AppBar(
         title: Text('Detail Profil'),

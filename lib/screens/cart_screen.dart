@@ -24,6 +24,10 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   @override
   void initState() {
+    final cartProvider = context.read<CartProvider>();
+    Future.microtask(() async {
+      cartProvider.getCarts();
+    });
     super.initState();
   }
 
@@ -38,14 +42,6 @@ class _CartScreenState extends State<CartScreen> {
       appBar: AppBar(
         title: Text('Cart'),
         centerTitle: true,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            final cartProvider = context.read<CartProvider>();
-            if (cartProvider.changeQuantity) cartProvider.updateAllQuantity();
-            Navigator.pop(context);
-          },
-        ),
       ),
       body: Consumer<CartProvider>(
         builder: (context, state, _) {

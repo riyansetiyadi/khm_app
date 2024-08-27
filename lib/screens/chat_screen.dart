@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:khm_app/provider/auth_provider.dart';
-import 'package:khm_app/utils/enum_app_page.dart';
+import 'package:khm_app/provider/chat_provider.dart';
 import 'package:provider/provider.dart';
 
 class ChatScreen extends StatefulWidget {
+  final String? idRoom;
 
   const ChatScreen({
     Key? key,
+    String? this.idRoom,
   }) : super(key: key);
 
   @override
@@ -16,12 +18,25 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _messageController = TextEditingController();
-  final List<String> _messages = [];
+  final List<String> _messages = ['ss', 'pppp'];
   final ScrollController _scrollController = ScrollController();
 
   bool _isPickingFile = false;
 
+  late String? _idRoom;
+
+  @override
+  void initState() {
+    super.initState();
+    _idRoom = widget.idRoom;
+  }
+
   void _sendMessage() {
+    if (_idRoom == null) {
+      final chatProvider = context.read<ChatProvider>();
+      chatProvider.addRoom();
+      chatProvider.sendMessage();
+    }
     final message = _messageController.text;
     if (message.isNotEmpty) {
       setState(() {
@@ -94,13 +109,14 @@ class _ChatScreenState extends State<ChatScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text('Menunggu respon dokter'),
+                  if (widget.idRoom != null)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text('Menunggu respon dokter'),
+                      ),
                     ),
-                  ),
                   Container(
                     width: double.infinity,
                     child: Card(

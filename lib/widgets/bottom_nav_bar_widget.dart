@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:khm_app/utils/list_bottom_nav_page.dart';
 
 class BottomNavigationPage extends StatefulWidget {
   const BottomNavigationPage({
@@ -28,11 +29,16 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
         selectedItemColor: Color(0xFF198754),
         unselectedItemColor: Colors.white,
         onTap: (index) {
-          widget.child.goBranch(
-            index,
-            initialLocation: index == widget.child.currentIndex,
-          );
-          setState(() {});
+          String? path = widget.child.route.branches[index].defaultRoute?.path;
+          print(path);
+          if (bottomNavPages.contains(path))
+            widget.child.goBranch(
+              index,
+              initialLocation: index == widget.child.currentIndex,
+            );
+          else {
+            context.push(path ?? '/notfound');
+          }
         },
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),

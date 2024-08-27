@@ -51,11 +51,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(toolbarHeight: 0.5),
-        body: Center(
-            child: SingleChildScrollView(
-          child: Column(children: [
+    return Center(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
             Container(
               padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 5.0),
               height: 180,
@@ -138,11 +137,13 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             ElevatedButton(
-              onPressed: () {},
-              child: Text('Mulai Sekarang',
-                  style: TextStyle(
-                    fontSize: 12,
-                  )),
+              onPressed: () => context.push('/addroom'),
+              child: Text(
+                'Mulai Konsultasi',
+                style: TextStyle(
+                  fontSize: 12,
+                ),
+              ),
               style: ElevatedButton.styleFrom(
                 minimumSize: Size(20, 30),
                 backgroundColor: Color(0xFF198754),
@@ -294,9 +295,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             SizedBox(height: 8),
             ElevatedButton(
-              onPressed: () {
-                // widget.onTapped(AppPage.shop);
-              },
+              onPressed: () => context.push('/shop'),
               child: Text(
                 'Produk Lainnya',
                 style: TextStyle(
@@ -459,11 +458,13 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                             ElevatedButton(
-                              onPressed: () {},
-                              child: Text('Konsultasi',
-                                  style: TextStyle(
-                                    fontSize: 11.0,
-                                  )),
+                              onPressed: () => context.push('/addroom'),
+                              child: Text(
+                                'Konsultasi',
+                                style: TextStyle(
+                                  fontSize: 11.0,
+                                ),
+                              ),
                               style: ElevatedButton.styleFrom(
                                 minimumSize: Size(20, 20),
                                 backgroundColor: Color(0xFF198754),
@@ -481,24 +482,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             )
-          ]),
-        )));
+          ],
+        ),
+      ),
+    );
   }
 
   Row listProduct(List<ProductModel> products) {
-    final productProvider = context.watch<ProductProvider>();
     return Row(
       children: products.map((product) {
+        String? id = product.id_produk;
         return GestureDetector(
-          onTap: () => {
-            if (product.id_produk != null)
-              {
-                productProvider.getProduct(
-                  int.parse(product.id_produk!),
-                ),
-                context.push('/detailproduct')
-              }
-          },
+          onTap: () => {if (id != null) context.push('/detailproduct/$id')},
           child: Card(
             color: Colors.white,
             elevation: 2,

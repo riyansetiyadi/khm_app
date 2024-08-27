@@ -6,7 +6,6 @@ import 'package:khm_app/models/product_model.dart';
 import 'package:khm_app/provider/auth_provider.dart';
 import 'package:khm_app/provider/cart_provider.dart';
 import 'package:khm_app/provider/product_provider.dart';
-import 'package:khm_app/utils/enum_app_page.dart';
 import 'package:khm_app/utils/enum_state.dart';
 import 'package:khm_app/widgets/handle_error_refresh_widget.dart';
 import 'package:provider/provider.dart';
@@ -175,32 +174,21 @@ class _ShopScreenState extends State<ShopScreen> {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Consumer<ProductProvider>(builder: (context, state, _) {
-                if (state.products == null) {
-                  switch (state.state) {
-                    case ResultState.loading:
-                      return Center(
-                        child: defaultTargetPlatform == TargetPlatform.iOS
-                            ? const CupertinoActivityIndicator(
-                                radius: 20.0,
-                              )
-                            : const CircularProgressIndicator(),
-                      );
-                    case ResultState.initial:
-                      return Container();
-                    case ResultState.error:
-                      return ErrorRefresh(
-                        onPressed: () async {
-                          await state.getProducts(
-                            keyword: searchQuery,
-                            filter: _selectedFilter,
-                          );
-                        },
-                      );
-                    case ResultState.loaded:
-                      if (state.products != null) {
-                        return listProducts(state.products!);
-                      } else {
+              child: Consumer<ProductProvider>(
+                builder: (context, state, _) {
+                  if (state.products == null) {
+                    switch (state.state) {
+                      case ResultState.loading:
+                        return Center(
+                          child: defaultTargetPlatform == TargetPlatform.iOS
+                              ? const CupertinoActivityIndicator(
+                                  radius: 20.0,
+                                )
+                              : const CircularProgressIndicator(),
+                        );
+                      case ResultState.initial:
+                        return Container();
+                      case ResultState.error:
                         return ErrorRefresh(
                           onPressed: () async {
                             await state.getProducts(
@@ -209,12 +197,25 @@ class _ShopScreenState extends State<ShopScreen> {
                             );
                           },
                         );
-                      }
+                      case ResultState.loaded:
+                        if (state.products != null) {
+                          return listProducts(state.products!);
+                        } else {
+                          return ErrorRefresh(
+                            onPressed: () async {
+                              await state.getProducts(
+                                keyword: searchQuery,
+                                filter: _selectedFilter,
+                              );
+                            },
+                          );
+                        }
+                    }
+                  } else {
+                    return listProducts(state.products!);
                   }
-                } else {
-                  return listProducts(state.products!);
-                }
-              }),
+                },
+              ),
             ),
           ),
         ],
@@ -223,7 +224,6 @@ class _ShopScreenState extends State<ShopScreen> {
   }
 
   GridView listProducts(List<ProductModel> products) {
-    final productProvider = context.watch<ProductProvider>();
     return GridView.builder(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
@@ -232,15 +232,11 @@ class _ShopScreenState extends State<ShopScreen> {
       itemCount: products.length,
       itemBuilder: (context, index) {
         ProductModel product = products[index];
+        String? id = product.id_produk;
         return GestureDetector(
-          onTap: () => {
-            if (product.id_produk != null)
-              {
-                productProvider.getProduct(
-                  int.parse(product.id_produk!),
-                ),
-                context.push('/detailproduct')
-              }
+          onTap: () {
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+            if (id != null) context.push('/detailproduct/$id');
           },
           child: Card(
             color: Colors.white,
