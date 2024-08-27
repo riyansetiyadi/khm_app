@@ -18,6 +18,7 @@ import 'package:khm_app/screens/shop_screen.dart';
 import 'package:khm_app/screens/splash_screen.dart';
 import 'package:khm_app/screens/upload_bukti_pembayaran_screen.dart';
 import 'package:khm_app/screens/riwayat_screen.dart';
+import 'package:khm_app/screens/upload_file_chat_screen.dart';
 import 'package:khm_app/utils/list_auth_page.dart';
 import 'package:khm_app/utils/list_auth_required_page.dart';
 import 'package:khm_app/utils/list_bottom_nav_page.dart';
@@ -58,14 +59,24 @@ final router = GoRouter(
           navigatorKey: _chatTabNavigatorKey,
           routes: [
             GoRoute(
-              path: '/addroom',
-              pageBuilder: (context, GoRouterState state) {
-                return getPage(
-                  child: const AddRoomScreen(),
-                  state: state,
-                );
-              },
-            ),
+                path: '/addroom',
+                pageBuilder: (context, GoRouterState state) {
+                  return getPage(
+                    child: const AddRoomScreen(),
+                    state: state,
+                  );
+                },
+                routes: [
+                  GoRoute(
+                      path: 'chat',
+                      builder: (context, state) => ChatScreen(),
+                      routes: [
+                        GoRoute(
+                          path: 'filechat',
+                          builder: (context, state) => UploadFileChatScreen(),
+                        ),
+                      ]),
+                ]),
           ],
         ),
         StatefulShellBranch(
@@ -207,10 +218,7 @@ final router = GoRouter(
     //   path: '/addroom',
     //   builder: (context, state) => AddRoomScreen(),
     // ),
-    GoRoute(
-      path: '/chat',
-      builder: (context, state) => ChatScreen(),
-    ),
+
     // GoRoute(
     //   path: '/cart',
     //   builder: (context, state) => CartScreen(),

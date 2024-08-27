@@ -71,7 +71,7 @@ class _ShopScreenState extends State<ShopScreen> {
                 Icons.history,
                 color: Color(0xFF198754),
               ),
-              onPressed: () => context.go('/riwayat'),
+              onPressed: () => context.push('/riwayat2'),
             ),
             Stack(
               clipBehavior: Clip.none,

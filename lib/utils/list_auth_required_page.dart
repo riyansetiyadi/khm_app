@@ -1,6 +1,6 @@
 final List<String> authRequiredPages = [
   '/profile',
-  '/chat',
+  '/addroom/chat',
   '/riwayat',
   '/addroom',
   '/registeraddress',

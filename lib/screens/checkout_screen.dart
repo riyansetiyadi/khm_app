@@ -6,7 +6,6 @@ import 'package:khm_app/utils/enum_app_page.dart';
 import 'package:provider/provider.dart';
 
 class Checkout extends StatefulWidget {
-
   const Checkout({
     Key? key,
   }) : super(key: key);
@@ -123,7 +122,7 @@ class _CheckoutState extends State<Checkout> {
                               child: IconButton(
                                 icon: Icon(Icons.edit),
                                 onPressed: () =>
-                            context.go('registeraddress'),                                                 
+                                    context.push('registeraddress'),
                               ),
                             ),
                           ],
@@ -170,7 +169,7 @@ class _CheckoutState extends State<Checkout> {
                               child: ElevatedButton(
                                 onPressed: () async {
                                   if (await cartRead.chekoutCart()) {
-                            context.go('/riwayat');                                                  
+                                    context.push('/riwayat');
                                   } else {
                                     print(cartRead.message);
                                   }

@@ -273,7 +273,7 @@ class _DetailHistoryState extends State<DetailHistory> {
             child: ElevatedButton(
               onPressed: () async {
                 await state.pickImage();
-                context.go('/buktipembayaran');
+                context.push('/buktipembayaran');
               },
               child: Text('Upload Bukti Transaksi'),
               style: ElevatedButton.styleFrom(

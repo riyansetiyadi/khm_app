@@ -3,6 +3,7 @@ import 'package:khm_app/db/auth_repository.dart';
 import 'package:khm_app/provider/address_provider.dart';
 import 'package:khm_app/provider/auth_provider.dart';
 import 'package:khm_app/provider/cart_provider.dart';
+import 'package:khm_app/provider/chat_provider.dart';
 import 'package:khm_app/provider/transaction_provider.dart';
 import 'package:khm_app/provider/product_provider.dart';
 import 'package:khm_app/routes/page_manager.dart';
@@ -28,6 +29,7 @@ class _StoryAppState extends State<KhmApp> {
   late CartProvider cartProvider;
   late AddressProvider addressProvider;
   late TransactionProvider historyTransactionProvider;
+  late ChatProvider chatProvider;
   late AppRouteInformationParser routeInformationParser;
 
   @override
@@ -56,6 +58,10 @@ class _StoryAppState extends State<KhmApp> {
       apiService,
       authRepository,
     );
+    chatProvider = ChatProvider(
+      apiService,
+      authRepository,
+    );
 
     routeInformationParser = AppRouteInformationParser();
   }
@@ -81,6 +87,9 @@ class _StoryAppState extends State<KhmApp> {
         ),
         ChangeNotifierProvider(
           create: (context) => historyTransactionProvider,
+        ),
+        ChangeNotifierProvider(
+          create: (context) => chatProvider,
         ),
       ],
       child: MaterialApp.router(

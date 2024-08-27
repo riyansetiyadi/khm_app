@@ -16,7 +16,7 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
   List<Widget> buttons = [];
 
   void _addRoomButton() {
-    context.push('/chat');
+    context.push('/addroom/chat');
     // DateTime now = DateTime.now();
     // String formattedDate = DateFormat('dd-MM-yyyy').format(now);
     // String formattedTime = DateFormat('HH:mm:ss').format(now);

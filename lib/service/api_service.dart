@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:path/path.dart' as p;
 import 'package:http/http.dart' as http;
 import 'package:khm_app/models/profile_model.dart';
 
 class ApiService {
   static const String _baseUrl = 'https://wedangtech.my.id/api_personal';
+  static const String _chatUrl = 'https://wedangtech.my.id';
   static const String _addressUrl = 'https://kodepos-2d475.firebaseio.com';
 
   Future<ProfileModel> loginApi(email, password) async {
@@ -253,7 +255,7 @@ class ApiService {
         Uri.parse("$_baseUrl/chat_room_api.php?addRoom&token=$uniqeCode"));
 
     http.StreamedResponse response = await request.send();
-
+    // print(await response.stream.bytesToString());
     if (response.statusCode == 200) {
       String responseString = await response.stream.bytesToString();
       final responseJson = jsonDecode(responseString);
@@ -268,11 +270,21 @@ class ApiService {
     String room,
     String fullname,
     String message, {
-    String? filepath,
+    File? img,
   }) async {
     var request =
-        http.MultipartRequest('POST', Uri.parse("$_baseUrl/chat_api.php"));
+        http.MultipartRequest('POST', Uri.parse("$_chatUrl/chat_api.php"));
+    request.fields.addAll({
+      'room': room,
+      'dari': 'pasien',
+      'dari_id': token,
+      'token': token,
+      'type': (img == null) ? 'text' : 'file',
+      'message': (img == null) ? message : p.basename(img.path),
+    });
 
+    if (img != null)
+      request.files.add(await http.MultipartFile.fromPath('foto', img.path));
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
@@ -280,13 +292,13 @@ class ApiService {
       final responseJson = jsonDecode(responseString);
       return responseJson;
     } else {
-      throw Exception('Failed to create room chat');
+      throw Exception('Failed to send messages');
     }
   }
 
-  Future getPesan(int idRoom) async {
-    var request = http.MultipartRequest(
-        'GET', Uri.parse("$_baseUrl/../chat_api.php?getPesan=$idRoom"));
+  Future getMessageApi(String idRoom, String token) async {
+    var request = http.MultipartRequest('GET',
+        Uri.parse("$_baseUrl/../chat_api.php?getPesan=$idRoom&token=$token"));
 
     http.StreamedResponse response = await request.send();
 

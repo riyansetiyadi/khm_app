@@ -1,7 +1,16 @@
+import 'dart:async';
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:file_picker/file_picker.dart';
+import 'package:go_router/go_router.dart';
+import 'package:khm_app/models/chat_model.dart';
 import 'package:khm_app/provider/auth_provider.dart';
 import 'package:khm_app/provider/chat_provider.dart';
+import 'package:khm_app/utils/enum_state.dart';
+import 'package:khm_app/widgets/handle_error_refresh_widget.dart';
+import 'package:khm_app/widgets/unauthorized_widget.dart';
 import 'package:provider/provider.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -18,54 +27,85 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _messageController = TextEditingController();
-  final List<String> _messages = ['ss', 'pppp'];
   final ScrollController _scrollController = ScrollController();
+  late ChatProvider chatProvider;
 
-  bool _isPickingFile = false;
+  Timer? _timer;
+  // bool _isPickingFile = false;
 
-  late String? _idRoom;
+  String? _idRoom;
 
   @override
   void initState() {
+    chatProvider = context.read<ChatProvider>();
+    if (widget.idRoom != null) {
+      _idRoom = widget.idRoom;
+      chatProvider.getMessage(_idRoom!);
+    }
+    _getMessageByTimer();
     super.initState();
-    _idRoom = widget.idRoom;
   }
 
-  void _sendMessage() {
+  void _getMessageByTimer() {
+    _timer = Timer.periodic(Duration(seconds: 5), (Timer timer) {
+      if (_idRoom != null) {
+        chatProvider.refreshMessage();
+        print('refresss');
+      }
+      print('yyyy');
+    });
+  }
+
+  @override
+  void dispose() {
+    _messageController.dispose();
+    _scrollController.dispose();
+    _idRoom = null;
+    chatProvider.resetChat();
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  Future<void> _sendMessage() async {
     if (_idRoom == null) {
-      final chatProvider = context.read<ChatProvider>();
-      chatProvider.addRoom();
-      chatProvider.sendMessage();
-    }
-    final message = _messageController.text;
-    if (message.isNotEmpty) {
+      await chatProvider.addRoom();
       setState(() {
-        _messages.add(message);
-        _messageController.clear();
+        _idRoom = chatProvider.roomChat?.id;
       });
-      _scrollToBottom();
     }
-  }
 
-  void _pickFile() async {
-    setState(() {
-      _isPickingFile = true;
-    });
+    final String message = _messageController.text;
+    File? img = chatProvider.image;
 
-    final result = await FilePicker.platform.pickFiles();
+    await chatProvider.sendMessage(message, img: img);
+    await chatProvider.refreshMessage();
+    chatProvider.image = null;
 
     setState(() {
-      _isPickingFile = false;
+      _messageController.clear();
     });
-
-    if (result != null) {
-      final fileName = result.files.single.name;
-      setState(() {
-        _messages.add("File selected: $fileName");
-      });
-      _scrollToBottom();
-    }
+    _scrollToBottom();
   }
+
+  // void _pickFile() async {
+  //   setState(() {
+  //     _isPickingFile = true;
+  //   });
+
+  //   final result = await FilePicker.platform.pickFiles();
+
+  //   setState(() {
+  //     _isPickingFile = false;
+  //   });
+
+  //   if (result != null) {
+  //     // final fileName = result.files.single.name;
+  //     // setState(() {
+  //     //   _messages.add("File selected: $fileName");
+  //     // });
+  //     _scrollToBottom();
+  //   }
+  // }
 
   void _scrollToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -77,19 +117,29 @@ class _ChatScreenState extends State<ChatScreen> {
     });
   }
 
-  Widget _buildMessageBubble(String message) {
+  Widget _buildMessageBubble(ChatModel message) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-      padding: EdgeInsets.all(12.0),
-      decoration: BoxDecoration(
-        color: message.startsWith("File selected: ")
-            ? Colors.greenAccent
-            : Color(0xFF198754),
-        borderRadius: BorderRadius.circular(15.0),
-      ),
-      child: Text(
-        message,
-        style: TextStyle(color: Colors.white),
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: (message.dari == 'pasien')
+            ? CrossAxisAlignment.end
+            : CrossAxisAlignment.start,
+        children: [
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+            padding: EdgeInsets.all(12.0),
+            decoration: BoxDecoration(
+              color: message.chat.startsWith("File selected: ")
+                  ? Colors.greenAccent
+                  : Color(0xFF198754),
+              borderRadius: BorderRadius.circular(15.0),
+            ),
+            child: Text(
+              message.chat,
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -109,7 +159,7 @@ class _ChatScreenState extends State<ChatScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: Column(
                 children: [
-                  if (widget.idRoom != null)
+                  if (chatProvider.roomChat?.chats?.last.dari == 'pasien')
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12.0),
                       child: Align(
@@ -117,35 +167,37 @@ class _ChatScreenState extends State<ChatScreen> {
                         child: Text('Menunggu respon dokter'),
                       ),
                     ),
-                  Container(
-                    width: double.infinity,
-                    child: Card(
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      elevation: 4,
-                      margin: EdgeInsets.all(8),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: _messages
-                              .map((message) => _buildMessageBubble(message))
-                              .toList(),
+                  if (chatProvider.roomChat != null)
+                    Container(
+                      width: double.infinity,
+                      child: Card(
+                        color: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        elevation: 4,
+                        margin: EdgeInsets.all(8),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: containerMessages(
+                              chatProvider.roomChat?.chats ?? []),
                         ),
                       ),
                     ),
-                  ),
                 ],
               ),
             ),
           ),
-          if (_isPickingFile)
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: CircularProgressIndicator(),
+          if (chatProvider.image != null)
+            Image.file(
+              chatProvider.image!,
+              width: 50,
+              fit: BoxFit.cover,
             ),
+          // Padding(
+          //   padding: const EdgeInsets.all(8.0),
+          //   child: CircularProgressIndicator(),
+          // ),
           Container(
             width: double.infinity,
             child: Card(
@@ -159,7 +211,10 @@ class _ChatScreenState extends State<ChatScreen> {
                 children: [
                   IconButton(
                     icon: Icon(Icons.attach_file),
-                    onPressed: _pickFile,
+                    onPressed: () async {
+                      await chatProvider.pickImage();
+                      context.push('/addroom/chat/filechat');
+                    },
                   ),
                   Expanded(
                     child: Padding(
@@ -186,6 +241,13 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget containerMessages(List<ChatModel> messages) {
+    return Column(
+      children:
+          messages.map((message) => _buildMessageBubble(message)).toList(),
     );
   }
 }
