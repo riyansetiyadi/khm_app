@@ -22,7 +22,7 @@ import 'package:khm_app/screens/upload_file_chat_screen.dart';
 import 'package:khm_app/utils/list_auth_page.dart';
 import 'package:khm_app/utils/list_auth_required_page.dart';
 import 'package:khm_app/utils/list_bottom_nav_page.dart';
-import 'package:khm_app/widgets/bottom_nav_bar_widget.dart';
+import 'package:khm_app/widgets/scaffold_with_bottom_bar.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -59,24 +59,26 @@ final router = GoRouter(
           navigatorKey: _chatTabNavigatorKey,
           routes: [
             GoRoute(
-                path: '/addroom',
-                pageBuilder: (context, GoRouterState state) {
-                  return getPage(
-                    child: const AddRoomScreen(),
-                    state: state,
-                  );
-                },
-                routes: [
-                  GoRoute(
-                      path: 'chat',
-                      builder: (context, state) => ChatScreen(),
-                      routes: [
-                        GoRoute(
-                          path: 'filechat',
-                          builder: (context, state) => UploadFileChatScreen(),
-                        ),
-                      ]),
-                ]),
+              path: '/addroom',
+              pageBuilder: (context, GoRouterState state) {
+                return getPage(
+                  child: const AddRoomScreen(),
+                  state: state,
+                );
+              },
+              routes: [
+                GoRoute(
+                  path: 'chat',
+                  builder: (context, state) => ChatScreen(),
+                  routes: [
+                    GoRoute(
+                      path: 'filechat',
+                      builder: (context, state) => UploadFileChatScreen(),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ],
         ),
         StatefulShellBranch(
@@ -165,8 +167,9 @@ final router = GoRouter(
       ) {
         return getPage(
           child: (bottomNavPages.contains(state.fullPath))
-              ? BottomNavigationPage(
+              ? ScaffoldWithBottomBar(
                   child: navigationShell,
+                  location: state.fullPath ?? '/',
                 )
               : navigationShell,
           state: state,
@@ -262,6 +265,8 @@ final router = GoRouter(
     if (authRequiredPages.contains(state.fullPath) && !isLoggedIn)
       return '/login';
     if (authPages.contains(state.fullPath) && isLoggedIn) return '/';
+    if (state.fullPath == '/checkout' &&
+        await authRepository.isChekoutDataComplete()) return '/registeraddress';
 
     return null;
   },

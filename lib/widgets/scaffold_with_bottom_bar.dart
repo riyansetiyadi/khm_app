@@ -56,13 +56,9 @@ class _ScaffoldWithBottomBarState extends State<ScaffoldWithBottomBar> {
     if (location == '/') {
       return 0;
     }
-    if (location == '/settings') {
-      return 4;
-    }
-    if (location == '/login') {
-      return 4;
-    }
-    if (location == '/register') {
+    if (location == '/setting' ||
+        location == '/login' ||
+        location == '/register') {
       return 4;
     }
     return 0;
@@ -74,13 +70,13 @@ class _ScaffoldWithBottomBarState extends State<ScaffoldWithBottomBar> {
         context.go('/');
         break;
       case 1:
-        context.go('/addroom');
+        context.push('/addroom');
         break;
       case 2:
-        context.go('/shop');
+        context.push('/shop');
         break;
       case 3:
-        context.go('/cart');
+        context.push('/cart');
         break;
       case 4:
         context.go('/setting');

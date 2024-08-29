@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:khm_app/provider/auth_provider.dart';
-import 'package:khm_app/utils/enum_app_page.dart';
 import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
-
   const RegisterScreen({
     Key? key,
   }) : super(key: key);
@@ -246,7 +244,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           alignment: Alignment.centerLeft,
                           child: InkWell(
                             onTap: () {
-                            context.go('/login');                                                  
+                              context.pushReplacement('/login');
                             },
                             child: Text(
                               'Sudah punya akun ??',
@@ -261,15 +259,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             final authRead = context.read<AuthProvider>();
 
                             final result = await authRead.register(
-                                _fullnameController.text,
-                                _phoneNumberController.text,
-                                _emailController.text,
-                                _passwordController.text,
-                                selectedDay.toString(),
-                                selectedMonth.toString(),
-                                _yearController.text);
+                              _fullnameController.text,
+                              _phoneNumberController.text,
+                              _emailController.text,
+                              _passwordController.text,
+                              selectedDay.toString(),
+                              selectedMonth.toString(),
+                              _yearController.text,
+                            );
                             if (result) {
-                            context.go('/login');                                                  
+                              context.pushReplacement('/login');
                             }
                           },
                           child: Text('Ajukan Pendaftaran'),

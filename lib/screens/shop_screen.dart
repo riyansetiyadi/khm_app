@@ -82,7 +82,7 @@ class _ShopScreenState extends State<ShopScreen> {
                     color: Color(0xFF198754),
                     size: 30,
                   ),
-                  onPressed: () => context.go('/cart'),
+                  onPressed: () => context.push('/cart'),
                 ),
                 if (itemCount > 0)
                   Positioned(

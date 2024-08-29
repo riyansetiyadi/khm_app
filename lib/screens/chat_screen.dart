@@ -1,16 +1,11 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:khm_app/models/chat_model.dart';
 import 'package:khm_app/provider/auth_provider.dart';
 import 'package:khm_app/provider/chat_provider.dart';
-import 'package:khm_app/utils/enum_state.dart';
-import 'package:khm_app/widgets/handle_error_refresh_widget.dart';
-import 'package:khm_app/widgets/unauthorized_widget.dart';
 import 'package:provider/provider.dart';
 
 class ChatScreen extends StatefulWidget {

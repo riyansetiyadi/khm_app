@@ -24,63 +24,69 @@ class _UploadBuktiPembayaranScreenState
       appBar: AppBar(
         title: Text('Preview'),
         actions: [
-          Consumer<TransactionProvider>(builder: (context, state, _) {
-            switch (state.state) {
-              case ResultState.loading:
-                return Center(
-                  child: defaultTargetPlatform == TargetPlatform.iOS
-                      ? const CupertinoActivityIndicator(
-                          radius: 20.0,
-                        )
-                      : const CircularProgressIndicator(),
-                );
-              case ResultState.initial:
-                return Container();
-              case ResultState.error:
-                return Container();
-              case ResultState.loaded:
-                if (state.transaction?.isEmpty ?? true) {
-                  return Container();
-                } else {
-                  return TextButton(
-                    onPressed: () async {
-                      if (await state.uploadBuktiTransaksi()) {
-                        Navigator.pop(context);
-                      } else {}
-                    },
-                    child: Text('Upload',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15,
-                            color: Color(0xFF198754))),
+          Consumer<TransactionProvider>(
+            builder: (context, state, _) {
+              switch (state.state) {
+                case ResultState.loading:
+                  return Center(
+                    child: defaultTargetPlatform == TargetPlatform.iOS
+                        ? const CupertinoActivityIndicator(
+                            radius: 20.0,
+                          )
+                        : const CircularProgressIndicator(),
                   );
-                }
-            }
-          }),
+                case ResultState.initial:
+                  return Container();
+                case ResultState.error:
+                  return Container();
+                case ResultState.loaded:
+                  if (state.transaction?.isEmpty ?? true) {
+                    return Container();
+                  } else {
+                    return TextButton(
+                      onPressed: () async {
+                        if (await state.uploadBuktiTransaksi()) {
+                          Navigator.pop(context);
+                        } else {}
+                      },
+                      child: Text(
+                        'Upload',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                          color: Color(0xFF198754),
+                        ),
+                      ),
+                    );
+                  }
+              }
+            },
+          ),
         ],
       ),
       bottomNavigationBar: ElevatedButton(
-          onPressed: () async {
-            final transactionProvider = context.read<TransactionProvider>();
-            await transactionProvider.pickImage();
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFF198754).withOpacity(0.5),
-            foregroundColor: Colors.white,
-            minimumSize: Size(double.infinity, 36),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(0),
-            ),
+        onPressed: () async {
+          final transactionProvider = context.read<TransactionProvider>();
+          await transactionProvider.pickImage();
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Color(0xFF198754).withOpacity(0.5),
+          foregroundColor: Colors.white,
+          minimumSize: Size(double.infinity, 36),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(0),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.camera_alt),
-              SizedBox(width: 10),
-              Text('Ambil Foto Ulang',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
-            ],
-          )),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.camera_alt),
+            SizedBox(width: 10),
+            Text('Ambil Foto Ulang',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+          ],
+        ),
+      ),
       body: Consumer<TransactionProvider>(
         builder: (context, state, _) {
           switch (state.state) {

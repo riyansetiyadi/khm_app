@@ -8,7 +8,6 @@ import 'package:khm_app/extension/status_formatted.dart';
 import 'package:khm_app/models/group_transaction_model.dart';
 import 'package:khm_app/provider/auth_provider.dart';
 import 'package:khm_app/provider/transaction_provider.dart';
-import 'package:khm_app/utils/enum_app_page.dart';
 import 'package:khm_app/utils/enum_state.dart';
 import 'package:khm_app/widgets/empty_shop_widget.dart';
 import 'package:khm_app/widgets/handle_error_refresh_widget.dart';
@@ -102,7 +101,7 @@ class _RiwayatScreenState extends State<RiwayatScreen> {
                         bool result = await state
                             .getTransactionByNota(transaction.codeNota);
                         if (result) {
-                          context.go('/detailhistory');
+                          context.push('/detailhistory');
                         } else {}
                       },
                       child: Container(
@@ -220,7 +219,7 @@ class _RiwayatScreenState extends State<RiwayatScreen> {
                                   if (transaction.buktiPembayaran == null)
                                     ElevatedButton(
                                       onPressed: () {
-                                        context.go('/detailhistory');
+                                        context.push('/detailhistory');
                                       },
                                       child: Text('Upload Bukti Transaksi'),
                                       style: ElevatedButton.styleFrom(

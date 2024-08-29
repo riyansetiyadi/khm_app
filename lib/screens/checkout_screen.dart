@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:khm_app/provider/auth_provider.dart';
 import 'package:khm_app/provider/cart_provider.dart';
-import 'package:khm_app/utils/enum_app_page.dart';
 import 'package:provider/provider.dart';
 
 class Checkout extends StatefulWidget {
@@ -122,7 +121,7 @@ class _CheckoutState extends State<Checkout> {
                               child: IconButton(
                                 icon: Icon(Icons.edit),
                                 onPressed: () =>
-                                    context.push('registeraddress'),
+                                    context.push('/registeraddress'),
                               ),
                             ),
                           ],

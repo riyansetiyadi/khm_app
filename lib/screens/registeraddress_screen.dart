@@ -4,11 +4,9 @@ import 'package:khm_app/models/province_district_model.dart';
 import 'package:khm_app/models/subdistrict_model.dart';
 import 'package:khm_app/provider/address_provider.dart';
 import 'package:khm_app/provider/auth_provider.dart';
-import 'package:khm_app/utils/enum_app_page.dart';
 import 'package:provider/provider.dart';
 
 class RegisterAddress extends StatefulWidget {
-
   const RegisterAddress({
     Key? key,
   }) : super(key: key);
@@ -325,72 +323,74 @@ class _RegisterAddressState extends State<RegisterAddress> {
                             }),
                             SizedBox(width: 15),
                             Consumer<AddressProvider>(
-                                builder: (context, state, _) {
-                              return Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Desa/Kelurahan',
-                                      style: TextStyle(fontSize: 12),
-                                    ),
-                                    Container(
-                                      width: double.infinity,
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 8.0),
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: Colors.grey, width: 1.0),
-                                        borderRadius:
-                                            BorderRadius.circular(4.0),
+                              builder: (context, state, _) {
+                                return Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Desa/Kelurahan',
+                                        style: TextStyle(fontSize: 12),
                                       ),
-                                      child: DropdownButton<SubdistrictModel>(
-                                        value: selectedVillage,
-                                        hint: Text('Pilih'),
-                                        isExpanded: true,
-                                        items: state.villages.map<
-                                                DropdownMenuItem<
-                                                    SubdistrictModel>>(
-                                            (SubdistrictModel village) {
-                                          return DropdownMenuItem<
-                                              SubdistrictModel>(
-                                            value: village,
-                                            child: Text(
-                                              village.kelurahan,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          );
-                                        }).toList(),
-                                        onChanged:
-                                            (SubdistrictModel? newVillage) {
-                                          if (newVillage != null) {
-                                            setState(() {
-                                              selectedVillage = newVillage;
-                                            });
-                                          } else {
-                                            final snackBar = SnackBar(
-                                              backgroundColor: Colors.green,
-                                              content: Text(
-                                                "Gagal mendapatkan data kelurahan ${newVillage ?? ''}",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyLarge
-                                                    ?.copyWith(
-                                                        color: Colors.white),
+                                      Container(
+                                        width: double.infinity,
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 8.0),
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Colors.grey, width: 1.0),
+                                          borderRadius:
+                                              BorderRadius.circular(4.0),
+                                        ),
+                                        child: DropdownButton<SubdistrictModel>(
+                                          value: selectedVillage,
+                                          hint: Text('Pilih'),
+                                          isExpanded: true,
+                                          items: state.villages.map<
+                                                  DropdownMenuItem<
+                                                      SubdistrictModel>>(
+                                              (SubdistrictModel village) {
+                                            return DropdownMenuItem<
+                                                SubdistrictModel>(
+                                              value: village,
+                                              child: Text(
+                                                village.kelurahan,
+                                                overflow: TextOverflow.ellipsis,
                                               ),
-                                              duration:
-                                                  const Duration(seconds: 3),
                                             );
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(snackBar);
-                                          }
-                                        },
+                                          }).toList(),
+                                          onChanged:
+                                              (SubdistrictModel? newVillage) {
+                                            if (newVillage != null) {
+                                              setState(() {
+                                                selectedVillage = newVillage;
+                                              });
+                                            } else {
+                                              final snackBar = SnackBar(
+                                                backgroundColor: Colors.green,
+                                                content: Text(
+                                                  "Gagal mendapatkan data kelurahan ${newVillage ?? ''}",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyLarge
+                                                      ?.copyWith(
+                                                          color: Colors.white),
+                                                ),
+                                                duration:
+                                                    const Duration(seconds: 3),
+                                              );
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(snackBar);
+                                            }
+                                          },
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            }),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
                           ],
                         ),
                         SizedBox(height: 10),
@@ -416,7 +416,9 @@ class _RegisterAddressState extends State<RegisterAddress> {
                             floatingLabelBehavior: FloatingLabelBehavior.never,
                             border: OutlineInputBorder(),
                             contentPadding: EdgeInsets.symmetric(
-                                horizontal: 5.0, vertical: 12.0),
+                              horizontal: 5.0,
+                              vertical: 12.0,
+                            ),
                           ),
                         ),
                         SizedBox(height: 10),
@@ -440,7 +442,9 @@ class _RegisterAddressState extends State<RegisterAddress> {
                             floatingLabelBehavior: FloatingLabelBehavior.never,
                             border: OutlineInputBorder(),
                             contentPadding: EdgeInsets.symmetric(
-                                horizontal: 5.0, vertical: 12.0),
+                              horizontal: 5.0,
+                              vertical: 12.0,
+                            ),
                           ),
                         ),
                         SizedBox(height: 15),
@@ -462,8 +466,7 @@ class _RegisterAddressState extends State<RegisterAddress> {
                                 _alamatController.text,
                               );
 
-                              if (result)context.go('/checkout');                                                   
-;
+                              if (result) context.pushReplacement('/checkout');
                             }
                           },
                           child: Text('Simpan Alamat'),

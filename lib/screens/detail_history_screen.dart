@@ -8,7 +8,6 @@ import 'package:khm_app/extension/currency.dart';
 import 'package:khm_app/extension/status_formatted.dart';
 import 'package:khm_app/provider/product_provider.dart';
 import 'package:khm_app/provider/transaction_provider.dart';
-import 'package:khm_app/utils/enum_app_page.dart';
 import 'package:khm_app/utils/enum_state.dart';
 import 'package:khm_app/widgets/handle_error_refresh_widget.dart';
 import 'package:provider/provider.dart';
@@ -135,7 +134,7 @@ class _DetailHistoryState extends State<DetailHistory> {
                     return InkWell(
                       onTap: () {
                         productProvider.getProduct(int.parse(product.produkId));
-                        context.go('/detailproduct');
+                        context.push('/detailproduct');
                       },
                       child: Card(
                         color: Colors.white,

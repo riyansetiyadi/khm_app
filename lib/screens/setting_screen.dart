@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:khm_app/provider/auth_provider.dart';
-import 'package:khm_app/utils/enum_app_page.dart';
 import 'package:provider/provider.dart';
 
 class SettingScreen extends StatefulWidget {
@@ -186,7 +185,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       height: 40,
                       child: InkWell(
                         onTap: () {
-                          context.go('/riwayat');
+                          context.push('/riwayat');
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -223,7 +222,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       onPressed: () async {
                         final result = await authRead.logout();
                         if (result) {
-                          context.go('/login');
+                          context.push('/login');
                         }
                       },
                       child: Text('Log Out'),
