@@ -80,7 +80,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       height: 40,
                       child: InkWell(
                         onTap: () {
-                          context.push('/profile');
+                          context.push('/setting/profile');
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,

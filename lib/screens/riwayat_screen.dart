@@ -25,6 +25,20 @@ class RiwayatScreen extends StatefulWidget {
 
 class _RiwayatScreenState extends State<RiwayatScreen> {
   @override
+  void initState() {
+    final transactionProvider = context.read<TransactionProvider>();
+    Future.microtask(() async {
+      transactionProvider.getTransactions();
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -98,11 +112,7 @@ class _RiwayatScreenState extends State<RiwayatScreen> {
                   children: <Widget>[
                     InkWell(
                       onTap: () async {
-                        bool result = await state
-                            .getTransactionByNota(transaction.codeNota);
-                        if (result) {
-                          context.push('/detailhistory');
-                        } else {}
+                        context.push('/detailhistory/${transaction.codeNota}');
                       },
                       child: Container(
                         child: InkWell(

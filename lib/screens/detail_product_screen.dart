@@ -58,7 +58,7 @@ class _DetailProductState extends State<DetailProduct> {
                 ),
                 onPressed: () {
                   ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                  context.push('/cart2');
+                  context.push('/cart');
                 },
               ),
               if (itemCount > 0)

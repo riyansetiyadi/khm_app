@@ -233,7 +233,7 @@ class _CartScreenState extends State<CartScreen> {
               bool result =
                   state.changeQuantity ? await state.updateAllQuantity() : true;
               if (result) {
-                context.push('/checkout');
+                context.push('/cart/checkout');
               } else {
                 final snackBar = SnackBar(
                   backgroundColor: Colors.green,

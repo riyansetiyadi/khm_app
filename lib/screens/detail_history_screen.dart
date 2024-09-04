@@ -6,15 +6,17 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:khm_app/extension/currency.dart';
 import 'package:khm_app/extension/status_formatted.dart';
-import 'package:khm_app/provider/product_provider.dart';
 import 'package:khm_app/provider/transaction_provider.dart';
 import 'package:khm_app/utils/enum_state.dart';
 import 'package:khm_app/widgets/handle_error_refresh_widget.dart';
 import 'package:provider/provider.dart';
 
 class DetailHistory extends StatefulWidget {
+  final String nota;
+
   const DetailHistory({
     Key? key,
+    required String this.nota,
   }) : super(key: key);
 
   @override
@@ -22,6 +24,20 @@ class DetailHistory extends StatefulWidget {
 }
 
 class _DetailHistoryState extends State<DetailHistory> {
+  @override
+  void initState() {
+    final transactionProvider = context.read<TransactionProvider>();
+    Future.microtask(() async {
+      transactionProvider.getTransactionByNota(widget.nota);
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,8 +75,6 @@ class _DetailHistoryState extends State<DetailHistory> {
   }
 
   Column detailTransaction(TransactionProvider state) {
-    final productProvider = context.watch<ProductProvider>();
-
     double totalHargaAsli = state.transaction!.fold(
         0.0,
         (sum, product) =>
@@ -133,8 +147,7 @@ class _DetailHistoryState extends State<DetailHistory> {
                         double.parse(product.jumlah));
                     return InkWell(
                       onTap: () {
-                        productProvider.getProduct(int.parse(product.produkId));
-                        context.push('/detailproduct');
+                        context.push('/detailproduct/${product.produkId}');
                       },
                       child: Card(
                         color: Colors.white,

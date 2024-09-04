@@ -29,8 +29,6 @@ final _rootNavigatorKey = GlobalKey<NavigatorState>();
 //tabs kesy
 final _homeTabNavigatorKey = GlobalKey<NavigatorState>();
 final _chatTabNavigatorKey = GlobalKey<NavigatorState>();
-final _shopTabNavigatorKey = GlobalKey<NavigatorState>();
-final _cartTabNavigatorKey = GlobalKey<NavigatorState>();
 final _settingTabNavigatorKey = GlobalKey<NavigatorState>();
 
 // GoRouter configuration
@@ -82,43 +80,6 @@ final router = GoRouter(
           ],
         ),
         StatefulShellBranch(
-          navigatorKey: _shopTabNavigatorKey,
-          routes: [
-            GoRoute(
-              path: '/shop',
-              pageBuilder: (context, GoRouterState state) {
-                return getPage(
-                  child: const ShopScreen(),
-                  state: state,
-                );
-              },
-            ),
-          ],
-        ),
-        StatefulShellBranch(
-          navigatorKey: _cartTabNavigatorKey,
-          routes: [
-            GoRoute(
-              path: '/cart',
-              pageBuilder: (context, GoRouterState state) {
-                return getPage(
-                  child: const CartScreen(),
-                  state: state,
-                );
-              },
-            ),
-            GoRoute(
-              path: '/checkout',
-              pageBuilder: (context, GoRouterState state) {
-                return getPage(
-                  child: const Checkout(),
-                  state: state,
-                );
-              },
-            ),
-          ],
-        ),
-        StatefulShellBranch(
           navigatorKey: _settingTabNavigatorKey,
           routes: [
             GoRoute(
@@ -129,15 +90,17 @@ final router = GoRouter(
                   state: state,
                 );
               },
-            ),
-            GoRoute(
-              path: '/profile',
-              pageBuilder: (context, state) {
-                return getPage(
-                  child: const ProfilScreen(),
-                  state: state,
-                );
-              },
+              routes: [
+                GoRoute(
+                  path: 'profile',
+                  pageBuilder: (context, state) {
+                    return getPage(
+                      child: const ProfilScreen(),
+                      state: state,
+                    );
+                  },
+                ),
+              ],
             ),
             GoRoute(
               path: '/login',
@@ -176,26 +139,35 @@ final router = GoRouter(
         );
       },
     ),
-    // GoRoute(
-    //   path: '/',
-    //   builder: (context, state) => HomeScreen(),
-    // ),
-    // GoRoute(
-    //   path: '/shop',
-    //   builder: (context, state) => ShopScreen(),
-    // ),
-    // GoRoute(
-    //   path: '/profile',
-    //   builder: (context, state) => ProfilScreen(),
-    // ),
-    // GoRoute(
-    //   path: '/login',
-    //   builder: (context, state) => LoginScreen(),
-    // ),
-    // GoRoute(
-    //   path: '/register',
-    //   builder: (context, state) => RegisterScreen(),
-    // ),
+    GoRoute(
+      path: '/cart',
+      pageBuilder: (context, GoRouterState state) {
+        return getPage(
+          child: const CartScreen(),
+          state: state,
+        );
+      },
+      routes: [
+        GoRoute(
+          path: 'checkout',
+          pageBuilder: (context, GoRouterState state) {
+            return getPage(
+              child: const Checkout(),
+              state: state,
+            );
+          },
+        ),
+      ],
+    ),
+    GoRoute(
+      path: '/shop',
+      pageBuilder: (context, GoRouterState state) {
+        return getPage(
+          child: const ShopScreen(),
+          state: state,
+        );
+      },
+    ),
     GoRoute(
       path: '/detailproduct/:id',
       pageBuilder: (context, state) {
@@ -209,24 +181,6 @@ final router = GoRouter(
       },
     ),
     GoRoute(
-      path: '/cart2',
-      pageBuilder: (context, GoRouterState state) {
-        return getPage(
-          child: const CartScreen(),
-          state: state,
-        );
-      },
-    ),
-    // GoRoute(
-    //   path: '/addroom',
-    //   builder: (context, state) => AddRoomScreen(),
-    // ),
-
-    // GoRoute(
-    //   path: '/cart',
-    //   builder: (context, state) => CartScreen(),
-    // ),
-    GoRoute(
       path: '/riwayat',
       builder: (context, state) => RiwayatScreen(),
     ),
@@ -238,17 +192,17 @@ final router = GoRouter(
       path: '/registeraddress',
       builder: (context, state) => RegisterAddress(),
     ),
-    // GoRoute(
-    //   path: '/checkout',
-    //   builder: (context, state) => Checkout(),
-    // ),
-    // GoRoute(
-    //   path: '/setting',
-    //   builder: (context, state) => SettingScreen(),
-    // ),
     GoRoute(
-      path: '/detailHistory',
-      builder: (context, state) => DetailHistory(),
+      path: '/detailhistory/:nota',
+      pageBuilder: (context, state) {
+        final nota = state.pathParameters["nota"]!;
+        return getPage(
+          child: DetailHistory(
+            nota: nota,
+          ),
+          state: state,
+        );
+      },
     ),
     GoRoute(
       path: '/buktipembayaran',
@@ -260,6 +214,7 @@ final router = GoRouter(
     ),
   ],
   redirect: (BuildContext context, GoRouterState state) async {
+    print(state.fullPath);
     final authRepository = AuthRepository();
     bool isLoggedIn = await authRepository.isLoggedIn();
     if (authRequiredPages.contains(state.fullPath) && !isLoggedIn)

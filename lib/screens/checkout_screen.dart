@@ -168,7 +168,7 @@ class _CheckoutState extends State<Checkout> {
                               child: ElevatedButton(
                                 onPressed: () async {
                                   if (await cartRead.chekoutCart()) {
-                                    context.push('/riwayat');
+                                    context.pushReplacement('/riwayat');
                                   } else {
                                     print(cartRead.message);
                                   }
