@@ -1,4 +1,4 @@
-package com.example.khm_app
+package com.khm.solverra
 
 import io.flutter.embedding.android.FlutterActivity
 
