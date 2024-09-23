@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "357365754289",
+    "project_id": "khm-app-2024",
+    "storage_bucket": "khm-app-2024.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:357365754289:android:5fddd06eb1c29c0a3bb590",
+        "android_client_info": {
+          "package_name": "com.khm.solverra"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwhNqal-8HaxNhy8tAyME1zjfMZbbW0eI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
