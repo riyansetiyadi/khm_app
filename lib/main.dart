@@ -78,13 +78,21 @@ class _KhmAppState extends State<KhmApp> {
           },
           onNavigationRequest: (NavigationRequest request) async {
             final Uri url = Uri.parse(request.url);
-
-            if (await canLaunchUrl(url)) {
-              await launchUrl(url, mode: LaunchMode.externalApplication);
+            final String currentHost = Uri.parse('https://simkhm.id/').host;
+            if (url.host != currentHost) {
+              if (await canLaunchUrl(url)) {
+                await launchUrl(url, mode: LaunchMode.externalApplication);
+              } else {
+                if (await canLaunchUrl(url)) {
+                  await launchUrl(url, mode: LaunchMode.externalApplication);
+                } else {
+                  debugPrint('Could not launch ${url}.');
+                }
+              }
+              return NavigationDecision.prevent;
             } else {
-              await launchUrl(url, mode: LaunchMode.inAppWebView);
+              return NavigationDecision.navigate;
             }
-            return NavigationDecision.prevent;
           },
           onHttpError: (HttpResponseError error) {
             debugPrint('Error occurred on page: ${error.response?.statusCode}');
