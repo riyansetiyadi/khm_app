@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // Import for Android features.
 import 'package:webview_flutter_android/webview_flutter_android.dart';
@@ -75,13 +76,15 @@ class _KhmAppState extends State<KhmApp> {
                 isForMainFrame: ${error.isForMainFrame}
             ''');
           },
-          onNavigationRequest: (NavigationRequest request) {
-            if (request.url.startsWith('https://www.youtube.com/')) {
-              debugPrint('blocking navigation to ${request.url}');
-              return NavigationDecision.prevent;
+          onNavigationRequest: (NavigationRequest request) async {
+            final Uri url = Uri.parse(request.url);
+
+            if (await canLaunchUrl(url)) {
+              await launchUrl(url, mode: LaunchMode.externalApplication);
+            } else {
+              await launchUrl(url, mode: LaunchMode.inAppWebView);
             }
-            debugPrint('allowing navigation to ${request.url}');
-            return NavigationDecision.navigate;
+            return NavigationDecision.prevent;
           },
           onHttpError: (HttpResponseError error) {
             debugPrint('Error occurred on page: ${error.response?.statusCode}');
