@@ -18,8 +18,10 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  final fcmToken = await FirebaseMessaging.instance.getToken();
-  debugPrint(fcmToken);
+  await FirebaseMessaging.instance.requestPermission();
+  await FirebaseMessaging.instance.getToken().then((token) {
+    print('FCM Token: $token');
+  });
   runApp(const KhmApp());
 }
 
