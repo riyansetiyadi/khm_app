@@ -122,21 +122,38 @@ class _KhmAppState extends State<KhmApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'WebView App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('WebView App'),
-          actions: <Widget>[
-            NavigationControls(webViewController: _controller),
-            // SampleMenu(webViewController: _controller),
-          ],
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        print(didPop);
+        if (didPop) {
+          if (await _controller.canGoForward()) {
+            await _controller.goForward();
+          } else {
+            if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('No forward history item')),
+              );
+            }
+          }
+        }
+      },
+      child: MaterialApp(
+        title: 'WebView App',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
         ),
-        body: WebViewWidget(
-          controller: _controller,
+        home: Scaffold(
+          appBar: AppBar(
+            title: Text('WebView App'),
+            actions: <Widget>[
+              NavigationControls(webViewController: _controller),
+              // SampleMenu(webViewController: _controller),
+            ],
+          ),
+          body: WebViewWidget(
+            controller: _controller,
+          ),
         ),
       ),
     );
