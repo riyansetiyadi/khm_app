@@ -35,6 +35,7 @@ class KhmApp extends StatefulWidget {
 
 class _KhmAppState extends State<KhmApp> {
   late final WebViewController _controller;
+  String mainUrl = 'https://simkhm.id/';
 
   @override
   void initState() {
@@ -78,7 +79,7 @@ class _KhmAppState extends State<KhmApp> {
           },
           onNavigationRequest: (NavigationRequest request) async {
             final Uri url = Uri.parse(request.url);
-            final String currentHost = Uri.parse('https://simkhm.id/').host;
+            final String currentHost = Uri.parse(mainUrl).host;
             if (url.host != currentHost) {
               if (await canLaunchUrl(url)) {
                 await launchUrl(url, mode: LaunchMode.externalApplication);
@@ -110,7 +111,7 @@ class _KhmAppState extends State<KhmApp> {
           );
         },
       )
-      ..loadRequest(Uri.parse('https://simkhm.id/'));
+      ..loadRequest(Uri.parse(mainUrl));
 
     // setBackgroundColor is not currently supported on macOS.
     if (kIsWeb || !Platform.isMacOS) {
