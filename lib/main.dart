@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:flutter/services.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +35,7 @@ class KhmApp extends StatefulWidget {
 
 class _KhmAppState extends State<KhmApp> {
   late final WebViewController _controller;
+  bool _isLoading = false;
   String mainUrl = 'https://simkhm.id/';
 
   @override
@@ -59,14 +60,15 @@ class _KhmAppState extends State<KhmApp> {
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
         NavigationDelegate(
-          onProgress: (int progress) {
-            debugPrint('WebView is loading (progress : $progress%)');
-          },
           onPageStarted: (String url) {
-            debugPrint('Page started loading: $url');
+            setState(() {
+              _isLoading = true;
+            });
           },
           onPageFinished: (String url) {
-            debugPrint('Page finished loading: $url');
+            setState(() {
+              _isLoading = false;
+            });
           },
           onWebResourceError: (WebResourceError error) {
             debugPrint('''
@@ -79,16 +81,13 @@ class _KhmAppState extends State<KhmApp> {
           },
           onNavigationRequest: (NavigationRequest request) async {
             final Uri url = Uri.parse(request.url);
-            final String currentHost = Uri.parse(mainUrl).host;
+            final String currentHost = Uri.parse('https://simkhm.id/').host;
+
             if (url.host != currentHost) {
               if (await canLaunchUrl(url)) {
                 await launchUrl(url, mode: LaunchMode.externalApplication);
               } else {
-                if (await canLaunchUrl(url)) {
-                  await launchUrl(url, mode: LaunchMode.externalApplication);
-                } else {
-                  debugPrint('Could not launch ${url}.');
-                }
+                await launchUrl(url, mode: LaunchMode.inAppWebView);
               }
               return NavigationDecision.prevent;
             } else {
@@ -137,24 +136,29 @@ class _KhmAppState extends State<KhmApp> {
         primarySwatch: Colors.blue,
       ),
       home: Scaffold(
-        appBar: AppBar(
-          title: Text('WebView App'),
-          // actions: <Widget>[
-          //   NavigationControls(webViewController: _controller),
-          // ],
-        ),
-        body: PopScope(
-          canPop: false,
-          onPopInvokedWithResult: (didPop, result) async {
-            if (await _controller.canGoBack()) {
-              await _controller.goBack();
-            } else {
-              print("halaman terakhir");
-            }
-          },
-          child: WebViewWidget(
-            controller: _controller,
-          ),
+        backgroundColor: Colors.white,
+        body: Stack(
+          children: [
+            PopScope(
+              canPop: false,
+              onPopInvokedWithResult: (didPop, result) async {
+                if (await _controller.canGoBack()) {
+                  await _controller.goBack();
+                } else {
+                  SystemNavigator.pop();
+                }
+              },
+              child: WebViewWidget(
+                controller: _controller,
+              ),
+            ),
+            if (_isLoading)
+              Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+                ),
+              ),
+          ],
         ),
       ),
     );
