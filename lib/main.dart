@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:webview_flutter/webview_flutter.dart';
 // Import for Android features.
 import 'package:webview_flutter_android/webview_flutter_android.dart';
 // Import for iOS/macOS features.
@@ -130,36 +130,28 @@ class _KhmAppState extends State<KhmApp> {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (didPop, result) async {
-        print(didPop);
-        if (didPop) {
-          if (await _controller.canGoForward()) {
-            await _controller.goForward();
-          } else {
-            if (context.mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('No forward history item')),
-              );
-            }
-          }
-        }
-      },
-      child: MaterialApp(
-        title: 'WebView App',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
+    return MaterialApp(
+      title: 'WebView App',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('WebView App'),
+          // actions: <Widget>[
+          //   NavigationControls(webViewController: _controller),
+          // ],
         ),
-        home: Scaffold(
-          appBar: AppBar(
-            title: Text('WebView App'),
-            actions: <Widget>[
-              NavigationControls(webViewController: _controller),
-              // SampleMenu(webViewController: _controller),
-            ],
-          ),
-          body: WebViewWidget(
+        body: PopScope(
+          canPop: false,
+          onPopInvokedWithResult: (didPop, result) async {
+            if (await _controller.canGoBack()) {
+              await _controller.goBack();
+            } else {
+              print("halaman terakhir");
+            }
+          },
+          child: WebViewWidget(
             controller: _controller,
           ),
         ),
