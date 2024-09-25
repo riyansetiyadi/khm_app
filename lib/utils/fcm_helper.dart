@@ -48,5 +48,13 @@ class FcmHelper {
       await notificationHelper.showNotification(
           flutterLocalNotificationsPlugin, restaurant);
     });
+
+    @pragma('vm:entry-point')
+    Future<void> _firebaseMessagingBackgroundHandler(
+        RemoteMessage message) async {
+      print("Handling a background message: ${message.notification?.title}");
+    }
+
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   }
 }
