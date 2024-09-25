@@ -3,6 +3,9 @@ import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:khm_app/models/notificationModel.dart';
+import 'package:khm_app/utils/notification_helper.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:webview_flutter/webview_flutter.dart';
@@ -14,8 +17,29 @@ import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  final NotificationHelper notificationHelper = NotificationHelper();
+
+  String? selectedNotificationPayload;
+
+  final NotificationAppLaunchDetails? notificationAppLaunchDetails = !kIsWeb &&
+          Platform.isLinux
+      ? null
+      : await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+  if (notificationAppLaunchDetails?.didNotificationLaunchApp ?? false) {
+    selectedNotificationPayload =
+        notificationAppLaunchDetails!.notificationResponse?.payload;
+    if (selectedNotificationPayload != null) {
+      print(selectedNotificationPayload);
+    }
+  }
+  await notificationHelper.initNotifications(flutterLocalNotificationsPlugin);
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -23,6 +47,12 @@ Future<void> main() async {
   await FirebaseMessaging.instance.getToken().then((token) {
     print('FCM Token: $token');
   });
+
+  FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
   runApp(const KhmApp());
 }
 
@@ -40,6 +70,36 @@ class _KhmAppState extends State<KhmApp> {
   @override
   void initState() {
     super.initState();
+
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('notification_icon');
+    final DarwinInitializationSettings initializationSettingsDarwin =
+        DarwinInitializationSettings();
+    final InitializationSettings initializationSettings =
+        InitializationSettings(
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsDarwin,
+    );
+    flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+      print('Got a message whilst in the foreground!');
+      print('Message data: ${int.tryParse(message.data['id'])}');
+      print('Message data: ${message.notification?.title}');
+      print('Message data: ${message.notification?.body}');
+
+      if (message.notification != null) {
+        print('Message also contained a notification: ${message.notification}');
+      }
+      final NotificationHelper notificationHelper = NotificationHelper();
+      NotificationModel restaurant = NotificationModel(
+          id: int.tryParse(message.data['id']) ?? 0,
+          title: message.notification?.title,
+          body: message.notification?.body,
+          payload: 'payload');
+      await notificationHelper.showNotification(
+          flutterLocalNotificationsPlugin, restaurant);
+    });
 
     late final PlatformWebViewControllerCreationParams params;
     if (WebViewPlatform.instance is WebKitWebViewPlatform) {
