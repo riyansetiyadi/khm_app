@@ -6,6 +6,11 @@ import 'package:khm_app/utils/notification_helper.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  print("Handling a background message: ${message.notification?.title}");
+}
+
 class FcmHelper {
   static FcmHelper? _instance;
 
@@ -48,12 +53,6 @@ class FcmHelper {
       await notificationHelper.showNotification(
           flutterLocalNotificationsPlugin, restaurant);
     });
-
-    @pragma('vm:entry-point')
-    Future<void> _firebaseMessagingBackgroundHandler(
-        RemoteMessage message) async {
-      print("Handling a background message: ${message.notification?.title}");
-    }
 
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   }
