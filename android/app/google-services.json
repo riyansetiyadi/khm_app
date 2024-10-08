@@ -16,6 +16,31 @@
       "api_key": [
         {
           "current_key": "AIzaSyAwhNqal-8HaxNhy8tAyME1zjfMZbbW0eI"
+        },
+        {
+          "current_key": "AIzaSyB2zNTGc_pXDNvxP7Ur7tADHs_HgQuUli4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:357365754289:android:1fc2dc744cdaf9bc3bb590",
+        "android_client_info": {
+          "package_name": "id.simkhm.www"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwhNqal-8HaxNhy8tAyME1zjfMZbbW0eI"
+        },
+        {
+          "current_key": "AIzaSyB2zNTGc_pXDNvxP7Ur7tADHs_HgQuUli4"
         }
       ],
       "services": {
