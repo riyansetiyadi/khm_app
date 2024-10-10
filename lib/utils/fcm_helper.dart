@@ -46,7 +46,7 @@ class FcmHelper {
       }
       final NotificationHelper notificationHelper = NotificationHelper();
       NotificationModel restaurant = NotificationModel(
-          id: int.tryParse(message.data['id']) ?? 0,
+          id: int.tryParse(message.data['id'].toString()) ?? 0,
           title: message.notification?.title,
           body: message.notification?.body,
           payload: 'payload');
