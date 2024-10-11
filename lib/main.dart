@@ -71,9 +71,7 @@ class _KhmAppState extends State<KhmApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Scaffold(
-        backgroundColor: Colors.white,
-        body: Stack(
+      home: Stack(
           children: [
             PopScope(
               canPop: false,
@@ -99,7 +97,6 @@ class _KhmAppState extends State<KhmApp> {
               ),
           ],
         ),
-      ),
     );
   }
 }
