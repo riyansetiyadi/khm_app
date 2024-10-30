@@ -49,6 +49,7 @@ class _KhmAppState extends State<KhmApp> {
   late final WebViewController _controller;
   bool _isLoading = false;
   String mainUrl = 'https://simkhm.id/';
+  int _selectedIndex = 0;
 
   @override
   void initState() {
@@ -64,6 +65,16 @@ class _KhmAppState extends State<KhmApp> {
     );
   }
 
+  void _loadUrl(String url) {
+    _controller.loadRequest(Uri.parse(url));
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -71,7 +82,79 @@ class _KhmAppState extends State<KhmApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Stack(
+      home: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          title: const Text(
+            'SIMKHM',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              SizedBox(
+                height: 100,
+                child: DrawerHeader(
+                  decoration: BoxDecoration(
+                    color: Colors.green,
+                  ),
+                  child: const Text(
+                    'SIMKHM',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+              ListTile(
+                leading: Icon(Icons.queue, color: Colors.blue),
+                title: const Text('Daftar Antrian'),
+                onTap: () {
+                  Navigator.pop(context);
+                  // _loadUrl('https://simkhm.id/daftar.php');
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.brush, color: Colors.pink),
+                title: const Text('Kosmetik'),
+                onTap: () {
+                  // _loadUrl('https://simkhm.id/wonorejo/kosmetik/?halaman=shop');
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.question_answer, color: Colors.green),
+                title: const Text('Konsultasi'),
+                onTap: () {
+                  // _loadUrl('https://simkhm.id/wonorejo/kosmetik/login.php');
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading:
+                    Icon(Icons.miscellaneous_services, color: Colors.green),
+                title: const Text('Layanan'),
+                onTap: () {
+                  Navigator.pop(context);
+                  // _loadUrl('https://simkhm.id/layanan.php');
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.medical_services, color: Colors.red),
+                title: const Text('Beli Obat (Segera Hadir)'),
+                onTap: () {
+                  Navigator.pop(context);
+                  // _loadUrl('https://simkhm.id/');
+                },
+              ),
+            ],
+          ),
+        ),
+        body: Stack(
           children: [
             PopScope(
               canPop: false,
@@ -97,6 +180,31 @@ class _KhmAppState extends State<KhmApp> {
               ),
           ],
         ),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.dashboard, color: Colors.black),
+              label: 'Beranda',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.request_quote, color: Colors.black),
+              label: 'Antrianku',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person, color: Colors.black),
+              label: 'Profil',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.contact_support, color: Colors.black),
+              label: 'Admin',
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.black,
+          unselectedItemColor: Colors.grey,
+          onTap: _onItemTapped,
+        ),
+      ),
     );
   }
 }
