@@ -114,6 +114,14 @@ class _KhmAppState extends State<KhmApp> {
                 ),
               ),
               ListTile(
+                leading: Icon(Icons.home, color: Colors.blue),
+                title: const Text('Home'),
+                onTap: () {
+                  _loadUrl('https://simkhm.id');
+                  scaffoldKey.currentState?.closeDrawer();
+                },
+              ),
+              ListTile(
                 leading: Icon(Icons.queue, color: Colors.blue),
                 title: const Text('Daftar Antrian'),
                 onTap: () {
