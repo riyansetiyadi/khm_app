@@ -46,15 +46,6 @@ class WebviewHelper {
           onPageFinished: (String url) {
             onLoadingChanged(false);
           },
-          onWebResourceError: (WebResourceError error) {
-            debugPrint('''
-              Page resource error:
-                code: ${error.errorCode}
-                description: ${error.description}
-                errorType: ${error.errorType}
-                isForMainFrame: ${error.isForMainFrame}
-            ''');
-          },
           onNavigationRequest: (NavigationRequest request) async {
             final Uri url = Uri.parse(request.url);
             final String currentHost = Uri.parse(mainUrl).host;
@@ -70,19 +61,7 @@ class WebviewHelper {
               return NavigationDecision.navigate;
             }
           },
-          onHttpError: (HttpResponseError error) {
-            debugPrint('Error occurred on page: ${error.response?.statusCode}');
-          },
-          onUrlChange: (UrlChange change) {
-            debugPrint('url change to ${change.url}');
-          },
         ),
-      )
-      ..addJavaScriptChannel(
-        'Toaster',
-        onMessageReceived: (JavaScriptMessage message) {
-          debugPrint(message.message);
-        },
       )
       ..loadRequest(Uri.parse(mainUrl));
 
