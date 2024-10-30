@@ -20,7 +20,7 @@ class WebviewHelper {
   factory WebviewHelper() => _instance ?? WebviewHelper._internal();
 
   WebViewController initWebview({
-    required String mainUrl,
+    required String initialUrl,
     required Function(bool) onLoadingChanged,
   }) {
     late final PlatformWebViewControllerCreationParams params;
@@ -48,7 +48,7 @@ class WebviewHelper {
           },
           onNavigationRequest: (NavigationRequest request) async {
             final Uri url = Uri.parse(request.url);
-            final String currentHost = Uri.parse(mainUrl).host;
+            final String currentHost = Uri.parse(initialUrl).host;
 
             if (url.host != currentHost) {
               if (await canLaunchUrl(url)) {
@@ -63,7 +63,7 @@ class WebviewHelper {
           },
         ),
       )
-      ..loadRequest(Uri.parse(mainUrl));
+      ..loadRequest(Uri.parse(initialUrl));
 
     if (kIsWeb || !Platform.isMacOS) {
       controller.setBackgroundColor(const Color(0x80000000));

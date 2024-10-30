@@ -6,6 +6,10 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:khm_app/utils/fcm_helper.dart';
 import 'package:khm_app/utils/notification_helper.dart';
 import 'package:khm_app/utils/webview_helper.dart';
+import 'package:khm_app/widgets/drawer/main_drawer.dart';
+import 'package:khm_app/widgets/drawer/shop_drawer.dart';
+import 'package:khm_app/widgets/navigation_bar/main_app_bar.dart';
+import 'package:khm_app/widgets/navigation_bar/main_bottom_bar.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -48,8 +52,7 @@ class _KhmAppState extends State<KhmApp> {
   final WebviewHelper webviewHelper = WebviewHelper();
   late final WebViewController _controller;
   bool _isLoading = false;
-  String mainUrl = 'https://simkhm.id/';
-  int _selectedIndex = 0;
+  String _url = 'https://simkhm.id/';
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -58,7 +61,7 @@ class _KhmAppState extends State<KhmApp> {
     super.initState();
 
     _controller = webviewHelper.initWebview(
-      mainUrl: mainUrl,
+      initialUrl: _url,
       onLoadingChanged: (isLoading) {
         setState(() {
           _isLoading = isLoading;
@@ -67,103 +70,28 @@ class _KhmAppState extends State<KhmApp> {
     );
   }
 
-  void _loadUrl(String url) {
-    _controller.loadRequest(Uri.parse(url));
-  }
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'WebView App',
+      title: 'Klinik Husada Mulia',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       home: Scaffold(
         key: scaffoldKey,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          title: const Text(
-            'SIMKHM',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-        drawer: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              SizedBox(
-                height: 100,
-                child: DrawerHeader(
-                  decoration: BoxDecoration(
-                    color: Colors.green,
-                  ),
-                  child: const Text(
-                    'SIMKHM',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-              ListTile(
-                leading: Icon(Icons.home, color: Colors.blue),
-                title: const Text('Home'),
-                onTap: () {
-                  _loadUrl('https://simkhm.id');
-                  scaffoldKey.currentState?.closeDrawer();
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.queue, color: Colors.blue),
-                title: const Text('Daftar Antrian'),
-                onTap: () {
-                  _loadUrl('https://simkhm.id/daftar.php');
-                  scaffoldKey.currentState?.closeDrawer();
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.brush, color: Colors.pink),
-                title: const Text('Kosmetik'),
-                onTap: () {
-                  _loadUrl('https://simkhm.id/wonorejo/kosmetik/?halaman=shop');
-                  scaffoldKey.currentState?.closeDrawer();
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.question_answer, color: Colors.green),
-                title: const Text('Konsultasi'),
-                onTap: () {
-                  _loadUrl('https://simkhm.id/wonorejo/kosmetik/login.php');
-                  scaffoldKey.currentState?.closeDrawer();
-                },
-              ),
-              ListTile(
-                leading:
-                    Icon(Icons.miscellaneous_services, color: Colors.green),
-                title: const Text('Layanan'),
-                onTap: () {
-                  _loadUrl('https://simkhm.id/layanan.php');
-                  scaffoldKey.currentState?.closeDrawer();
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.medical_services, color: Colors.red),
-                title: const Text('Beli Obat (Segera Hadir)'),
-                onTap: () {
-                  _loadUrl('https://simkhm.id/');
-                  scaffoldKey.currentState?.closeDrawer();
-                },
-              ),
-            ],
-          ),
+        appBar: MainAppBar(),
+        drawer: FutureBuilder(
+          future: _controller.currentUrl(),
+          builder: (context, snapshot) {
+            String url = snapshot.data ?? '';
+            if (url.startsWith("https://simkhm.id/wonorejo/kosmetik/")) {
+              return ShopDrawer(
+                  scaffoldKey: scaffoldKey, controller: _controller);
+            } else {
+              return MainDrawer(
+                  scaffoldKey: scaffoldKey, controller: _controller);
+            }
+          },
         ),
         body: Stack(
           children: [
@@ -191,32 +119,7 @@ class _KhmAppState extends State<KhmApp> {
               ),
           ],
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.dashboard, color: Colors.black),
-              label: 'Beranda',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.request_quote, color: Colors.black),
-              label: 'Antrianku',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person, color: Colors.black),
-              label: 'Profil',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.contact_support, color: Colors.black),
-              label: 'Admin',
-            ),
-          ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.black,
-          unselectedItemColor: Colors.grey,
-          showSelectedLabels: true,
-          showUnselectedLabels: true,
-          onTap: _onItemTapped,
-        ),
+        bottomNavigationBar: MainBottomBar(),
       ),
     );
   }
