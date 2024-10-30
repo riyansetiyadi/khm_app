@@ -51,6 +51,8 @@ class _KhmAppState extends State<KhmApp> {
   String mainUrl = 'https://simkhm.id/';
   int _selectedIndex = 0;
 
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   void initState() {
     super.initState();
@@ -83,6 +85,7 @@ class _KhmAppState extends State<KhmApp> {
         primarySwatch: Colors.blue,
       ),
       home: Scaffold(
+        key: scaffoldKey,
         appBar: AppBar(
           backgroundColor: Colors.white,
           title: const Text(
@@ -114,24 +117,24 @@ class _KhmAppState extends State<KhmApp> {
                 leading: Icon(Icons.queue, color: Colors.blue),
                 title: const Text('Daftar Antrian'),
                 onTap: () {
-                  Navigator.pop(context);
-                  // _loadUrl('https://simkhm.id/daftar.php');
+                  _loadUrl('https://simkhm.id/daftar.php');
+                  scaffoldKey.currentState?.closeDrawer();
                 },
               ),
               ListTile(
                 leading: Icon(Icons.brush, color: Colors.pink),
                 title: const Text('Kosmetik'),
                 onTap: () {
-                  // _loadUrl('https://simkhm.id/wonorejo/kosmetik/?halaman=shop');
-                  Navigator.pop(context);
+                  _loadUrl('https://simkhm.id/wonorejo/kosmetik/?halaman=shop');
+                  scaffoldKey.currentState?.closeDrawer();
                 },
               ),
               ListTile(
                 leading: Icon(Icons.question_answer, color: Colors.green),
                 title: const Text('Konsultasi'),
                 onTap: () {
-                  // _loadUrl('https://simkhm.id/wonorejo/kosmetik/login.php');
-                  Navigator.pop(context);
+                  _loadUrl('https://simkhm.id/wonorejo/kosmetik/login.php');
+                  scaffoldKey.currentState?.closeDrawer();
                 },
               ),
               ListTile(
@@ -139,16 +142,16 @@ class _KhmAppState extends State<KhmApp> {
                     Icon(Icons.miscellaneous_services, color: Colors.green),
                 title: const Text('Layanan'),
                 onTap: () {
-                  Navigator.pop(context);
-                  // _loadUrl('https://simkhm.id/layanan.php');
+                  _loadUrl('https://simkhm.id/layanan.php');
+                  scaffoldKey.currentState?.closeDrawer();
                 },
               ),
               ListTile(
                 leading: Icon(Icons.medical_services, color: Colors.red),
                 title: const Text('Beli Obat (Segera Hadir)'),
                 onTap: () {
-                  Navigator.pop(context);
-                  // _loadUrl('https://simkhm.id/');
+                  _loadUrl('https://simkhm.id/');
+                  scaffoldKey.currentState?.closeDrawer();
                 },
               ),
             ],
@@ -202,55 +205,11 @@ class _KhmAppState extends State<KhmApp> {
           currentIndex: _selectedIndex,
           selectedItemColor: Colors.black,
           unselectedItemColor: Colors.grey,
+          showSelectedLabels: true,
+          showUnselectedLabels: true,
           onTap: _onItemTapped,
         ),
       ),
-    );
-  }
-}
-
-class NavigationControls extends StatelessWidget {
-  const NavigationControls({super.key, required this.webViewController});
-
-  final WebViewController webViewController;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        IconButton(
-          icon: const Icon(Icons.arrow_back_ios),
-          onPressed: () async {
-            if (await webViewController.canGoBack()) {
-              await webViewController.goBack();
-            } else {
-              if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('No back history item')),
-                );
-              }
-            }
-          },
-        ),
-        IconButton(
-          icon: const Icon(Icons.arrow_forward_ios),
-          onPressed: () async {
-            if (await webViewController.canGoForward()) {
-              await webViewController.goForward();
-            } else {
-              if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('No forward history item')),
-                );
-              }
-            }
-          },
-        ),
-        IconButton(
-          icon: const Icon(Icons.replay),
-          onPressed: () => webViewController.reload(),
-        ),
-      ],
     );
   }
 }
