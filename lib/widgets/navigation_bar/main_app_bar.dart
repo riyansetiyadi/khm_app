@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 
 class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final String? title;
   const MainAppBar({
     super.key,
+    this.title,
   });
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.white,
-      title: const Text(
-        'SIMKHM',
-        style: TextStyle(fontWeight: FontWeight.bold),
+      title: Text(
+        title ?? '',
+        style: const TextStyle(fontWeight: FontWeight.bold),
       ),
     );
   }

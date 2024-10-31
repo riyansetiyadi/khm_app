@@ -22,6 +22,7 @@ class WebviewHelper {
   WebViewController initWebview({
     required String initialUrl,
     required Function(bool) onLoadingChanged,
+    Function(String)? onUrlChanged,
   }) {
     late final PlatformWebViewControllerCreationParams params;
     if (WebViewPlatform.instance is WebKitWebViewPlatform) {
@@ -45,6 +46,7 @@ class WebviewHelper {
           },
           onPageFinished: (String url) {
             onLoadingChanged(false);
+            if (onUrlChanged != null) onUrlChanged(url);
           },
           onNavigationRequest: (NavigationRequest request) async {
             final Uri url = Uri.parse(request.url);
