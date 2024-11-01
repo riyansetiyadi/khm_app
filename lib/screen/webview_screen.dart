@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:khm_app/utils/webview_helper.dart';
 import 'package:khm_app/widgets/drawer/main_drawer.dart';
 import 'package:khm_app/widgets/drawer/shop_drawer.dart';
@@ -24,8 +23,6 @@ class _WebviewScreenState extends State<WebviewScreen> {
   bool _isLoading = false;
   String _titleAppBar = '';
 
-  final scaffoldKey = GlobalKey<ScaffoldState>();
-
   @override
   void initState() {
     super.initState();
@@ -43,7 +40,6 @@ class _WebviewScreenState extends State<WebviewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: scaffoldKey,
       appBar: MainAppBar(title: _titleAppBar),
       drawer: FutureBuilder(
         future: _controller.currentUrl(),
@@ -51,10 +47,10 @@ class _WebviewScreenState extends State<WebviewScreen> {
           String url = snapshot.data ?? '';
           if (url.startsWith("https://simkhm.id/wonorejo/kosmetik/")) {
             return ShopDrawer(
-                scaffoldKey: scaffoldKey, controller: _controller);
+              controller: _controller,
+            );
           } else {
-            return MainDrawer(
-                scaffoldKey: scaffoldKey, controller: _controller);
+            return MainDrawer();
           }
         },
       ),
@@ -66,11 +62,12 @@ class _WebviewScreenState extends State<WebviewScreen> {
             PopScope(
               canPop: false,
               onPopInvokedWithResult: (didPop, result) async {
-                if (await _controller.canGoBack()) {
-                  await _controller.goBack();
-                } else {
-                  if (context.mounted) {
-                    context.go('/home');
+                if (!didPop) {
+                  if (await _controller.canGoBack()) {
+                    await _controller.goBack();
+                  } else {
+                    final navigator = Navigator.of(context);
+                    navigator.pop();
                   }
                 }
               },

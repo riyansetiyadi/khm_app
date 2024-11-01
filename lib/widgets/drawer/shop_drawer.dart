@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class ShopDrawer extends StatelessWidget {
-  final GlobalKey<ScaffoldState> scaffoldKey;
   final WebViewController controller;
-  const ShopDrawer(
-      {super.key, required this.scaffoldKey, required this.controller});
+  const ShopDrawer({
+    super.key,
+    required this.controller,
+  });
 
   void _loadUrl(String url) {
     controller.loadRequest(Uri.parse(url));
@@ -37,32 +39,54 @@ class ShopDrawer extends StatelessWidget {
             leading: Icon(Icons.home, color: Colors.blue),
             title: const Text('Home'),
             onTap: () {
-              _loadUrl('https://simkhm.id/wonorejo/kosmetik/?halaman=home');
-              scaffoldKey.currentState?.closeDrawer();
+              context.push(
+                Uri(
+                  path: '/webview',
+                  queryParameters: {
+                    'url': 'https://simkhm.id/wonorejo/kosmetik/?halaman=home'
+                  },
+                ).toString(),
+              );
+              Scaffold.of(context).closeDrawer();
             },
           ),
           ListTile(
             leading: Icon(Icons.brush, color: Colors.pink),
             title: const Text('Kosmetik'),
             onTap: () {
-              _loadUrl('https://simkhm.id/wonorejo/kosmetik/?halaman=shop');
-              scaffoldKey.currentState?.closeDrawer();
+              context.push(
+                Uri(
+                  path: '/webview',
+                  queryParameters: {
+                    'url': 'https://simkhm.id/wonorejo/kosmetik/?halaman=shop'
+                  },
+                ).toString(),
+              );
+              Scaffold.of(context).closeDrawer();
             },
           ),
           ListTile(
             leading: Icon(Icons.local_hospital, color: Colors.pink),
             title: const Text('SIMKHM'),
             onTap: () {
-              _loadUrl('https://simkhm.id');
-              scaffoldKey.currentState?.closeDrawer();
+              context.go('/home');
+              Scaffold.of(context).closeDrawer();
             },
           ),
           ListTile(
             leading: Icon(Icons.info, color: Colors.red),
             title: const Text('Tentang kami'),
             onTap: () {
-              _loadUrl('https://simkhm.id/wonorejo/kosmetik/?halaman=about_us');
-              scaffoldKey.currentState?.closeDrawer();
+              context.push(
+                Uri(
+                  path: '/webview',
+                  queryParameters: {
+                    'url':
+                        'https://simkhm.id/wonorejo/kosmetik/?halaman=about_us'
+                  },
+                ).toString(),
+              );
+              Scaffold.of(context).closeDrawer();
             },
           ),
         ],

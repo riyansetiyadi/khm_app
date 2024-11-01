@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:go_router/go_router.dart';
 
 class MainDrawer extends StatelessWidget {
-  final GlobalKey<ScaffoldState> scaffoldKey;
-  final WebViewController controller;
-  const MainDrawer(
-      {super.key, required this.scaffoldKey, required this.controller});
-
-  void _loadUrl(String url) {
-    controller.loadRequest(Uri.parse(url));
-  }
+  const MainDrawer({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -37,48 +32,67 @@ class MainDrawer extends StatelessWidget {
             leading: Icon(Icons.home, color: Colors.blue),
             title: const Text('Home'),
             onTap: () {
-              _loadUrl('https://simkhm.id');
-              scaffoldKey.currentState?.closeDrawer();
+              context.push('/home');
+              Scaffold.of(context).closeDrawer();
             },
           ),
           ListTile(
             leading: Icon(Icons.queue, color: Colors.blue),
             title: const Text('Daftar Antrian'),
             onTap: () {
-              _loadUrl('https://simkhm.id/daftar.php');
-              scaffoldKey.currentState?.closeDrawer();
+              context.push('/pendaftaran');
+              Scaffold.of(context).closeDrawer();
             },
           ),
           ListTile(
             leading: Icon(Icons.brush, color: Colors.pink),
             title: const Text('Kosmetik'),
             onTap: () {
-              _loadUrl('https://simkhm.id/wonorejo/kosmetik/?halaman=shop');
-              scaffoldKey.currentState?.closeDrawer();
+              context.push(
+                Uri(
+                  path: '/webview',
+                  queryParameters: {
+                    'url': 'https://simkhm.id/wonorejo/kosmetik/?halaman=shop'
+                  },
+                ).toString(),
+              );
+              Scaffold.of(context).closeDrawer();
             },
           ),
           ListTile(
             leading: Icon(Icons.question_answer, color: Colors.green),
             title: const Text('Konsultasi'),
             onTap: () {
-              _loadUrl('https://simkhm.id/wonorejo/kosmetik/login.php');
-              scaffoldKey.currentState?.closeDrawer();
+              context.push(
+                Uri(
+                  path: '/webview',
+                  queryParameters: {
+                    'url': 'https://simkhm.id/wonorejo/kosmetik/login.php'
+                  },
+                ).toString(),
+              );
+              Scaffold.of(context).closeDrawer();
             },
           ),
           ListTile(
             leading: Icon(Icons.miscellaneous_services, color: Colors.green),
             title: const Text('Layanan'),
             onTap: () {
-              _loadUrl('https://simkhm.id/layanan.php');
-              scaffoldKey.currentState?.closeDrawer();
+              context.push('/layanan');
+              Scaffold.of(context).closeDrawer();
             },
           ),
           ListTile(
             leading: Icon(Icons.medical_services, color: Colors.red),
             title: const Text('Beli Obat (Segera Hadir)'),
             onTap: () {
-              _loadUrl('https://simkhm.id/');
-              scaffoldKey.currentState?.closeDrawer();
+              context.push(
+                Uri(
+                  path: '/webview',
+                  queryParameters: {'url': 'https://simkhm.id/'},
+                ).toString(),
+              );
+              Scaffold.of(context).closeDrawer();
             },
           ),
         ],
