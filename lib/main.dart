@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:khm_app/screen/simkhm/home_screen.dart';
+import 'package:khm_app/routes/config.dart';
 import 'package:khm_app/utils/fcm_helper.dart';
 import 'package:khm_app/utils/notification_helper.dart';
 
@@ -50,12 +50,7 @@ class _KhmAppState extends State<KhmApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Klinik Husada Mulia',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: HomeSimkhmScreen(),
-    );
+    return MaterialApp.router(
+      routerConfig: router);
   }
 }
