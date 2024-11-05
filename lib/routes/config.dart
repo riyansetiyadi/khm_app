@@ -4,6 +4,7 @@ import 'package:khm_app/screen/simkhm/home_screen.dart';
 import 'package:khm_app/screen/simkhm/layanan_screen.dart';
 import 'package:khm_app/screen/simkhm/pendaftaran_poli_screen.dart';
 import 'package:khm_app/screen/webview_screen.dart';
+import 'package:khm_app/utils/response_from_urls.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -32,4 +33,13 @@ final router = GoRouter(
       },
     ),
   ],
+  redirect: (context, state) {
+    if (state.fullPath == '/webview') {
+      String url = state.uri.queryParameters['url'] ?? '';
+      String? path = getResponseFromUrl(url);
+      if (path != null) return path;
+    }
+
+    return null;
+  },
 );

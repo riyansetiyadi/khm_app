@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:khm_app/widgets/drawer/main_drawer.dart';
 import 'package:khm_app/widgets/navigation_bar/main_app_bar.dart';
-
+import 'package:khm_app/widgets/navigation_bar/main_bottom_bar.dart';
 
 class LayananScreen extends StatefulWidget {
   const LayananScreen({super.key});
@@ -15,10 +15,11 @@ class _LayananScreenState extends State<LayananScreen> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-              appBar: MainAppBar(
-        title: 'SIMKHM',
-      ),
-      drawer: MainDrawer(),
+        appBar: MainAppBar(
+          title: 'SIMKHM',
+        ),
+        drawer: MainDrawer(),
+        bottomNavigationBar: MainBottomBar(),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: GridView.count(
@@ -50,7 +51,8 @@ class _LayananScreenState extends State<LayananScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text(
                         cardData[index]['title']!,
-                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
                       ),
                     ),

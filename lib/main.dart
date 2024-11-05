@@ -50,7 +50,6 @@ class _KhmAppState extends State<KhmApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      routerConfig: router);
+    return MaterialApp.router(routerConfig: router);
   }
 }

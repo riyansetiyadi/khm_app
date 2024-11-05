@@ -18,10 +18,6 @@ class _HomeSimkhmScreenState extends State<HomeSimkhmScreen> {
     return Scaffold(
         appBar: AppBar(
           title: Text('SIMKHM'),
-          // leading: IconButton(
-          //   icon: Icon(Icons.menu),
-          //   onPressed: () {},
-          // ),
         ),
         drawer: MainDrawer(),
         body: SingleChildScrollView(

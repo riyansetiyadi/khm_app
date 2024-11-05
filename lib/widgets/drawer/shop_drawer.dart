@@ -9,10 +9,6 @@ class ShopDrawer extends StatelessWidget {
     required this.controller,
   });
 
-  void _loadUrl(String url) {
-    controller.loadRequest(Uri.parse(url));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Drawer(

@@ -1,7 +1,7 @@
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:webview_flutter/webview_flutter.dart';
@@ -46,9 +46,9 @@ class WebviewHelper {
           },
           onPageFinished: (String url) {
             onLoadingChanged(false);
-            if (onUrlChanged != null) onUrlChanged(url);
           },
           onNavigationRequest: (NavigationRequest request) async {
+            if (onUrlChanged != null) onUrlChanged(request.url);
             final Uri url = Uri.parse(request.url);
             final String currentHost = Uri.parse(initialUrl).host;
 

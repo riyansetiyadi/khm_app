@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:khm_app/widgets/drawer/main_drawer.dart';
 import 'package:khm_app/widgets/navigation_bar/main_app_bar.dart';
+import 'package:khm_app/widgets/navigation_bar/main_bottom_bar.dart';
 
 class PendaftaranPoliScreen extends StatefulWidget {
   const PendaftaranPoliScreen({super.key});
@@ -18,6 +19,7 @@ class _PendaftaranPoliScreenState extends State<PendaftaranPoliScreen> {
         title: 'SIMKHM',
       ),
       drawer: MainDrawer(),
+      bottomNavigationBar: MainBottomBar(),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20),
         child: Column(
