@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:khm_app/screen/simkhm/about_us_screen.dart';
 import 'package:khm_app/screen/simkhm/home_screen.dart';
 import 'package:khm_app/screen/simkhm/layanan_screen.dart';
 import 'package:khm_app/screen/simkhm/pendaftaran_poli_screen.dart';
@@ -24,6 +25,10 @@ final router = GoRouter(
     GoRoute(
       path: '/pendaftaran',
       builder: (context, state) => const PendaftaranPoliScreen(),
+    ),
+    GoRoute(
+      path: '/about_us',
+      builder: (context, state) => const AboutUsScreen(),
     ),
     GoRoute(
       path: '/webview',
