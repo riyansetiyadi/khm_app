@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:khm_app/widgets/drawer/shop_drawer.dart';
 import 'package:khm_app/widgets/navigation_bar/shop_app_bar.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AboutUsScreen extends StatefulWidget {
   const AboutUsScreen({super.key});
@@ -177,16 +178,15 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                         Text(
                             'Jl. Nasional 25, Krajan, Wonorejo, Kec. Kedungjajang, Kabupaten Lumajang, Jawa Timur 67358'),
                         ElevatedButton(
-                          onPressed: () {
-                            context.push(
-                              Uri(
-                                path: '/webview',
-                                queryParameters: {
-                                  'url':
-                                      'https://www.google.com/maps?ll=-8.082487,113.222733&z=13&t=m&hl=id&gl=ID&mapclient=embed&cid=14695811650495879814'
-                                },
-                              ).toString(),
-                            );
+                          onPressed: () async {
+                            final Uri MapsUri = Uri.parse(
+                                "https://www.google.com/maps?ll=-8.082487,113.222733&z=13&t=m&hl=id&gl=ID&mapclient=embed&cid=14695811650495879814");
+                            if (await canLaunchUrl(MapsUri)) {
+                              await launchUrl(MapsUri,
+                                  mode: LaunchMode.externalApplication);
+                            } else {
+                              print("Could not launch Maps");
+                            }
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
@@ -228,16 +228,15 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                         Text(
                             'Jl. Raya Lumajang - Probolinggo, Kec. Klakah, Kabupaten Lumajang, Jawa Timur 67356'),
                         ElevatedButton(
-                          onPressed: () {
-                            context.push(
-                              Uri(
-                                path: '/webview',
-                                queryParameters: {
-                                  'url':
-                                      'https://www.google.com/maps?ll=-8.00704,113.24439&z=15&t=m&hl=id&gl=ID&mapclient=embed&cid=1197288916292994637'
-                                },
-                              ).toString(),
-                            );
+                          onPressed: () async {
+                            final Uri MapsUri = Uri.parse(
+                                "https://www.google.com/maps?ll=-8.00704,113.24439&z=15&t=m&hl=id&gl=ID&mapclient=embed&cid=1197288916292994637");
+                            if (await canLaunchUrl(MapsUri)) {
+                              await launchUrl(MapsUri,
+                                  mode: LaunchMode.externalApplication);
+                            } else {
+                              print("Could not launch Maps");
+                            }
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
@@ -279,16 +278,15 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                         Text(
                             'Jl. Tunjung, Krajan Dua, Tunjung, Kec. Randuagung, Kabupaten Lumajang, Jawa Timur 67354'),
                         ElevatedButton(
-                          onPressed: () {
-                            context.push(
-                              Uri(
-                                path: '/webview',
-                                queryParameters: {
-                                  'url':
-                                      'https://www.google.com/maps?ll=-8.078039,113.333292&z=10&t=m&hl=id&gl=ID&mapclient=embed&cid=15901907758921733217'
-                                },
-                              ).toString(),
-                            );
+                          onPressed: () async {
+                            final Uri MapsUri = Uri.parse(
+                                "https://www.google.com/maps?ll=-8.078039,113.333292&z=10&t=m&hl=id&gl=ID&mapclient=embed&cid=15901907758921733217");
+                            if (await canLaunchUrl(MapsUri)) {
+                              await launchUrl(MapsUri,
+                                  mode: LaunchMode.externalApplication);
+                            } else {
+                              print("Could not launch Maps");
+                            }
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
