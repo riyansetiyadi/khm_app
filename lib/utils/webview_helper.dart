@@ -43,12 +43,12 @@ class WebviewHelper {
         NavigationDelegate(
           onPageStarted: (String url) {
             onLoadingChanged(true);
+            if (onUrlChanged != null) onUrlChanged(url);
           },
           onPageFinished: (String url) {
             onLoadingChanged(false);
           },
           onNavigationRequest: (NavigationRequest request) async {
-            if (onUrlChanged != null) onUrlChanged(request.url);
             final Uri url = Uri.parse(request.url);
             final String currentHost = Uri.parse(initialUrl).host;
 

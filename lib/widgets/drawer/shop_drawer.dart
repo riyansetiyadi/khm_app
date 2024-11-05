@@ -62,7 +62,7 @@ class ShopDrawer extends StatelessWidget {
             leading: Icon(Icons.local_hospital, color: Colors.pink),
             title: const Text('SIMKHM'),
             onTap: () {
-              context.go('/home');
+              context.push('/home');
               Scaffold.of(context).closeDrawer();
             },
           ),
@@ -70,15 +70,7 @@ class ShopDrawer extends StatelessWidget {
             leading: Icon(Icons.info, color: Colors.red),
             title: const Text('Tentang kami'),
             onTap: () {
-              context.push(
-                Uri(
-                  path: '/webview',
-                  queryParameters: {
-                    'url':
-                        'https://simkhm.id/wonorejo/kosmetik/?halaman=about_us'
-                  },
-                ).toString(),
-              );
+              context.push('/kosmetik_about_us');
               Scaffold.of(context).closeDrawer();
             },
           ),

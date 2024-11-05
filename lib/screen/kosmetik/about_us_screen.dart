@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:khm_app/widgets/drawer/shop_drawer.dart';
-import 'package:khm_app/widgets/navigation_bar/main_app_bar.dart';
-import 'package:khm_app/widgets/navigation_bar/main_bottom_bar.dart';
+import 'package:khm_app/widgets/navigation_bar/shop_app_bar.dart';
 
 class AboutUsScreen extends StatefulWidget {
   const AboutUsScreen({super.key});
@@ -16,13 +15,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Image.network(
-          'https://simkhm.id/wonorejo/admin/dist/assets/img/khm.png',
-          fit: BoxFit.cover,
-          height: 30,
-        ),
-      ),
+      appBar: ShopAppBar(),
       drawer: ShopDrawer(),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20),
@@ -234,7 +227,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                         ),
                         Text(
                             'Jl. Raya Lumajang - Probolinggo, Kec. Klakah, Kabupaten Lumajang, Jawa Timur 67356'),
-                      ElevatedButton(
+                        ElevatedButton(
                           onPressed: () {
                             context.push(
                               Uri(
@@ -257,7 +250,8 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                             'Lihat Lokasi',
                             style: TextStyle(color: Colors.white),
                           ),
-                        ),],
+                        ),
+                      ],
                     ),
                   ),
                 ],
@@ -284,7 +278,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                         ),
                         Text(
                             'Jl. Tunjung, Krajan Dua, Tunjung, Kec. Randuagung, Kabupaten Lumajang, Jawa Timur 67354'),
-                      ElevatedButton(
+                        ElevatedButton(
                           onPressed: () {
                             context.push(
                               Uri(
@@ -307,7 +301,8 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                             'Lihat Lokasi',
                             style: TextStyle(color: Colors.white),
                           ),
-                        ),],
+                        ),
+                      ],
                     ),
                   ),
                 ],

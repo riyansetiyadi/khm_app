@@ -1,7 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:khm_app/firebase_options.dart';
-import 'package:khm_app/models/notificationModel.dart';
+import 'package:khm_app/models/notification_model.dart';
 import 'package:khm_app/utils/notification_helper.dart';
 
 import 'package:firebase_core/firebase_core.dart';

@@ -4,6 +4,7 @@ import 'package:khm_app/widgets/drawer/main_drawer.dart';
 import 'package:khm_app/widgets/drawer/shop_drawer.dart';
 import 'package:khm_app/widgets/navigation_bar/main_app_bar.dart';
 import 'package:khm_app/widgets/navigation_bar/main_bottom_bar.dart';
+import 'package:khm_app/widgets/navigation_bar/shop_app_bar.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebviewScreen extends StatefulWidget {
@@ -22,37 +23,61 @@ class _WebviewScreenState extends State<WebviewScreen> {
   late final WebViewController _controller;
   bool _isLoading = false;
   String _titleAppBar = '';
+  String _webTitle = '';
 
   @override
   void initState() {
     super.initState();
 
     _controller = webviewHelper.initWebview(
-      initialUrl: widget.url,
-      onLoadingChanged: (isLoading) {
-        setState(() {
-          _isLoading = isLoading;
+        initialUrl: widget.url,
+        onLoadingChanged: (isLoading) {
+          setState(() {
+            _isLoading = isLoading;
+          });
+        },
+        onUrlChanged: (url) {
+          print(url);
+          setState(() {
+            if (url.startsWith("https://simkhm.id/wonorejo/kosmetik/")) {
+              _webTitle = 'kosmetik';
+            } else {
+              _webTitle = 'simkhm';
+            }
+          });
         });
-      },
-    );
+  }
+
+  Widget buildDrawer(webtitle) {
+    if (_webTitle == 'kosmetik') {
+      return ShopDrawer();
+    } else {
+      return MainDrawer();
+    }
+  }
+
+  PreferredSizeWidget buildAppBar(webtitle) {
+    if (_webTitle == 'kosmetik') {
+      return ShopAppBar();
+    } else {
+      return MainAppBar(title: _titleAppBar);
+    }
+  }
+
+  Widget? buildBottomBar(webtitle) {
+    if (_webTitle == 'kosmetik') {
+      return null;
+    } else {
+      return MainBottomBar();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MainAppBar(title: _titleAppBar),
-      drawer: FutureBuilder(
-        future: _controller.currentUrl(),
-        builder: (context, snapshot) {
-          String url = snapshot.data ?? '';
-          if (url.startsWith("https://simkhm.id/wonorejo/kosmetik/")) {
-            return ShopDrawer();
-          } else {
-            return MainDrawer();
-          }
-        },
-      ),
-      bottomNavigationBar: const MainBottomBar(),
+      appBar: buildAppBar(_webTitle),
+      drawer: buildDrawer(_webTitle),
+      bottomNavigationBar: buildBottomBar(_webTitle),
       body: Container(
         color: Colors.white,
         child: Stack(
