@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 class ShopDrawer extends StatelessWidget {
-  final WebViewController controller;
   const ShopDrawer({
     super.key,
-    required this.controller,
   });
 
   @override

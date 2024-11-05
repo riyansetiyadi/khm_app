@@ -46,9 +46,7 @@ class _WebviewScreenState extends State<WebviewScreen> {
         builder: (context, snapshot) {
           String url = snapshot.data ?? '';
           if (url.startsWith("https://simkhm.id/wonorejo/kosmetik/")) {
-            return ShopDrawer(
-              controller: _controller,
-            );
+            return ShopDrawer();
           } else {
             return MainDrawer();
           }
