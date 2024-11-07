@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class ShopDrawer extends StatelessWidget {
-  const ShopDrawer({
+class KosmetikDrawer extends StatelessWidget {
+  const KosmetikDrawer({
     super.key,
   });
 
@@ -32,14 +32,7 @@ class ShopDrawer extends StatelessWidget {
             leading: Icon(Icons.home, color: Colors.blue),
             title: const Text('Home'),
             onTap: () {
-              context.push(
-                Uri(
-                  path: '/webview',
-                  queryParameters: {
-                    'url': 'https://simkhm.id/wonorejo/kosmetik/?halaman=home'
-                  },
-                ).toString(),
-              );
+              context.push('/home-kosmetik');
               Scaffold.of(context).closeDrawer();
             },
           ),
@@ -47,14 +40,7 @@ class ShopDrawer extends StatelessWidget {
             leading: Icon(Icons.brush, color: Colors.pink),
             title: const Text('Kosmetik'),
             onTap: () {
-              context.push(
-                Uri(
-                  path: '/webview',
-                  queryParameters: {
-                    'url': 'https://simkhm.id/wonorejo/kosmetik/?halaman=shop'
-                  },
-                ).toString(),
-              );
+              context.push('/shop-kosmetik');
               Scaffold.of(context).closeDrawer();
             },
           ),

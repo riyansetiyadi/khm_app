@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:khm_app/widgets/drawer/shop_drawer.dart';
-import 'package:khm_app/widgets/navigation_bar/shop_app_bar.dart';
+import 'package:khm_app/widgets/drawer/kosmetik_drawer.dart';
+import 'package:khm_app/widgets/navigation_bar/kosmetik_app_bar.dart';
+import 'package:khm_app/widgets/navigation_bar/kosmetik_bottom_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AboutUsScreen extends StatefulWidget {
@@ -16,8 +17,9 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ShopAppBar(),
-      drawer: ShopDrawer(),
+      appBar: KosmetikAppBar(),
+      drawer: KosmetikDrawer(),
+      bottomNavigationBar: KosmetikBottomBar(),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20),
         child: Column(

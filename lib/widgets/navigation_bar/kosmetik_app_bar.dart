@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class ShopAppBar extends StatelessWidget implements PreferredSizeWidget {
+class KosmetikAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
-  const ShopAppBar({
+  const KosmetikAppBar({
     super.key,
     this.title,
   });

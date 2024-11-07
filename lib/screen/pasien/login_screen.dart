@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginPasienScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

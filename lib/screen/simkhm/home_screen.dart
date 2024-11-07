@@ -57,15 +57,7 @@ class _HomeSimkhmScreenState extends State<HomeSimkhmScreen> {
                   ),
                   InkWell(
                     onTap: () {
-                      context.push(
-                        Uri(
-                          path: '/webview',
-                          queryParameters: {
-                            'url':
-                                'https://simkhm.id/wonorejo/kosmetik/?halaman=shop'
-                          },
-                        ).toString(),
-                      );
+                      context.push('/shop-kosmetik');
                     },
                     child: Image(
                       image: NetworkImage(

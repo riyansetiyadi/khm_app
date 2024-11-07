@@ -48,14 +48,7 @@ class MainDrawer extends StatelessWidget {
             leading: Icon(Icons.brush, color: Colors.pink),
             title: const Text('Kosmetik'),
             onTap: () {
-              context.push(
-                Uri(
-                  path: '/webview',
-                  queryParameters: {
-                    'url': 'https://simkhm.id/wonorejo/kosmetik/?halaman=shop'
-                  },
-                ).toString(),
-              );
+              context.push('/shop-kosmetik');
               Scaffold.of(context).closeDrawer();
             },
           ),

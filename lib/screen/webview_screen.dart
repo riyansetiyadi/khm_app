@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:khm_app/utils/webview_helper.dart';
 import 'package:khm_app/widgets/drawer/main_drawer.dart';
-import 'package:khm_app/widgets/drawer/shop_drawer.dart';
+import 'package:khm_app/widgets/drawer/kosmetik_drawer.dart';
+import 'package:khm_app/widgets/navigation_bar/kosmetik_bottom_bar.dart';
 import 'package:khm_app/widgets/navigation_bar/main_app_bar.dart';
 import 'package:khm_app/widgets/navigation_bar/main_bottom_bar.dart';
-import 'package:khm_app/widgets/navigation_bar/shop_app_bar.dart';
+import 'package:khm_app/widgets/navigation_bar/kosmetik_app_bar.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebviewScreen extends StatefulWidget {
@@ -50,7 +51,7 @@ class _WebviewScreenState extends State<WebviewScreen> {
 
   Widget buildDrawer(webtitle) {
     if (_webTitle == 'kosmetik') {
-      return ShopDrawer();
+      return KosmetikDrawer();
     } else {
       return MainDrawer();
     }
@@ -58,7 +59,7 @@ class _WebviewScreenState extends State<WebviewScreen> {
 
   PreferredSizeWidget buildAppBar(webtitle) {
     if (_webTitle == 'kosmetik') {
-      return ShopAppBar();
+      return KosmetikAppBar();
     } else {
       return MainAppBar(title: _titleAppBar);
     }
@@ -66,7 +67,7 @@ class _WebviewScreenState extends State<WebviewScreen> {
 
   Widget? buildBottomBar(webtitle) {
     if (_webTitle == 'kosmetik') {
-      return null;
+      return KosmetikBottomBar();
     } else {
       return MainBottomBar();
     }
