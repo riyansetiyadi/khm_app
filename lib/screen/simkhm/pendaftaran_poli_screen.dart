@@ -72,15 +72,7 @@ class _PendaftaranPoliScreenState extends State<PendaftaranPoliScreen> {
                             ),
                           ),
                           onPressed: () {
-                            context.push(
-                              Uri(
-                                path: '/webview',
-                                queryParameters: {
-                                  'url':
-                                      'https://simkhm.id/wonorejo/pasien/login.php'
-                                },
-                              ).toString(),
-                            );
+                            context.push('/register');
                           },
                           child: Text('Kunjungi',
                               style:
