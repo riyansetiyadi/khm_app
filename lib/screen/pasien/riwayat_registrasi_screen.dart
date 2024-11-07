@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class RiwayatRegistrasiScreen extends StatefulWidget {
   const RiwayatRegistrasiScreen({super.key});
@@ -137,7 +136,9 @@ class _RiwayatRegistrasiScreenState extends State<RiwayatRegistrasiScreen> {
                                                   color: Colors.white),
                                             ),
                                             style: ElevatedButton.styleFrom(
-                                              backgroundColor: const Color.fromARGB(255, 9, 74, 11),
+                                              backgroundColor:
+                                                  const Color.fromARGB(
+                                                      255, 9, 74, 11),
                                               minimumSize: Size(50, 30),
                                               shape: RoundedRectangleBorder(
                                                 borderRadius:
