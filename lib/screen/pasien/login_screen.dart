@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginScreen extends StatelessWidget {
   @override
@@ -16,7 +17,7 @@ class LoginScreen extends StatelessWidget {
                 margin: const EdgeInsets.only(bottom: 24.0),
                 child: Image.network(
                   'https://simkhm.id/wonorejo/admin/dist/assets/img/khm.png', // Ganti dengan URL logo Anda
-                  height: 80,
+                  height: 70,
                 ),
               ),
 
@@ -79,28 +80,33 @@ class LoginScreen extends StatelessWidget {
                         children: [
                           ElevatedButton(
                             onPressed: () {
-                              // Aksi untuk Register
+                              context.push('/register');
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green[700], // Warna hijau
+                              backgroundColor: const Color.fromARGB(
+                                  255, 35, 94, 37), // Warna hijau
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8.0),
                               ),
                             ),
-                            child: Text('Register'),
+                            child: Text('Register',
+                                style: TextStyle(color: Colors.white)),
                           ),
                           SizedBox(width: 8),
                           ElevatedButton(
                             onPressed: () {
-                              // Aksi untuk Login
+                                                      context.push('/menu_pasien');
+
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green[700],
+                              backgroundColor:
+                                  const Color.fromARGB(255, 35, 94, 37),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8.0),
                               ),
                             ),
-                            child: Text('Login'),
+                            child: Text('Login',
+                                style: TextStyle(color: Colors.white)),
                           ),
                         ],
                       ),
