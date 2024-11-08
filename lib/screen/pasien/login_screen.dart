@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:khm_app/widgets/drawer/main_drawer.dart';
+import 'package:khm_app/widgets/navigation_bar/main_app_bar.dart';
 
 class LoginPasienScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[200],
+      appBar: MainAppBar(
+        title: 'SIMKHM',
+      ),
+      drawer: MainDrawer(),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -80,7 +86,7 @@ class LoginPasienScreen extends StatelessWidget {
                         children: [
                           ElevatedButton(
                             onPressed: () {
-                              context.push('/register');
+                              context.push('/register-pasien');
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color.fromARGB(
@@ -95,8 +101,7 @@ class LoginPasienScreen extends StatelessWidget {
                           SizedBox(width: 8),
                           ElevatedButton(
                             onPressed: () {
-                                                      context.push('/menu_pasien');
-
+                              context.push('/menu-pasien');
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor:
