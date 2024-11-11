@@ -72,7 +72,7 @@ class _PendaftaranPoliScreenState extends State<PendaftaranPoliScreen> {
                             ),
                           ),
                           onPressed: () {
-                            context.push('/register');
+                            context.push('/register-pasien');
                           },
                           child: Text('Kunjungi',
                               style:

@@ -27,7 +27,7 @@ final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
 // GoRouter configuration
 final router = GoRouter(
-  initialLocation: '/register-pasien',
+  initialLocation: '/home',
   navigatorKey: _rootNavigatorKey,
   routes: [
     GoRoute(
@@ -53,7 +53,6 @@ final router = GoRouter(
         return WebviewScreen(url: url);
       },
     ),
-
     GoRoute(
       path: '/home-kosmetik',
       builder: (context, state) => HomeKosmetikScreen(),
@@ -94,7 +93,7 @@ final router = GoRouter(
       path: '/riwayat-shop-kosmetik',
       builder: (context, state) => RiwayatScreen(),
     ),
-        GoRoute(
+    GoRoute(
       path: '/login-pasien',
       builder: (context, state) => LoginPasienScreen(),
     ),
