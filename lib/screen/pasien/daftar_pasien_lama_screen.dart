@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:khm_app/widgets/drawer/main_drawer.dart';
+import 'package:khm_app/widgets/navigation_bar/main_app_bar.dart';
 
 class DaftarPasienLamaScreen extends StatefulWidget {
   const DaftarPasienLamaScreen({super.key});
@@ -24,9 +26,10 @@ class _DaftarPasienLamaScreenState extends State<DaftarPasienLamaScreen> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        // appBar: AppBar(
-        //   backgroundColor: Colors.white,
-        // ),
+      appBar: MainAppBar(
+        title: 'SIMKHM',
+      ),
+      drawer: MainDrawer(),
         body: SingleChildScrollView(
           padding:
               const EdgeInsets.only(top: 40, left: 16, right: 16, bottom: 16),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:khm_app/widgets/drawer/main_drawer.dart';
+import 'package:khm_app/widgets/navigation_bar/main_app_bar.dart';
 
 class MenuPasienScreen extends StatefulWidget {
   const MenuPasienScreen({super.key});
@@ -14,9 +16,10 @@ class _MenuPasienScreenState extends State<MenuPasienScreen> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        // appBar: AppBar(
-        //   backgroundColor: Colors.white,
-        // ),
+        appBar: MainAppBar(
+          title: 'SIMKHM',
+        ),
+        drawer: MainDrawer(),
         body: SingleChildScrollView(
           padding:
               const EdgeInsets.only(top: 40, left: 16, right: 16, bottom: 16),
@@ -213,7 +216,7 @@ class _MenuPasienScreenState extends State<MenuPasienScreen> {
                   Expanded(
                     child: InkWell(
                       onTap: () {
-                        context.push('/daftar_pasien_lama');
+                        context.push('/daftar-pasien-lama');
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -251,7 +254,7 @@ class _MenuPasienScreenState extends State<MenuPasienScreen> {
                   Expanded(
                     child: InkWell(
                       onTap: () {
-                        context.push('/riwayat_registrasi');
+                        context.push('/riwayat-kunjungan-pasien');
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -292,7 +295,7 @@ class _MenuPasienScreenState extends State<MenuPasienScreen> {
               ),
               InkWell(
                 onTap: () {
-                  context.push('/');
+                  context.push('/login-pasien');
                 },
                 child: Container(
                   width: double.infinity,
