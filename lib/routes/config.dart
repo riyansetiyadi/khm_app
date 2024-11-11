@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:khm_app/db/auth_repository.dart';
 import 'package:khm_app/screen/kosmetik/about_us_screen.dart';
+import 'package:khm_app/screen/kosmetik/cart_screen.dart';
 import 'package:khm_app/screen/kosmetik/home_screen.dart';
 import 'package:khm_app/screen/kosmetik/login_screen.dart';
 import 'package:khm_app/screen/kosmetik/profile_screen.dart';
@@ -88,6 +89,10 @@ final router = GoRouter(
     GoRoute(
       path: '/register-address-kosmetik',
       builder: (context, state) => RegisterAddressScreen(),
+    ),
+    GoRoute(
+      path: '/cart-kosmetik',
+      builder: (context, state) => CartScreen(),
     ),
     GoRoute(
       path: '/riwayat-shop-kosmetik',
