@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:khm_app/provider/auth_provider.dart';
+import 'package:khm_app/provider/auth_kosmetik_provider.dart';
 import 'package:khm_app/widgets/navigation_bar/kosmetik_bottom_bar.dart';
 import 'package:provider/provider.dart';
 
@@ -16,7 +16,7 @@ class SettingScreen extends StatefulWidget {
 class _SettingScreenState extends State<SettingScreen> {
   @override
   Widget build(BuildContext context) {
-    final authRead = context.read<AuthProvider>();
+    final authRead = context.read<AuthKosmetikProvider>();
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,

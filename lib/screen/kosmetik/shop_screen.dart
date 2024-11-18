@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:khm_app/models/product_model.dart';
-import 'package:khm_app/provider/auth_provider.dart';
+import 'package:khm_app/provider/auth_kosmetik_provider.dart';
 import 'package:khm_app/provider/cart_provider.dart';
 import 'package:khm_app/provider/product_provider.dart';
 import 'package:khm_app/utils/enum_state.dart';
@@ -84,7 +84,7 @@ class _ShopScreenState extends State<ShopScreen> {
                     color: Color(0xFF198754),
                     size: 30,
                   ),
-                  onPressed: () => context.push('/cart'),
+                  onPressed: () => context.push('/cart-kosmetik'),
                 ),
                 if (itemCount > 0)
                   Positioned(
@@ -242,7 +242,7 @@ class _ShopScreenState extends State<ShopScreen> {
         return GestureDetector(
           onTap: () {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            if (id != null) context.push('/detailproduct/$id');
+            if (id != null) context.push('/product/$id');
           },
           child: Card(
             color: Colors.white,
@@ -280,7 +280,8 @@ class _ShopScreenState extends State<ShopScreen> {
                       ElevatedButton(
                         onPressed: () async {
                           if (int.parse(product.stok ?? '0') != 0) {
-                            final authRead = context.read<AuthProvider>();
+                            final authRead =
+                                context.read<AuthKosmetikProvider>();
                             bool isLoggedIn = await authRead.isLoggedIn;
                             if (isLoggedIn && (product.id_produk != null)) {
                               final cartRead = context.read<CartProvider>();

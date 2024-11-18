@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:khm_app/provider/auth_provider.dart';
+import 'package:khm_app/provider/auth_kosmetik_provider.dart';
 import 'package:khm_app/widgets/drawer/kosmetik_drawer.dart';
 import 'package:khm_app/widgets/navigation_bar/kosmetik_app_bar.dart';
 import 'package:khm_app/widgets/navigation_bar/kosmetik_bottom_bar.dart';
@@ -185,7 +185,8 @@ class _LoginKosmetikScreenState extends State<LoginKosmetikScreen> {
                           children: <Widget>[
                             ElevatedButton(
                               onPressed: () async {
-                                final authRead = context.read<AuthProvider>();
+                                final authRead =
+                                    context.read<AuthKosmetikProvider>();
 
                                 final result = await authRead.login(
                                     _emailController.text,

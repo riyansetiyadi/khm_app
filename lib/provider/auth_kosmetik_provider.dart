@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:khm_app/db/auth_repository.dart';
+import 'package:khm_app/db/auth_kosmetik_repository.dart';
 import 'package:khm_app/models/profile_model.dart';
 import 'package:khm_app/models/response_model.dart';
-import 'package:khm_app/service/api_service.dart';
+import 'package:khm_app/service/api_kosmetik_service.dart';
 import 'package:khm_app/utils/enum_state.dart';
 
-class AuthProvider extends ChangeNotifier {
-  final AuthRepository authRepository;
-  final ApiService apiService;
+class AuthKosmetikProvider extends ChangeNotifier {
+  final AuthKosmetikRepository authRepository;
+  final ApiKosmetikService apiService;
 
-  AuthProvider(this.authRepository, this.apiService) {
+  AuthKosmetikProvider(this.authRepository, this.apiService) {
     _init();
   }
 

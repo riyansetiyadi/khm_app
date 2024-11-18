@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:khm_app/extension/currency.dart';
 import 'package:khm_app/extension/status_formatted.dart';
 import 'package:khm_app/models/group_transaction_model.dart';
-import 'package:khm_app/provider/auth_provider.dart';
+import 'package:khm_app/provider/auth_kosmetik_provider.dart';
 import 'package:khm_app/provider/transaction_provider.dart';
 import 'package:khm_app/utils/enum_state.dart';
 import 'package:khm_app/widgets/empty_shop_widget.dart';
@@ -14,16 +14,16 @@ import 'package:khm_app/widgets/handle_error_refresh_widget.dart';
 import 'package:khm_app/widgets/unauthorized_widget.dart';
 import 'package:provider/provider.dart';
 
-class RiwayatScreen extends StatefulWidget {
-  const RiwayatScreen({
+class TransactionsScreen extends StatefulWidget {
+  const TransactionsScreen({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<RiwayatScreen> createState() => _RiwayatScreenState();
+  State<TransactionsScreen> createState() => _TransactionsScreenState();
 }
 
-class _RiwayatScreenState extends State<RiwayatScreen> {
+class _TransactionsScreenState extends State<TransactionsScreen> {
   @override
   void initState() {
     final transactionProvider = context.read<TransactionProvider>();
@@ -58,7 +58,7 @@ class _RiwayatScreenState extends State<RiwayatScreen> {
       ),
       body: Consumer<TransactionProvider>(
         builder: (context, state, _) {
-          final authWatch = context.watch<AuthProvider>();
+          final authWatch = context.watch<AuthKosmetikProvider>();
           if (authWatch.isLoggedIn) {
             switch (state.state) {
               case ResultState.loading:
@@ -112,7 +112,7 @@ class _RiwayatScreenState extends State<RiwayatScreen> {
                   children: <Widget>[
                     InkWell(
                       onTap: () async {
-                        context.push('/detailhistory/${transaction.codeNota}');
+                        context.push('/detail-riwayat/${transaction.codeNota}');
                       },
                       child: Container(
                         child: InkWell(
@@ -229,7 +229,8 @@ class _RiwayatScreenState extends State<RiwayatScreen> {
                                   if (transaction.buktiPembayaran == null)
                                     ElevatedButton(
                                       onPressed: () {
-                                        context.push('/detailhistory');
+                                        context.push(
+                                            '/detail-riwayat/${transaction.codeNota}');
                                       },
                                       child: Text('Upload Bukti Transaksi'),
                                       style: ElevatedButton.styleFrom(

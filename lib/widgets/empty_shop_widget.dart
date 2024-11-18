@@ -32,7 +32,7 @@ class EmptyShop extends StatelessWidget {
           SizedBox(height: 10),
           ElevatedButton(
             onPressed: () {
-              context.push('/shop');
+              context.push('/shop-kosmetik');
             },
             child: Text('Belanja Sekarang'),
             style: ElevatedButton.styleFrom(

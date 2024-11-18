@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:khm_app/models/gender_model.dart';
-import 'package:khm_app/provider/auth_provider.dart';
+import 'package:khm_app/provider/auth_kosmetik_provider.dart';
 import 'package:khm_app/utils/list_gender.dart';
 import 'package:provider/provider.dart';
 
@@ -34,7 +34,7 @@ class _RegisterKonsulScreenState extends State<RegisterKonsulScreen> {
   String? _selectedGender;
 
   Future<void> _setDataUser() async {
-    final authRead = context.read<AuthProvider>();
+    final authRead = context.read<AuthKosmetikProvider>();
     if (mounted) {
       setState(() {
         if (listGender.any((gender) => gender.id == authRead.profile?.gender))
@@ -47,7 +47,7 @@ class _RegisterKonsulScreenState extends State<RegisterKonsulScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final authRead = context.read<AuthProvider>();
+    final authRead = context.read<AuthKosmetikProvider>();
     return Scaffold(
       appBar: AppBar(
         title: Text("Lengkapi Data Diri"),

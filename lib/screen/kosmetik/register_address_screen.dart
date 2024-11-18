@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:khm_app/models/province_district_model.dart';
 import 'package:khm_app/models/subdistrict_model.dart';
 import 'package:khm_app/provider/address_provider.dart';
-import 'package:khm_app/provider/auth_provider.dart';
+import 'package:khm_app/provider/auth_kosmetik_provider.dart';
 import 'package:provider/provider.dart';
 
 class RegisterAddressScreen extends StatefulWidget {
@@ -48,7 +48,7 @@ class _RegisterAddressScreenState extends State<RegisterAddressScreen> {
 
   Future<void> _setAddressUser() async {
     final addressProvider = context.read<AddressProvider>();
-    final authRead = context.read<AuthProvider>();
+    final authRead = context.read<AuthKosmetikProvider>();
 
     ProvinceDistrictModel? userProvince =
         await addressProvider.getProvinceByName(authRead.profile?.province);
@@ -456,7 +456,8 @@ class _RegisterAddressScreenState extends State<RegisterAddressScreen> {
                                 (selectedVillage?.kelurahan != null) &&
                                 (selectedVillage?.kodepos != null) &&
                                 (_alamatController.text.isNotEmpty)) {
-                              final authRead = context.read<AuthProvider>();
+                              final authRead =
+                                  context.read<AuthKosmetikProvider>();
                               bool result = await authRead.registerShop(
                                 selectedProvince!.name,
                                 selectedDistrict!.name,

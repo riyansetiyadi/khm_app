@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:khm_app/models/profile_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AuthRepository {
+class AuthKosmetikRepository {
   final String profileKey = "profile-kosmetik";
 
   Future<bool> isLoggedInKosmetik() async {

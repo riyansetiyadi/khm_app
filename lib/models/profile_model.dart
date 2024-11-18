@@ -110,7 +110,7 @@ class ProfileModel {
       province: json['data'][0]['provinsi'],
       district: json['data'][0]['kota'],
       subdistrict: json['data'][0]['kecamatan'],
-      village: json['data'][0]['kecamatan'],
+      village: json['data'][0]['kelurahan'],
       postalCode: json['data'][0]['kode_pos'],
       address: json['data'][0]['alamat'],
       domAddress: json['data'][0]['alamat_dom'],

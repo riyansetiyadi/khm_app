@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:khm_app/models/product_model.dart';
-import 'package:khm_app/service/api_service.dart';
+import 'package:khm_app/service/api_kosmetik_service.dart';
 import 'package:khm_app/utils/enum_state.dart';
 
 class ProductProvider extends ChangeNotifier {
-  final ApiService apiService;
+  final ApiKosmetikService apiService;
 
   ProductProvider(this.apiService) {
     _init();

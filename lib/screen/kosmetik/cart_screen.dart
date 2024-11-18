@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:khm_app/models/cart_model.dart';
-import 'package:khm_app/provider/auth_provider.dart';
+import 'package:khm_app/provider/auth_kosmetik_provider.dart';
 import 'package:khm_app/provider/cart_provider.dart';
 import 'package:khm_app/utils/enum_state.dart';
 import 'package:khm_app/widgets/empty_shop_widget.dart';
@@ -44,7 +44,7 @@ class _CartScreenState extends State<CartScreen> {
       ),
       body: Consumer<CartProvider>(
         builder: (context, state, _) {
-          final authWatch = context.watch<AuthProvider>();
+          final authWatch = context.watch<AuthKosmetikProvider>();
           if (authWatch.isLoggedIn) {
             switch (state.state) {
               case ResultState.loading:
@@ -233,7 +233,7 @@ class _CartScreenState extends State<CartScreen> {
               bool result =
                   state.changeQuantity ? await state.updateAllQuantity() : true;
               if (result) {
-                context.push('/cart/checkout');
+                context.push('/checkout-kosmetik');
               } else {
                 final snackBar = SnackBar(
                   backgroundColor: Colors.green,

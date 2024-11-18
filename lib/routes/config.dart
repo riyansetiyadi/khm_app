@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:khm_app/db/auth_repository.dart';
+import 'package:khm_app/db/auth_kosmetik_repository.dart';
+import 'package:khm_app/db/auth_pasien_repository.dart';
 import 'package:khm_app/screen/kosmetik/about_us_screen.dart';
 import 'package:khm_app/screen/kosmetik/cart_screen.dart';
+import 'package:khm_app/screen/kosmetik/checkout_screen.dart';
+import 'package:khm_app/screen/kosmetik/product_screen.dart';
+import 'package:khm_app/screen/kosmetik/transaction_screen.dart';
 import 'package:khm_app/screen/kosmetik/home_screen.dart';
 import 'package:khm_app/screen/kosmetik/login_screen.dart';
 import 'package:khm_app/screen/kosmetik/profile_screen.dart';
 import 'package:khm_app/screen/kosmetik/register_address_screen.dart';
 import 'package:khm_app/screen/kosmetik/register_konsul_screen.dart';
 import 'package:khm_app/screen/kosmetik/register_screen.dart';
-import 'package:khm_app/screen/kosmetik/riwayat_screen.dart';
+import 'package:khm_app/screen/kosmetik/transactions_screen.dart';
 import 'package:khm_app/screen/kosmetik/setting_screen.dart';
 import 'package:khm_app/screen/kosmetik/shop_screen.dart';
+import 'package:khm_app/screen/kosmetik/receipt_screen.dart';
 import 'package:khm_app/screen/pasien/daftar_pasien_lama_screen.dart';
 import 'package:khm_app/screen/pasien/login_screen.dart';
 import 'package:khm_app/screen/pasien/menu_pasien.dart';
@@ -62,6 +67,15 @@ final router = GoRouter(
       builder: (context, state) => ShopScreen(),
     ),
     GoRoute(
+      path: '/product/:id',
+      builder: (context, state) {
+        final id = state.pathParameters["id"]!;
+        return ProductScreen(
+          id: int.parse(id),
+        );
+      },
+    ),
+    GoRoute(
       path: '/profile-kosmetik',
       builder: (context, state) => ProfileKosmetikScreen(),
     ),
@@ -91,7 +105,24 @@ final router = GoRouter(
     ),
     GoRoute(
       path: '/riwayat-shop-kosmetik',
-      builder: (context, state) => RiwayatScreen(),
+      builder: (context, state) => TransactionsScreen(),
+    ),
+    GoRoute(
+      path: '/detail-riwayat/:nota',
+      builder: (context, state) {
+        final nota = state.pathParameters["nota"]!;
+        return TransactionScreen(
+          nota: nota,
+        );
+      },
+    ),
+    GoRoute(
+      path: '/receipt-transaction-kosmetik',
+      builder: (context, state) => ReceiptScreen(),
+    ),
+    GoRoute(
+      path: '/checkout-kosmetik',
+      builder: (context, state) => CheckoutScreen(),
     ),
     GoRoute(
       path: '/login-pasien',
@@ -121,10 +152,17 @@ final router = GoRouter(
       if (path != null) return path;
     }
 
-    final authRepository = AuthRepository();
-    bool isLoggedInKosmetik = await authRepository.isLoggedInKosmetik();
+    final authKosmetikRepository = AuthKosmetikRepository();
+    bool isLoggedInKosmetik = await authKosmetikRepository.isLoggedInKosmetik();
     if (state.fullPath == '/setting-kosmetik' && !isLoggedInKosmetik)
       return '/login-kosmetik';
+
+    final authPasienRepository = AuthPasienRepository();
+    bool isLoggedInPasien = await authPasienRepository.isLoggedInPasien();
+    print(isLoggedInPasien);
+    if ((state.fullPath == '/login-pasien' ||
+            state.fullPath == '/register-pasien') &&
+        isLoggedInPasien) return '/menu-pasien';
 
     return null;
   },

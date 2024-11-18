@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:khm_app/models/province_district_model.dart';
 import 'package:khm_app/models/subdistrict_model.dart';
-import 'package:khm_app/service/api_address.dart';
+import 'package:khm_app/service/api_address_service.dart';
 import 'package:khm_app/utils/enum_state.dart';
 
 class AddressProvider extends ChangeNotifier {

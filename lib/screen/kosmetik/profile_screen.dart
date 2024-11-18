@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:khm_app/provider/auth_provider.dart';
+import 'package:khm_app/provider/auth_kosmetik_provider.dart';
 import 'package:provider/provider.dart';
 
 class ProfileKosmetikScreen extends StatefulWidget {
@@ -14,7 +14,7 @@ class ProfileKosmetikScreen extends StatefulWidget {
 class _ProfileKosmetikScreenState extends State<ProfileKosmetikScreen> {
   @override
   Widget build(BuildContext context) {
-    final authWatch = context.watch<AuthProvider>();
+    final authWatch = context.watch<AuthKosmetikProvider>();
     return Scaffold(
       appBar: AppBar(
         title: Text('Detail Profil'),

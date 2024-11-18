@@ -5,7 +5,7 @@ import 'package:path/path.dart' as p;
 import 'package:http/http.dart' as http;
 import 'package:khm_app/models/profile_model.dart';
 
-class ApiService {
+class ApiKosmetikService {
   static const String _baseUrl = 'https://wedangtech.my.id/api_personal';
   static const String _chatUrl = 'https://wedangtech.my.id';
 
